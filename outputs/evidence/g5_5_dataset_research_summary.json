@@ -1,0 +1,226 @@
+{
+  "pulseguard_gate": "G5.5",
+  "gate_name": "Public/Realistic Data Lane Evaluation",
+  "status": "COMPLETE",
+  "date": "2026-06",
+  "produced_by": "G5.5 dataset research + decision matrix",
+
+  "primary_recommendation": {
+    "dataset": "Taiwan Default (UCI Credit Card Default)",
+    "decision": "USE_NOW",
+    "rationale": "Only dataset satisfying all 4 immediate criteria: downloaded, real default labels, real demographics, no auth barrier",
+    "local_path": "data/public/taiwan_credit_default.xls",
+    "download_status": "DOWNLOADED",
+    "file_size_bytes": 5539328,
+    "rows": 30000,
+    "features": 23,
+    "default_rate": 0.2212,
+    "default_rate_by_group": {
+      "male": 0.2417,
+      "female": 0.2078,
+      "gap_pp": 3.39
+    },
+    "target_column": "default payment next month",
+    "source_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls",
+    "auth_required": false,
+    "citation": "Yeh, I.C. and Lien, C.H. (2009). The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2), 2473-2480.",
+    "known_limitations": [
+      "Credit card default, not consumer loan default — different product",
+      "Taiwan market, 2005 data — not representative of current credit populations",
+      "No loan amount / outstanding principal (installment loan features absent)",
+      "EDUCATION/MARRIAGE codes have undocumented categories (0, 5, 6 in EDUCATION; 0 in MARRIAGE)"
+    ]
+  },
+
+  "dataset_decisions": [
+    {
+      "rank": 1,
+      "dataset": "Home Credit Default Risk",
+      "source": "Kaggle (auth required)",
+      "rows": 307511,
+      "decision": "USE_LATER",
+      "decision_rationale": "Ideal match for synthetic DGP; enables direct SR-1 through SR-7 reproduction; blocked by Kaggle auth in automated environment",
+      "download_status": "BLOCKED",
+      "auth_required": true,
+      "business_realism_score": 5,
+      "suitability_default_modeling": 5,
+      "suitability_fairness_audit": 4,
+      "suitability_drift_monitoring": 4,
+      "suitability_reject_inference": 3,
+      "implementation_cost": 4,
+      "target_gate": "G4-G6 re-run"
+    },
+    {
+      "rank": 2,
+      "dataset": "LendingClub",
+      "source": "Kaggle (auth required)",
+      "rows": 2260000,
+      "decision": "USE_LATER",
+      "decision_rationale": "Primary value is rejected loan pool for reject inference; 27M rejected rows; blocked by Kaggle auth",
+      "download_status": "BLOCKED",
+      "auth_required": true,
+      "business_realism_score": 4,
+      "suitability_default_modeling": 4,
+      "suitability_fairness_audit": 2,
+      "suitability_drift_monitoring": 4,
+      "suitability_reject_inference": 5,
+      "implementation_cost": 4,
+      "target_gate": "G9 reject inference"
+    },
+    {
+      "rank": 3,
+      "dataset": "HMDA 2022",
+      "source": "CFPB public (no auth)",
+      "rows": 12000000,
+      "decision": "USE_LATER",
+      "decision_rationale": "No default outcome — approval/denial only; mandatory demographic fields; regulatory-grade fairness lane; not for champion/challenger",
+      "download_status": "ACCESSIBLE_COMPLEX",
+      "auth_required": false,
+      "business_realism_score": 4,
+      "suitability_default_modeling": 1,
+      "suitability_fairness_audit": 5,
+      "suitability_drift_monitoring": 2,
+      "suitability_reject_inference": 1,
+      "implementation_cost": 3,
+      "target_gate": "G9+ fairness/approval lane"
+    },
+    {
+      "rank": 4,
+      "dataset": "FICO HELOC",
+      "source": "FICO Explainability Challenge (primary page offline)",
+      "rows": 10459,
+      "decision": "FALLBACK",
+      "decision_rationale": "Real credit performance; no demographic variables; primary source offline; too small for drift experiments",
+      "download_status": "NOT_DIRECTLY_ACCESSIBLE",
+      "auth_required": false,
+      "business_realism_score": 2,
+      "suitability_default_modeling": 3,
+      "suitability_fairness_audit": 1,
+      "suitability_drift_monitoring": 2,
+      "suitability_reject_inference": 1,
+      "implementation_cost": 2,
+      "target_gate": "FALLBACK_ONLY"
+    },
+    {
+      "rank": 5,
+      "dataset": "Give Me Some Credit",
+      "source": "Kaggle (auth required)",
+      "rows": 150000,
+      "decision": "FALLBACK",
+      "decision_rationale": "Real US consumer default labels; only age as demographic; Kaggle auth; simpler than Home Credit",
+      "download_status": "BLOCKED",
+      "auth_required": true,
+      "business_realism_score": 3,
+      "suitability_default_modeling": 3,
+      "suitability_fairness_audit": 2,
+      "suitability_drift_monitoring": 2,
+      "suitability_reject_inference": 1,
+      "implementation_cost": 3,
+      "target_gate": "FALLBACK_ONLY"
+    },
+    {
+      "rank": 6,
+      "dataset": "Taiwan Default (UCI Credit Card Default)",
+      "source": "UCI ML Repository (no auth)",
+      "rows": 30000,
+      "decision": "USE_NOW",
+      "decision_rationale": "Downloaded, verified, real default labels, real demographics (SEX/AGE/EDUCATION/MARRIAGE), temporal panel, no auth",
+      "download_status": "DOWNLOADED",
+      "auth_required": false,
+      "business_realism_score": 3,
+      "suitability_default_modeling": 4,
+      "suitability_fairness_audit": 4,
+      "suitability_drift_monitoring": 4,
+      "suitability_reject_inference": 2,
+      "implementation_cost": 1,
+      "target_gate": "G6 champion/challenger"
+    },
+    {
+      "rank": 7,
+      "dataset": "German Credit (Statlog)",
+      "source": "UCI Statlog (no auth)",
+      "rows": 1000,
+      "decision": "EXCLUDE",
+      "decision_rationale": "1,000 rows; 1994 data; 30% default rate unrealistic; recognized as toy dataset; interview-damaging if cited as primary",
+      "download_status": "ACCESSIBLE",
+      "auth_required": false,
+      "business_realism_score": 1,
+      "suitability_default_modeling": 1,
+      "suitability_fairness_audit": 2,
+      "suitability_drift_monitoring": 1,
+      "suitability_reject_inference": 1,
+      "implementation_cost": 1,
+      "target_gate": "EXCLUDED"
+    }
+  ],
+
+  "two_lane_architecture": {
+    "synthetic_harness_lane": {
+      "dataset": "synthetic_home_credit_like",
+      "role": "Injected failure testing; controlled leakage/drift/calibration protocol",
+      "gates": ["G3", "G3.1", "G4", "G5"],
+      "retain": true,
+      "rationale": "Cannot remove synthetic harness — it is the only environment with injected temporal leakage, controlled DGP drift, and known Bayes ceiling"
+    },
+    "real_data_immediate_lane": {
+      "dataset": "Taiwan Default",
+      "role": "Business-realistic champion/challenger evaluation; real demographic fairness audit",
+      "gates": ["G6", "G7"],
+      "data_path": "data/public/taiwan_credit_default.xls",
+      "status": "READY"
+    },
+    "real_data_future_lane": {
+      "dataset": "Home Credit Default Risk",
+      "role": "Gold standard; source-reference reproduction; Kaggle — user manual download required",
+      "gates": ["G4-G6 re-run"],
+      "status": "BLOCKED_NEEDS_USER_ACTION"
+    },
+    "reject_inference_lane": {
+      "dataset": "LendingClub (rejected pool)",
+      "role": "Selection bias correction",
+      "gates": ["G9"],
+      "status": "BLOCKED_AUTH"
+    },
+    "approval_fairness_lane": {
+      "dataset": "HMDA 2022",
+      "role": "Regulatory-grade approval fairness (not default modeling)",
+      "gates": ["G9+"],
+      "status": "ACCESSIBLE_COMPLEX"
+    }
+  },
+
+  "pending_decision_before_g6": {
+    "question": "Which data lane should G6 Champion/Challenger run on?",
+    "options": [
+      {
+        "option": "A",
+        "description": "Taiwan Default only (real-data lane; immediate)",
+        "pro": "Clean real-data story; forces pipeline to handle real data",
+        "con": "Loses direct comparison with synthetic protocol results"
+      },
+      {
+        "option": "B",
+        "description": "Synthetic + Taiwan parallel lanes (run G6 twice)",
+        "pro": "Full comparison; validates pipeline portability across datasets",
+        "con": "Double the work; requires managing two evidence sets"
+      },
+      {
+        "option": "C",
+        "description": "Synthetic retained for failure tests; Taiwan Default becomes primary G6 evidence",
+        "pro": "Best portfolio story; demonstrates lane separation explicitly",
+        "con": "Slightly more complex to document clearly"
+      }
+    ],
+    "recommended": "C",
+    "recommended_rationale": "Option C gives the strongest interview narrative: synthetic lane tests protocol correctness (injected failure detection); Taiwan Default lane tests business-realistic modeling (real data, real demographics). The two lanes are complementary, not redundant."
+  },
+
+  "claim_boundary_note": "No performance claim may use Taiwan results as substitute for Home Credit or synthetic DGP results. Taiwan credit card default (Taiwan, 2005) is a separate dataset with different product, geography, and vintage. Claims must be labeled: 'Taiwan credit card default dataset' — not 'Home Credit' and not 'consumer loan'.",
+
+  "files_produced": [
+    "docs/G5_5_PUBLIC_DATASET_RESEARCH.md",
+    "docs/G5_5_DATASET_DECISION_MATRIX.md",
+    "outputs/evidence/g5_5_dataset_research_summary.json",
+    "data/public/taiwan_credit_default.xls"
+  ]
+}

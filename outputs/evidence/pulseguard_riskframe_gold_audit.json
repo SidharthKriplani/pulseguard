@@ -1,0 +1,197 @@
+{
+  "project": "PulseGuard",
+  "audit_gate": "PULSEGUARD_RISKFRAME_GOLD_RUTHLESS_AUDIT",
+  "audit_date": "2026-06-17",
+  "audit_scope": "G0 through G8.1 inclusive",
+  "overall_verdict": "STRONG_NEEDS_MEAT_PASS",
+  "verdict_rationale": "PulseGuard demonstrates production-pattern governance discipline and calibration-first methodology. Core weaknesses are data realism (Taiwan Default: 2005 vintage, no income, random split, 30k rows), decision economics (illustrative cost matrix only), and evaluation validity (random not temporal split; uncalibrated LightGBM comparison). These gaps prevent Gold certification. Foundations are solid; adding Home Credit realism lane and temporal validation would push score to GOLD_CANDIDATE.",
+  "provenance_status": "PASS",
+  "provenance_evidence_file": "outputs/evidence/g8_1_data_provenance_audit.json",
+  "provenance_checks": "20/20",
+  "provenance_sha256": "30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933",
+  "provenance_sha256_matches_live_uci": true,
+  "taiwan_realism_decision": "BRIDGE_ONLY",
+  "taiwan_realism_rationale": "Taiwan Default is a verified real-public bridge: real payment histories, real demographics, real default outcomes, SHA256-verified. It is not a production substitute: 2005 vintage, single geography, single product, no income/FOIR, random split, 30k rows, no reject inference complexity.",
+  "stronger_realism_lane_recommendation": "Home Credit Default Risk (307k rows, multi-vintage, reject inference required, income fields, temporal split possible) as G10 BeastMax lane. LendingClub as T3 secondary. Taiwan remains as compact verified bridge.",
+  "riskframe_score": {
+    "product_thesis_clarity": {"score": 8, "max": 10, "rationale": "Sharp identity; six sub-decisions governed; user personas documented; cost of wrongness quantified"},
+    "market_jd_relevance": {"score": 7, "max": 10, "rationale": "SR 26-2 alignment; PSI/ECE/champion-challenger/calibration all present. Missing: WOE/IV, FOIR on real income data, bureau feature engineering"},
+    "technique_tournament_depth": {"score": 6, "max": 10, "rationale": "XGBoost/LightGBM/LR/Platt/PSI/fairness built. Missing: WOE/IV, scorecard path, reject inference implementation, temporal validation, KS scalar, isotonic calibration"},
+    "deep_defense_kernel": {"score": 8, "max": 10, "rationale": "20 defense cards covering calibration, thresholding, reject inference, PSI, champion/challenger, fairness boundaries. Hard questions with specific numerically-grounded answers."},
+    "product_reasoning_kernel": {"score": 8, "max": 10, "rationale": "14 product decisions with first-principles drivers. AUC vs calibration reasoning is production-grade. Cost-sensitive thresholding derivation is correct."},
+    "data_realism_feature_engineering": {"score": 4, "max": 10, "rationale": "Taiwan Default: 2005 vintage, no income/FOIR, 30k rows, single product, random split, no reject inference complexity. Real and verified, but thin by production standards."},
+    "synthetic_realism_audit": {"score": 9, "max": 10, "rationale": "Synthetic harness clearly demoted to STRESS-TEST-ONLY lane at G5.5. SYNTHETIC_HARNESS tags throughout. Claim boundary prevents synthetic results from leaking into credit risk performance claims."},
+    "evidence_honesty": {"score": 9, "max": 10, "rationale": "10 pre-launch gaps explicit. Forbidden claims documented throughout. Provenance challenged before G9. Launch status NOT_PRODUCTION_READY. No false confidence in illustrative cost matrix."},
+    "evaluation_validity": {"score": 6, "max": 10, "rationale": "Correct Platt protocol (val for calibration, test for evaluation). But: random not temporal split; LightGBM comparison unfair (uncalibrated vs calibrated); 6k test set with ±1pp metric uncertainty; no bootstrap CI."},
+    "decision_economics": {"score": 4, "max": 10, "rationale": "Cost matrix C_bad=10/C_reject=1 illustrative; ratio not grounded in observed charge-off/NIM data; no P&L validation on historical cohort; sensitivity sweep exists but cannot validate absolute threshold."},
+    "industry_pattern_awareness": {"score": 6, "max": 10, "rationale": "Knows about reject inference, bureau features, FOIR, temporal validation, WOE/IV — all documented as gaps. Awareness without implementation. PSI segment-blindspot acknowledged. Delayed label pipeline documented."},
+    "hairy_failure_modes": {"score": 7, "max": 10, "rationale": "19 failure modes documented including: PSI segment blindspot, reject inference MNAR risk, temporal leakage, calibration population drift, operational review queue overflow, label delay in production, override audit trail gaps."},
+    "achievement_moments": {"score": 8, "max": 10, "rationale": "6 genuine moments: synthetic demotion, bridge data addition, calibration-first champion selection, G7 lane patch, provenance challenge pre-G9. All credible and specific."},
+    "tradeoff_density": {"score": 7, "max": 10, "rationale": "AUC vs calibration; 3-zone vs single-threshold; bridge vs BeastMax; Platt vs isotonic; Bayes-optimal vs operational threshold — all documented with reasoning."},
+    "interview_dominance": {"score": 7, "max": 10, "rationale": "Dominant on calibration, ECE, thresholding, champion/challenger governance. Weaker on reject inference (knows gap, cannot demonstrate implementation), bureau features, temporal validation, real economics."},
+    "total": {"score": 104, "max": 150, "pct": 69.3}
+  },
+  "score_band": "STRONG_NEEDS_MEAT_PASS",
+  "score_band_definitions": {
+    "RISKFRAME_GOLD": "130-150 (87-100%)",
+    "GOLD_CANDIDATE": "113-129 (75-86%)",
+    "STRONG_NEEDS_MEAT_PASS": "98-112 (65-74%)",
+    "FOUNDATIONS_GOOD_REBUILD_NEEDED": "75-97 (50-64%)",
+    "REBUILD_REQUIRED": "<75 (<50%)"
+  },
+  "gap_to_gold_candidate": {
+    "points_needed": 9,
+    "primary_levers": [
+      "data_realism_feature_engineering: 4→7 via Home Credit G10 (+3pts) — temporal split, reject inference, income features",
+      "evaluation_validity: 6→8 via calibrated LightGBM comparison + bootstrap CI at G9 (+2pts)",
+      "decision_economics: 4→6 via published benchmark cost ratios or lender partner data (+2pts)",
+      "industry_pattern_awareness: 6→7 via reject inference implementation at G10 (+1pt)",
+      "technique_tournament_depth: 6→7 via WOE/IV + KS scalar at G9 (+1pt)"
+    ]
+  },
+  "top_15_claim_risks": [
+    "Claiming Taiwan Default reflects current credit market conditions (2005 vintage; 19-year gap)",
+    "Claiming model generalises to populations outside Taiwan credit card holders (single geography, single product)",
+    "Citing synthetic AUC=0.6237 or synthetic ECE=0.00159 as credit risk performance metrics without SYNTHETIC_HARNESS qualifier",
+    "Citing LightGBM AUC=0.7742 as a fair comparison to XGBoost Platt champion (uncalibrated vs calibrated)",
+    "Claiming threshold θ=0.20 is well-grounded (cost matrix is illustrative; 10:1 ratio not observed from real lender economics)",
+    "Stating PulseGuard is SR 26-2 compliant or certified (aligned in methodology, not certified)",
+    "Claiming Taiwan Default is representative of Indian, US, or EU consumer lending populations",
+    "Implying the 10:1 cost ratio is a conservative industry default rather than an assumed illustration",
+    "Claiming fairness is certified or proven from DI/EOpp calculation on Taiwan test set",
+    "Presenting the REVIEW zone override policy as tested or operational (designed and documented only)",
+    "Claiming random stratified split produces the same confidence in out-of-time performance as temporal validation",
+    "Stating that ECE=0.0112 means the model is 'production-calibrated' (it is calibrated on this dataset/split, not in production)",
+    "Claiming provenance audit proves the dataset is free of selection or reporting bias (it only proves file identity and authenticity)",
+    "Asserting that PSI monitoring thresholds will catch all meaningful population drift (univariate blindspot acknowledged)",
+    "Claiming adverse action reason codes can be generated from SHAP values without a regulatory taxonomy (not yet mapped)"
+  ],
+  "top_15_ambition_gaps": [
+    {"gap": "Home Credit realism lane", "severity": "CRITICAL_FOR_BEASTMAX", "when": "G10", "unlocks": "Reject inference, temporal split, income features, 10x sample size"},
+    {"gap": "Temporal / out-of-time validation", "severity": "HIGH", "when": "G10 with Home Credit", "unlocks": "Out-of-time AUC claim; production stability estimate"},
+    {"gap": "Reject inference study", "severity": "HIGH", "when": "G10", "unlocks": "Selection bias mitigation; MNAR documentation"},
+    {"gap": "WOE / IV feature encoding + scorecard path", "severity": "HIGH", "when": "G10", "unlocks": "Regulatory-preferred interpretable model; adverse action scores"},
+    {"gap": "Real application-time underwriting workflow (FOIR engine)", "severity": "HIGH", "when": "G10", "unlocks": "Hard rule pre-screen before model scoring"},
+    {"gap": "Adverse action reason code taxonomy", "severity": "HIGH", "when": "G9 (SHAP) + G10 (regulatory mapping)", "unlocks": "ECOA Regulation B readiness documentation"},
+    {"gap": "Calibrated LightGBM champion/challenger fair comparison", "severity": "MEDIUM", "when": "G9", "unlocks": "Definitive champion/challenger claim; model selection defensible"},
+    {"gap": "Bootstrap confidence intervals on all test metrics", "severity": "MEDIUM", "when": "G9", "unlocks": "Metric uncertainty quantified; ±CI on ROC-AUC, PR-AUC, ECE"},
+    {"gap": "Fairness audit on Taiwan Default (DI/EOpp/PPV)", "severity": "MEDIUM", "when": "G9", "unlocks": "Real demographic fairness metrics at G7 thresholds"},
+    {"gap": "SHAP-based reason code assignment", "severity": "MEDIUM", "when": "G9", "unlocks": "Top adverse features per application; first adverse action step"},
+    {"gap": "Real lender economics for cost matrix", "severity": "MEDIUM", "when": "T3", "unlocks": "Threshold grounded in real charge-off rate and NIM"},
+    {"gap": "IMV-equivalent external validation", "severity": "MEDIUM", "when": "T3", "unlocks": "Reproducibility claim; independent model validation"},
+    {"gap": "KS statistic on Taiwan test set", "severity": "LOW", "when": "G9", "unlocks": "Complete metric set; industry-standard KS reported"},
+    {"gap": "Monitoring exercised over real time period", "severity": "LOW", "when": "Requires live deployment or staged simulation", "unlocks": "Monitoring kernel validated beyond scripted synthetic drift"},
+    {"gap": "Override simulation and audit", "severity": "LOW", "when": "G10", "unlocks": "Override rate within reference range; no demographic pattern in overrides"}
+  ],
+  "top_15_missing_evidence_items": [
+    "outputs/evidence/g9_taiwan_fairness_report.json — DI/EOpp/PPV by SEX/EDUCATION/MARRIAGE at θ=0.20/0.40",
+    "outputs/evidence/g9_calibrated_lgbm_report.json — calibrated LightGBM vs calibrated XGBoost champion/challenger",
+    "outputs/evidence/g9_shap_report.json — SHAP top-k adverse reason assignments per test instance",
+    "outputs/evidence/g10_home_credit_data_audit.json — provenance + quality audit for Home Credit raw files",
+    "outputs/evidence/g10_temporal_split_report.json — train on T1 cohort, validate on T2 cohort; OOT AUC",
+    "outputs/evidence/g10_reject_inference_study.json — semi-supervised or propensity-weighted reject inference analysis",
+    "outputs/evidence/g10_woe_iv_feature_report.json — WOE encoding + IV scores for all features",
+    "outputs/evidence/g10_scorecard_report.json — logit on WOE features; integer point scorecard",
+    "outputs/plots/g9_reliability_diagram_calibrated_lgbm.png — reliability diagram for calibrated challenger",
+    "outputs/plots/g9_fairness_approval_rate_by_group.png — approval rate at θ=0.20 by SEX/EDUCATION/MARRIAGE",
+    "outputs/plots/g9_shap_beeswarm.png — SHAP beeswarm plot for feature importance",
+    "outputs/plots/g10_vintage_drift_oot_curve.png — vintage-level performance across time",
+    "scripts/run_g9_fairness_audit.py — Taiwan fairness audit script",
+    "scripts/run_g9_calibrated_lgbm.py — calibrated LightGBM challenger script",
+    "docs/G9_FAIRNESS_AND_EXPLAINABILITY_NOTES.md — fairness methodology limitations and interpretation"
+  ],
+  "delete_or_downgrade_claims": [
+    {"claim": "PulseGuard is a production lending system", "action": "DELETE — explicitly forbidden in G8 governance packet and this audit"},
+    {"claim": "Synthetic AUC=0.6237 as credit risk performance", "action": "DELETE — retag as SYNTHETIC_HARNESS; synthetic results do not demonstrate credit risk performance"},
+    {"claim": "LightGBM is inferior to XGBoost", "action": "DOWNGRADE — currently HELD not REJECTED; fair comparison (calibrated vs calibrated) pending G9"},
+    {"claim": "Cost matrix 10:1 is an industry standard", "action": "DELETE — it is an illustrative assumption; replace with: 'illustrative ratio; real threshold requires observed lender economics'"},
+    {"claim": "Model is SR 26-2 compliant", "action": "DOWNGRADE — replace with 'SR 26-2 aligned in methodology; not certified; no IMV sign-off'"},
+    {"claim": "Taiwan Default is representative of the target lending market", "action": "DELETE — replace with 'verified real-public bridge dataset; single geography, single product, 2005 vintage'"},
+    {"claim": "PulseGuard is fair-lending certified", "action": "DELETE — DI computation is not a fair-lending certification in any jurisdiction"}
+  ],
+  "safe_claims_now": [
+    "PulseGuard uses a verified real public credit-card default dataset (UCI Taiwan Default, SHA256-confirmed, 20/20 provenance checks) as its primary data lane",
+    "XGBoost with Platt calibration achieves ROC-AUC=0.7852, PR-AUC=0.5709, ECE=0.0112 on a stratified 6,000-row test split of Taiwan Default (real data)",
+    "Platt calibration reduces ECE by 94.6% (0.2082→0.0112) and is fit on held-out validation set, not test set",
+    "The 3-zone policy (APPROVE PD<0.20 / REVIEW 0.20–0.40 / REJECT PD≥0.40) produces observed default rates of 10.7%/27.2%/62.7% on the real Taiwan Default test set",
+    "Threshold θ*=C_reject/(C_bad+C_reject) is the Bayes-optimal formula under a 10:1 illustrative cost ratio; empirical minimum expected loss is confirmed at θ=0.10",
+    "Monitoring triggers are grounded in G6/G7 evidence: ECE WARN at 2.2× baseline (0.025), approve-zone DR WARN at 1.9× baseline (20%)",
+    "Launch status is NOT_PRODUCTION_READY; 10 pre-launch gaps explicitly documented",
+    "Taiwan Default is a verified real-public bridge, not the final BeastMax ceiling; Home Credit realism lane is scheduled for G10",
+    "PulseGuard governance is aligned with SR 26-2 model risk management methodology but is not certified or externally validated",
+    "The synthetic Home Credit-like lane is a stress-test harness only; synthetic results (AUC=0.6237, ECE=0.00159) demonstrate correct protocol functioning under known conditions, not credit risk performance"
+  ],
+  "safe_claims_after_next_gate": {
+    "G9_completion": [
+      "Disparate impact, equal opportunity, and PPV computed at G7 thresholds for SEX, EDUCATION, MARRIAGE on real Taiwan Default test set",
+      "Calibrated LightGBM vs calibrated XGBoost champion/challenger comparison completed; champion selection is fully justified",
+      "SHAP-based adverse action reason code assignment built; top adverse features documentable per application",
+      "KS statistic documented alongside ROC-AUC, PR-AUC, ECE, Brier; complete metric set on Taiwan Default"
+    ],
+    "G10_completion": [
+      "Model trained and validated on Home Credit Default Risk (307k rows, multi-vintage, real income fields)",
+      "Out-of-time validation completed; OOT AUC documented with temporal split",
+      "Reject inference study completed; selection bias in approved-applicant training formally addressed",
+      "WOE/IV feature encoding and integer scorecard built; regulatory-preferred interpretable model path demonstrated"
+    ]
+  },
+  "forbidden_claims": [
+    "PulseGuard is a production lending system",
+    "PulseGuard used real bank customer data or proprietary data",
+    "PulseGuard made decisions on live applicants",
+    "PulseGuard is regulatory-grade, SR 26-2 certified, or compliance-certified",
+    "Taiwan Default represents current market conditions or a specific lending market",
+    "Synthetic results (AUC=0.6237, ECE=0.00159, DI=1.0127) demonstrate credit risk performance",
+    "LightGBM is definitively inferior to XGBoost (comparison was unfair; calibrated rematch pending)",
+    "Cost matrix 10:1 reflects real lender economics",
+    "PulseGuard is fair-lending certified or approved",
+    "The model's threshold is production-validated or board-approved",
+    "ECE=0.0112 means the model will remain calibrated on any future population",
+    "Adverse action notices can be generated from the current system"
+  ],
+  "next_gate_recommendation": {
+    "gate": "G9_FAIRNESS_AND_EXPLAINABILITY",
+    "rationale": "G8.1 PASS unblocks G9. G9 delivers the highest-value evidence items that require no new data: Taiwan fairness audit at thresholds 0.20/0.40 for SEX/EDUCATION/MARRIAGE; calibrated LightGBM fair comparison; SHAP adverse reason code assignment. All four G9 deliverables close material claim gaps without requiring new data acquisition.",
+    "deliverables": [
+      "g9_taiwan_fairness_report.json — DI/EOpp/PPV for SEX/EDUCATION/MARRIAGE at θ=0.20/0.40",
+      "g9_calibrated_lgbm_challenger_report.json — calibrated LightGBM promotion decision",
+      "g9_shap_report.json — SHAP top-k adverse features per test instance",
+      "G9_FAIRNESS_AND_EXPLAINABILITY_NOTES.md — methodology and limitations"
+    ],
+    "do_not_skip_for": "Home Credit realism lane (schedule G10 in parallel; do not block G9 on data acquisition)",
+    "forbidden_at_G9": [
+      "Claim fairness-certified from DI computation",
+      "Promote LightGBM without calibrated comparison gate",
+      "Present SHAP features as legally compliant adverse action notices without regulatory taxonomy",
+      "Open Home Credit pipeline before G9 evidence gates pass"
+    ]
+  },
+  "blocked_until": [
+    {"claim": "Temporal validation completed", "blocked_by": "Home Credit multi-cohort data (G10)"},
+    {"claim": "Reject inference implemented", "blocked_by": "Home Credit approved-only training data (G10)"},
+    {"claim": "Real lender economics cost matrix", "blocked_by": "Lender partner data or published benchmark charge-off/NIM (T3)"},
+    {"claim": "IMV-equivalent external validation", "blocked_by": "Second independent reviewer running full pipeline (T3)"},
+    {"claim": "WOE/IV scorecard path built", "blocked_by": "G10 Home Credit feature engineering sprint"},
+    {"claim": "Adverse action notice generation", "blocked_by": "SHAP (G9) + regulatory reason code taxonomy (G10) + communication channel"},
+    {"claim": "Fair-lending methodology demonstrated on large sample", "blocked_by": "Home Credit CODE_GENDER fairness audit (G10)"}
+  ],
+  "resume_lines_safe_now": [
+    "Built end-to-end credit risk governance platform (PulseGuard) covering model training, calibration, champion/challenger governance, cost-sensitive threshold policy, fairness audit harness, and monitoring design.",
+    "Trained XGBoost with Platt calibration on verified real public credit-card default data (UCI Taiwan Default, 30k rows, SHA256-verified); achieved ROC-AUC=0.7852, PR-AUC=0.5709, ECE=0.0112 post-calibration.",
+    "Implemented 3-zone APPROVE/REVIEW/REJECT policy using Bayes-optimal threshold derivation (θ*=C_reject/(C_bad+C_reject)) with observed zone default rates: 10.7%/27.2%/62.7%.",
+    "Calibration gate enforces Platt-first model promotion (ECE WARN=0.025, ALERT=0.05): prevents AUC-chasing and ensures threshold interpretability.",
+    "Designed PSI and ECE monitoring triggers grounded in G6/G7 evidence baselines, not copied from literature.",
+    "Governance dossier documents 10 explicit pre-launch gaps including adverse action, IMV, reject inference, and FOIR — launch status is NOT_PRODUCTION_READY.",
+    "Established claim boundary taxonomy (BUILT, SYNTHETIC HARNESS, BOUNDARY-LIMITED, BUILD-TASK, PLACEHOLDER) across all evidence artifacts."
+  ],
+  "resume_lines_unsafe_delete": [
+    "PulseGuard is a production credit scoring system [DELETE — NOT_PRODUCTION_READY]",
+    "Trained model on real bank customer data [DELETE — UCI public dataset, not bank data]",
+    "Model achieves AUC 0.62 on credit risk [DELETE unless SYNTHETIC HARNESS qualifier is explicit — this is the synthetic result]",
+    "LightGBM challenger rejected in favor of XGBoost [DELETE — LightGBM is HELD pending calibrated rematch]",
+    "Fairness-certified model [DELETE — DI computation is not a fair-lending certification]",
+    "SR 26-2 compliant [DELETE — aligned, not certified]",
+    "Cost threshold validated against real lender economics [DELETE — cost matrix is illustrative]"
+  ],
+  "audit_integrity_note": "This audit is deliberately critical. The goal is to distinguish between what is genuinely built and evidenced versus what is aspirational, documented-as-gap, or would collapse under interview scrutiny. PulseGuard's strengths are real; its gaps are real. Do not protect previous work by inflating scores. Do not reopen G9 without completing G9's four deliverables."
+}

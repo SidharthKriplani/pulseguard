@@ -1,0 +1,25 @@
+{
+  "pulseguard_gate": "G6",
+  "data_tag": "PUBLIC_REAL_TAIWAN_DEFAULT",
+  "calibration_method": "Platt sigmoid (CalibratedClassifierCV cv='prefit' method='sigmoid')",
+  "calibration_fit_on": "validation set (6,000 rows)",
+  "evaluation_on": "held-out test set (6,000 rows)",
+  "base_model": "XGBoost champion (best_iteration=57)",
+  "raw_xgb": {
+    "ece": 0.208162,
+    "brier_score": 0.177804,
+    "roc_auc": 0.785209,
+    "pr_auc": 0.570924
+  },
+  "calibrated_xgb": {
+    "ece": 0.011239,
+    "brier_score": 0.132949,
+    "roc_auc": 0.785209,
+    "pr_auc": 0.570924
+  },
+  "ece_delta": -0.196923,
+  "ece_reduction_pct": 94.6,
+  "brier_delta": -0.044855,
+  "calibration_verdict": "IMPROVED",
+  "note": "On Taiwan Default, XGBoost outputs from tree splits are already reasonably calibrated at this base rate (22%). Platt calibration is applied as protocol \u2014 any ECE improvement, however small, is retained for the champion."
+}

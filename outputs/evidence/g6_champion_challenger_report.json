@@ -1,0 +1,229 @@
+{
+  "pulseguard_gate": "G6",
+  "data_tag": "PUBLIC_REAL_TAIWAN_DEFAULT",
+  "dataset": "UCI Credit Card Default (Taiwan)",
+  "n_train": 18000,
+  "n_val": 6000,
+  "n_test": 6000,
+  "default_rate_train": 0.221222,
+  "default_rate_val": 0.221167,
+  "default_rate_test": 0.221167,
+  "split": "60/20/20 stratified, seed=42",
+  "feature_cols": [
+    "LIMIT_BAL",
+    "AGE",
+    "PAY_0",
+    "PAY_2",
+    "PAY_3",
+    "PAY_4",
+    "PAY_5",
+    "PAY_6",
+    "BILL_AMT1",
+    "BILL_AMT2",
+    "BILL_AMT3",
+    "BILL_AMT4",
+    "BILL_AMT5",
+    "BILL_AMT6",
+    "PAY_AMT1",
+    "PAY_AMT2",
+    "PAY_AMT3",
+    "PAY_AMT4",
+    "PAY_AMT5",
+    "PAY_AMT6",
+    "SEX",
+    "EDUCATION",
+    "MARRIAGE"
+  ],
+  "n_features_input": 23,
+  "categorical_encoding": "OneHotEncoder (handle_unknown=ignore)",
+  "numeric_scaling": "StandardScaler",
+  "decision_threshold": 0.35,
+  "threshold_policy": "Synthetic business threshold: PD >= 0.35 \u2192 REJECT prediction. Not a real underwriting rule. Chosen to reflect 22% base rate context.",
+  "models": {
+    "lr_baseline": {
+      "type": "LogisticRegression",
+      "params": {
+        "C": 0.1,
+        "class_weight": "balanced",
+        "solver": "lbfgs",
+        "max_iter": 1000
+      },
+      "test_metrics": {
+        "model": "LR Baseline",
+        "roc_auc": 0.728341,
+        "pr_auc": 0.513766,
+        "brier_score": 0.204673,
+        "ece": 0.234742,
+        "confusion_matrix": {
+          "threshold": 0.35,
+          "threshold_meaning": "PD >= 0.35 \u2192 default prediction",
+          "tn": 1507,
+          "fp": 3166,
+          "fn": 202,
+          "tp": 1125,
+          "precision": 0.2622,
+          "recall": 0.8478,
+          "f1": 0.4005
+        }
+      }
+    },
+    "xgb_raw": {
+      "type": "XGBClassifier",
+      "params": {
+        "n_estimators": 500,
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "early_stopping_rounds": 50,
+        "eval_metric": "aucpr"
+      },
+      "best_iteration": 57,
+      "test_metrics": {
+        "model": "XGBoost (raw)",
+        "roc_auc": 0.785209,
+        "pr_auc": 0.570924,
+        "brier_score": 0.177804,
+        "ece": 0.208162,
+        "confusion_matrix": {
+          "threshold": 0.35,
+          "threshold_meaning": "PD >= 0.35 \u2192 default prediction",
+          "tn": 2353,
+          "fp": 2320,
+          "fn": 222,
+          "tp": 1105,
+          "precision": 0.3226,
+          "recall": 0.8327,
+          "f1": 0.4651
+        }
+      }
+    },
+    "lgb_challenger": {
+      "type": "LGBMClassifier",
+      "params": {
+        "n_estimators": 500,
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "early_stopping_rounds": 50
+      },
+      "best_iteration": 9,
+      "test_metrics": {
+        "model": "LightGBM",
+        "roc_auc": 0.774202,
+        "pr_auc": 0.552475,
+        "brier_score": 0.155291,
+        "ece": 0.132061,
+        "confusion_matrix": {
+          "threshold": 0.35,
+          "threshold_meaning": "PD >= 0.35 \u2192 default prediction",
+          "tn": 4069,
+          "fp": 604,
+          "fn": 615,
+          "tp": 712,
+          "precision": 0.541,
+          "recall": 0.5365,
+          "f1": 0.5388
+        }
+      }
+    },
+    "xgb_calibrated": {
+      "type": "XGBClassifier + Platt sigmoid calibration",
+      "calibration_method": "CalibratedClassifierCV(cv='prefit', method='sigmoid') on val set",
+      "test_metrics": {
+        "model": "XGBoost (Platt)",
+        "roc_auc": 0.785209,
+        "pr_auc": 0.570924,
+        "brier_score": 0.132949,
+        "ece": 0.011239,
+        "confusion_matrix": {
+          "threshold": 0.35,
+          "threshold_meaning": "PD >= 0.35 \u2192 default prediction",
+          "tn": 4206,
+          "fp": 467,
+          "fn": 673,
+          "tp": 654,
+          "precision": 0.5834,
+          "recall": 0.4928,
+          "f1": 0.5343
+        }
+      }
+    }
+  },
+  "promotion_decision": {
+    "champion": "XGBoost (Platt calibrated)",
+    "champion_metrics": {
+      "model": "XGBoost (Platt)",
+      "roc_auc": 0.785209,
+      "pr_auc": 0.570924,
+      "brier_score": 0.132949,
+      "ece": 0.011239,
+      "confusion_matrix": {
+        "threshold": 0.35,
+        "threshold_meaning": "PD >= 0.35 \u2192 default prediction",
+        "tn": 4206,
+        "fp": 467,
+        "fn": 673,
+        "tp": 654,
+        "precision": 0.5834,
+        "recall": 0.4928,
+        "f1": 0.5343
+      }
+    },
+    "lr_baseline_vs_champion": {
+      "challenger": "LR Baseline",
+      "champion": "XGBoost (Platt calibrated)",
+      "gate_1_pr_auc_delta": -0.057158,
+      "gate_1_pass": false,
+      "gate_2_roc_auc_delta": -0.056868,
+      "gate_2_pass": false,
+      "gate_3_ece_delta": 0.223503,
+      "gate_3_pass": false,
+      "gate_4_brier_delta": 0.071724,
+      "gate_4_pass": false,
+      "gates_passed": 0,
+      "decision": "REJECT",
+      "rationale": "ECE regression +0.22350 exceeds tolerance 0.005 \u2014 calibration gate blocks promotion"
+    },
+    "xgb_uncalibrated_vs_champion": {
+      "challenger": "XGBoost (raw)",
+      "champion": "XGBoost (Platt calibrated)",
+      "gate_1_pr_auc_delta": 0.0,
+      "gate_1_pass": false,
+      "gate_2_roc_auc_delta": 0.0,
+      "gate_2_pass": false,
+      "gate_3_ece_delta": 0.196923,
+      "gate_3_pass": false,
+      "gate_4_brier_delta": 0.044855,
+      "gate_4_pass": false,
+      "gates_passed": 0,
+      "decision": "REJECT",
+      "rationale": "ECE regression +0.19692 exceeds tolerance 0.005 \u2014 calibration gate blocks promotion"
+    },
+    "lgb_vs_champion": {
+      "challenger": "LightGBM",
+      "champion": "XGBoost (Platt calibrated)",
+      "gate_1_pr_auc_delta": -0.018449,
+      "gate_1_pass": false,
+      "gate_2_roc_auc_delta": -0.011007,
+      "gate_2_pass": false,
+      "gate_3_ece_delta": 0.120822,
+      "gate_3_pass": false,
+      "gate_4_brier_delta": 0.022342,
+      "gate_4_pass": false,
+      "gates_passed": 0,
+      "decision": "REJECT",
+      "rationale": "ECE regression +0.12082 exceeds tolerance 0.005 \u2014 calibration gate blocks promotion"
+    },
+    "promotion_rule": "Gate 1: PR-AUC delta \u2265 0.001; Gate 2: ROC-AUC delta \u2265 0.001; Gate 3: ECE increase \u2264 0.005 (calibration gate \u2014 BLOCKING); Gate 4: Brier increase \u2264 0.003. PROMOTE requires all 4 gates pass. REJECT if Gate 3 fails. HOLD otherwise."
+  },
+  "synthetic_harness_boundary": "These metrics are computed on Taiwan Default (PUBLIC_REAL_TAIWAN_DEFAULT). Do NOT compare directly with G4 synthetic metrics (ROC-AUC=0.6237, ECE=0.00159). Different dataset, different product, different DGP. Synthetic harness retained only for injected failure-mode tests.",
+  "claim_boundary": [
+    "Real public data \u2014 not synthetic",
+    "Credit card default (Taiwan, 2005) \u2014 not consumer loan underwriting",
+    "No production deployment claim",
+    "No regulatory-grade fairness claim",
+    "No Home Credit claim"
+  ]
+}

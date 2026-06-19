@@ -1,0 +1,383 @@
+{
+  "report_id": "gold_pass3_shap_reason_code_report",
+  "champion": "LightGBM_monotonic_platt",
+  "method": "LightGBM built-in pred_contrib (SHAP tree values, no SHAP library)",
+  "global_feature_importance": {
+    "sample_size": 1000,
+    "sample_method": "random stratified-draw, seed=42",
+    "metric": "mean_absolute_shap_contribution",
+    "top_features": [
+      {
+        "rank": 1,
+        "feature": "EXT_SOURCE_MEAN",
+        "mean_abs_shap": 0.509755
+      },
+      {
+        "rank": 2,
+        "feature": "CREDIT_TO_ANNUITY",
+        "mean_abs_shap": 0.141446
+      },
+      {
+        "rank": 3,
+        "feature": "CREDIT_TO_GOODS",
+        "mean_abs_shap": 0.139307
+      },
+      {
+        "rank": 4,
+        "feature": "INST_LATE_RATIO",
+        "mean_abs_shap": 0.129245
+      },
+      {
+        "rank": 5,
+        "feature": "EXT_SOURCE_1",
+        "mean_abs_shap": 0.119646
+      },
+      {
+        "rank": 6,
+        "feature": "OWN_CAR_AGE",
+        "mean_abs_shap": 0.092359
+      },
+      {
+        "rank": 7,
+        "feature": "EMPLOYED_YEARS",
+        "mean_abs_shap": 0.091051
+      },
+      {
+        "rank": 8,
+        "feature": "BUREAU_ACTIVE_COUNT",
+        "mean_abs_shap": 0.087428
+      },
+      {
+        "rank": 9,
+        "feature": "AMT_GOODS_PRICE",
+        "mean_abs_shap": 0.081748
+      },
+      {
+        "rank": 10,
+        "feature": "EXT_SOURCE_3",
+        "mean_abs_shap": 0.07816
+      },
+      {
+        "rank": 11,
+        "feature": "AMT_ANNUITY",
+        "mean_abs_shap": 0.0773
+      },
+      {
+        "rank": 12,
+        "feature": "PREV_REFUSAL_RATE",
+        "mean_abs_shap": 0.074653
+      },
+      {
+        "rank": 13,
+        "feature": "DAYS_BIRTH",
+        "mean_abs_shap": 0.070304
+      },
+      {
+        "rank": 14,
+        "feature": "POS_MONTHS",
+        "mean_abs_shap": 0.06844
+      },
+      {
+        "rank": 15,
+        "feature": "CC_UTILIZATION_MEAN",
+        "mean_abs_shap": 0.061284
+      },
+      {
+        "rank": 16,
+        "feature": "DAYS_EMPLOYED",
+        "mean_abs_shap": 0.056372
+      },
+      {
+        "rank": 17,
+        "feature": "PREV_CREDIT_SUM",
+        "mean_abs_shap": 0.05168
+      },
+      {
+        "rank": 18,
+        "feature": "BUREAU_AMT_CREDIT_SUM",
+        "mean_abs_shap": 0.051624
+      },
+      {
+        "rank": 19,
+        "feature": "EXT_SOURCE_2",
+        "mean_abs_shap": 0.046749
+      },
+      {
+        "rank": 20,
+        "feature": "AGE_YEARS",
+        "mean_abs_shap": 0.045498
+      }
+    ]
+  },
+  "local_cases": [
+    {
+      "band": "GREEN_APPROVE",
+      "pd_score": 0.0335,
+      "actual_default": 0,
+      "top_reason_codes": [
+        {
+          "rank": 1,
+          "feature": "EXT_SOURCE_MEAN",
+          "feature_value": 0.6849,
+          "shap_contribution": -0.828778,
+          "direction": "DECREASES_RISK",
+          "monotone_constraint": "-1_constrained",
+          "human_readable_reason": "External credit bureau composite score below threshold",
+          "adverse_action_draft": null
+        },
+        {
+          "rank": 2,
+          "feature": "CREDIT_TO_GOODS",
+          "feature_value": 1.0792,
+          "shap_contribution": -0.190597,
+          "direction": "DECREASES_RISK",
+          "monotone_constraint": "+1_constrained",
+          "human_readable_reason": "Loan-to-goods-value ratio elevated",
+          "adverse_action_draft": null
+        },
+        {
+          "rank": 3,
+          "feature": "EMPLOYED_YEARS",
+          "feature_value": 1.796,
+          "shap_contribution": 0.162728,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "-1_constrained",
+          "human_readable_reason": "Employment tenure considered (longer reduces risk)",
+          "adverse_action_draft": "Employment tenure considered (longer reduces risk)"
+        },
+        {
+          "rank": 4,
+          "feature": "INST_LATE_RATIO",
+          "feature_value": 0.0,
+          "shap_contribution": -0.146473,
+          "direction": "DECREASES_RISK",
+          "monotone_constraint": "+1_constrained",
+          "human_readable_reason": "High proportion of late instalment payments",
+          "adverse_action_draft": null
+        },
+        {
+          "rank": 5,
+          "feature": "EXT_SOURCE_1",
+          "feature_value": null,
+          "shap_contribution": 0.129679,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "External credit assessment 1 unfavourable",
+          "adverse_action_draft": "External credit assessment 1 unfavourable"
+        }
+      ],
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "disclaimer": "SHAP explanation is assistive only. Not a legally compliant adverse action notice."
+    },
+    {
+      "band": "AMBER_REVIEW",
+      "pd_score": 0.2056,
+      "actual_default": 0,
+      "top_reason_codes": [
+        {
+          "rank": 1,
+          "feature": "EXT_SOURCE_MEAN",
+          "feature_value": 0.2871,
+          "shap_contribution": 0.939408,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "-1_constrained",
+          "human_readable_reason": "External credit bureau composite score below threshold",
+          "adverse_action_draft": "External credit bureau composite score below threshold"
+        },
+        {
+          "rank": 2,
+          "feature": "CREDIT_TO_ANNUITY",
+          "feature_value": 20.6636,
+          "shap_contribution": 0.200743,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Credit amount high relative to annual repayment capacity",
+          "adverse_action_draft": "Credit amount high relative to annual repayment capacity"
+        },
+        {
+          "rank": 3,
+          "feature": "POS_MONTHS",
+          "feature_value": 11.0,
+          "shap_contribution": 0.147589,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Feature POS_MONTHS",
+          "adverse_action_draft": "Feature POS_MONTHS"
+        },
+        {
+          "rank": 4,
+          "feature": "AMT_GOODS_PRICE",
+          "feature_value": 391500.0,
+          "shap_contribution": 0.120367,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Goods purchase value relative to credit profile",
+          "adverse_action_draft": "Goods purchase value relative to credit profile"
+        },
+        {
+          "rank": 5,
+          "feature": "BUREAU_ACTIVE_COUNT",
+          "feature_value": null,
+          "shap_contribution": 0.113197,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "High number of active bureau credit lines",
+          "adverse_action_draft": "High number of active bureau credit lines"
+        }
+      ],
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "disclaimer": "SHAP explanation is assistive only. Not a legally compliant adverse action notice."
+    },
+    {
+      "band": "RED_HIGH_RISK",
+      "pd_score": 0.4164,
+      "actual_default": 0,
+      "top_reason_codes": [
+        {
+          "rank": 1,
+          "feature": "EXT_SOURCE_MEAN",
+          "feature_value": 0.0104,
+          "shap_contribution": 1.300036,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "-1_constrained",
+          "human_readable_reason": "External credit bureau composite score below threshold",
+          "adverse_action_draft": "External credit bureau composite score below threshold"
+        },
+        {
+          "rank": 2,
+          "feature": "CREDIT_TO_GOODS",
+          "feature_value": 1.3168,
+          "shap_contribution": 0.250533,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "+1_constrained",
+          "human_readable_reason": "Loan-to-goods-value ratio elevated",
+          "adverse_action_draft": "Loan-to-goods-value ratio elevated"
+        },
+        {
+          "rank": 3,
+          "feature": "EXT_SOURCE_2",
+          "feature_value": 0.0104,
+          "shap_contribution": 0.243071,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Feature EXT_SOURCE_2",
+          "adverse_action_draft": "Feature EXT_SOURCE_2"
+        },
+        {
+          "rank": 4,
+          "feature": "CREDIT_TO_ANNUITY",
+          "feature_value": 18.3597,
+          "shap_contribution": 0.240537,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Credit amount high relative to annual repayment capacity",
+          "adverse_action_draft": "Credit amount high relative to annual repayment capacity"
+        },
+        {
+          "rank": 5,
+          "feature": "AMT_GOODS_PRICE",
+          "feature_value": 450000.0,
+          "shap_contribution": 0.19064,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Goods purchase value relative to credit profile",
+          "adverse_action_draft": "Goods purchase value relative to credit profile"
+        }
+      ],
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "disclaimer": "SHAP explanation is assistive only. Not a legally compliant adverse action notice."
+    },
+    {
+      "band": "AMBER_CONFLICT_GOOD_APPLICANT",
+      "pd_score": 0.3475,
+      "actual_default": 0,
+      "top_reason_codes": [
+        {
+          "rank": 1,
+          "feature": "EXT_SOURCE_MEAN",
+          "feature_value": 0.1726,
+          "shap_contribution": 1.231598,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "-1_constrained",
+          "human_readable_reason": "External credit bureau composite score below threshold",
+          "adverse_action_draft": "External credit bureau composite score below threshold"
+        },
+        {
+          "rank": 2,
+          "feature": "CC_UTILIZATION_MEAN",
+          "feature_value": 0.9647,
+          "shap_contribution": 0.336791,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Feature CC_UTILIZATION_MEAN",
+          "adverse_action_draft": "Feature CC_UTILIZATION_MEAN"
+        },
+        {
+          "rank": 3,
+          "feature": "EXT_SOURCE_3",
+          "feature_value": 0.1455,
+          "shap_contribution": 0.187281,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "External credit assessment 3 unfavourable",
+          "adverse_action_draft": "External credit assessment 3 unfavourable"
+        },
+        {
+          "rank": 4,
+          "feature": "REGION_RATING_CLIENT_W_CITY",
+          "feature_value": 3.0,
+          "shap_contribution": 0.175633,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "N/A",
+          "human_readable_reason": "Feature REGION_RATING_CLIENT_W_CITY",
+          "adverse_action_draft": "Feature REGION_RATING_CLIENT_W_CITY"
+        },
+        {
+          "rank": 5,
+          "feature": "INST_LATE_RATIO",
+          "feature_value": 0.1667,
+          "shap_contribution": 0.16086,
+          "direction": "INCREASES_RISK",
+          "monotone_constraint": "+1_constrained",
+          "human_readable_reason": "High proportion of late instalment payments",
+          "adverse_action_draft": "High proportion of late instalment payments"
+        }
+      ],
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "disclaimer": "SHAP explanation is assistive only. Not a legally compliant adverse action notice."
+    }
+  ],
+  "methodology_notes": [
+    "pred_contrib=True returns per-feature SHAP contributions (Lundberg et al, NIPS 2017) via LightGBM native implementation",
+    "Last column (bias/expected value) dropped before ranking",
+    "Positive contribution increases predicted default probability; negative decreases it",
+    "GREEN: PD<0.20 \u2014 policy approve band; AMBER: 0.20-0.40 \u2014 manual review; RED: >=0.40 \u2014 high-risk",
+    "CONFLICT case: AMBER band applicant who did NOT default (good applicant in review zone)"
+  ],
+  "tags": [
+    "ASSISTIVE_ONLY",
+    "HUMAN_REVIEW_REQUIRED",
+    "NOT_FINAL_DECISION"
+  ],
+  "hard_rules": [
+    "This report does NOT constitute a legally compliant adverse action notice",
+    "LLM/model output is assistive only \u2014 human reviewer must make final decision",
+    "SHAP reason codes are for internal governance documentation, not applicant communication"
+  ]
+}

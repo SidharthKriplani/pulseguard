@@ -1,0 +1,78 @@
+{
+  "gate": "GOLD_PASS_2",
+  "step": "FINAL_UNTOUCHED_TEST_EVALUATION",
+  "generated_at": "2026-06-17",
+  "champion": "LightGBM_monotonic",
+  "calibrator": "Platt (LogisticRegression C=1e6 fit on val only)",
+  "selection_basis": "val_composite_score_only \u2014 test never used for selection or calibrator choice",
+  "test_metrics": {
+    "auc": 0.776858,
+    "pr_auc": 0.262773,
+    "ks": 0.414142,
+    "brier": 0.066833,
+    "ece_raw": 0.294812,
+    "ece_platt": 0.003396,
+    "latency_ms": 327.1,
+    "n_test": 61503,
+    "test_dr": 0.0807
+  },
+  "val_metrics": {
+    "auc": 0.773449,
+    "ece_platt": 0.005086
+  },
+  "generalization_gap": {
+    "auc_gap": -0.00341,
+    "verdict": "ACCEPTABLE",
+    "note": "Expected: val and test are random stratified splits of same distribution."
+  },
+  "vs_g9a_baseline": {
+    "baseline_model": "CatBoost+Platt",
+    "baseline_val_auc": 0.7716,
+    "baseline_val_ece_post": 0.0054,
+    "baseline_val_ks": 0.4094,
+    "baseline_val_pr_auc": 0.2637,
+    "tuned_test_auc": 0.776858,
+    "auc_delta": 0.005258,
+    "ks_delta": 0.004742,
+    "pr_auc_delta": -0.000927
+  },
+  "calibration_curve_test": [
+    {
+      "bin_mid": 0.05,
+      "mean_pred": 0.0387,
+      "frac_positive": 0.0392,
+      "n": 45303
+    },
+    {
+      "bin_mid": 0.15,
+      "mean_pred": 0.1423,
+      "frac_positive": 0.1422,
+      "n": 9880
+    },
+    {
+      "bin_mid": 0.25,
+      "mean_pred": 0.2434,
+      "frac_positive": 0.2231,
+      "n": 4218
+    },
+    {
+      "bin_mid": 0.35,
+      "mean_pred": 0.3421,
+      "frac_positive": 0.3779,
+      "n": 1810
+    },
+    {
+      "bin_mid": 0.45,
+      "mean_pred": 0.4234,
+      "frac_positive": 0.5377,
+      "n": 292
+    }
+  ],
+  "hard_rules_confirmed": {
+    "test_not_used_for_hpo": "TRUE",
+    "calibrator_fit_val_only": "TRUE",
+    "champion_selected_val_composite": "TRUE",
+    "test_evaluated_once": "TRUE",
+    "model_not_changed_after_test": "TRUE"
+  }
+}

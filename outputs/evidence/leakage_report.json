@@ -1,0 +1,61 @@
+{
+  "pulseguard_gate": "G3",
+  "run_timestamp": "2026-06-16T20:32:52",
+  "dataset_label": "synthetic_home_credit_like",
+  "dataset_source": "synthetic_home_credit_like",
+  "kaggle_available": false,
+  "n_rows_total": 50000,
+  "n_rows_train": 30000,
+  "n_rows_val": 10000,
+  "n_rows_test": 10000,
+  "default_rate_train": 0.0817,
+  "synthetic_columns_added": [
+    "APPLICATION_DATE",
+    "FEATURE_TIMESTAMP_EXT_SOURCE_2",
+    "FEATURE_TIMESTAMP_INJECTED_LEAK",
+    "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED",
+    "EXISTING_OBLIGATIONS_MONTHLY__SYNTHETIC",
+    "SPLIT"
+  ],
+  "injected_leakage_feature": "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED",
+  "injected_leakage_reason": "Simulates a post-application credit bureau query result. Timestamped APPLICATION_DATE + 1-30 days. Not available at application time \u2192 temporal leakage FAIL.",
+  "fll_audit": {
+    "status": "FAIL",
+    "summary": {
+      "rows": 50000,
+      "columns": 36,
+      "candidate_features_checked": 29,
+      "finding_count": 2,
+      "warn_count": 1,
+      "fail_count": 1,
+      "insufficient_input_count": 0
+    },
+    "findings": [
+      {
+        "check_name": "categorical_proxy_scan",
+        "status": "WARN",
+        "severity": "medium",
+        "feature": "DAYS_ID_PUBLISH",
+        "detail": "Feature values have a large target-rate gap (0.667).",
+        "recommendation": "Check if this categorical feature encodes post-outcome state or business-process leakage.",
+        "evidence": {
+          "target_rate_gap": 0.6667,
+          "threshold": 0.65
+        }
+      },
+      {
+        "check_name": "temporal_availability",
+        "status": "FAIL",
+        "severity": "high",
+        "feature": "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED",
+        "detail": "Feature timestamp occurs after outcome timestamp for 50000 rows.",
+        "recommendation": "Do not use this feature unless the prediction-time workflow can prove availability before outcome.",
+        "evidence": {
+          "future_rows": 50000,
+          "checked_rows": 50000
+        }
+      }
+    ]
+  },
+  "source_reference_note": "SR-12: FeatureLeakageLens on Home Credit produced 3 WARNs, 0 FAILs (SOURCE_REFERENCE \u2014 not PulseGuard-built). PulseGuard result on synthetic data with injected FAIL is shown above."
+}

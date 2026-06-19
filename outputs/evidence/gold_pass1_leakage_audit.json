@@ -1,0 +1,118 @@
+{
+  "gate": "GOLD_PASS_1",
+  "pass_step": "G3_LEAKAGE_AUDIT",
+  "generated_at": "2026-06-17",
+  "n_checks": 10,
+  "n_pass": 10,
+  "n_fail": 0,
+  "verdict": "PASS",
+  "safe_to_tune": true,
+  "leakage_checks": [
+    {
+      "leakage_risk": "target_column_in_features",
+      "affected_features": [],
+      "severity": "CRITICAL",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "TARGET not present in feature list"
+    },
+    {
+      "leakage_risk": "post_outcome_proxy_columns",
+      "affected_features": [],
+      "severity": "NONE",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "suspect features: []"
+    },
+    {
+      "leakage_risk": "aggregation_uses_future_data",
+      "affected_features": [],
+      "severity": "LOW",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "bureau_balance/bureau/installments/CC/POS all aggregate historical records relative to application date. No future-dated records possible in HC public data structure."
+    },
+    {
+      "leakage_risk": "target_encoding_or_OHE_trained_on_full_dataset",
+      "affected_features": [],
+      "severity": "NONE",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "categorical_in_features: []. Only numeric features used in g9a_splits.pkl (select_dtypes(include=np.number) applied before split)."
+    },
+    {
+      "leakage_risk": "calibration_fit_uses_test_set",
+      "affected_features": [
+        "Platt_sigmoid"
+      ],
+      "severity": "HIGH",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "Platt sigmoid fit on val_probs+y_val. Test probs transformed by already-fit Platt. Test labels not used during calibration fitting."
+    },
+    {
+      "leakage_risk": "shap_used_for_model_selection_on_test",
+      "affected_features": [
+        "SHAP_LightGBM_monotonic"
+      ],
+      "severity": "MEDIUM",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "SHAP computed post-selection on 500-row test sample for explanability only. Not used in champion selection decision. Champion selected by val AUC + ECE."
+    },
+    {
+      "leakage_risk": "test_set_used_for_early_stopping_or_model_selection",
+      "affected_features": [],
+      "severity": "CRITICAL",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "All models used eval_set=[(X_val,y_val)] for early stopping. Test set not accessed until final tournament metrics extraction. Test AUC computed post-selection only."
+    },
+    {
+      "leakage_risk": "ext_source_post_application_leakage",
+      "affected_features": [
+        "EXT_SOURCE_1",
+        "EXT_SOURCE_2",
+        "EXT_SOURCE_3",
+        "EXT_SOURCE_MEAN",
+        "EXT_SOURCE_STD"
+      ],
+      "severity": "LOW",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "EXT_SOURCE_1/2/3 are external credit bureau scores provided at application time. They are part of the loan application package, not computed after default resolution. No temporal leakage."
+    },
+    {
+      "leakage_risk": "imputation_fitted_on_full_dataset",
+      "affected_features": [
+        "BEHAVIORAL_RISK_SCORE_inputs"
+      ],
+      "severity": "LOW",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "GBMs handle NaN natively (no imputation fitted). Behavioral composite inputs fillna(0) is a constant (not learned from data). LR/sklearn baseline uses -999 sentinel (constant). No distributional imputation (mean/median) fitted on any set."
+    },
+    {
+      "leakage_risk": "application_test_joined_into_train_features",
+      "affected_features": [],
+      "severity": "CRITICAL",
+      "fix_required": false,
+      "safe_to_tune": true,
+      "result": "PASS",
+      "detail": "Data spine uses application_train.csv only. application_test.csv has no TARGET column. ID overlap check confirmed 0 overlap. application_test not used in any pipeline step."
+    }
+  ],
+  "known_limitations": [
+    "bureau/payment aggregates are relative to application date but HC does not provide sub-applicant timestamps \u2014 cannot rule out very rare edge cases where a bureau record was created after default (low probability, not addressable with public data)",
+    "SHAP was computed on test sample for demo purposes only \u2014 this is informational, not model selection"
+  ]
+}

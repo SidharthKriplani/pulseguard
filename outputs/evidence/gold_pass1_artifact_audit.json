@@ -1,0 +1,287 @@
+{
+  "gate": "GOLD_PASS_1",
+  "pass_step": "G1_ARTIFACT_AUDIT",
+  "generated_at": "2026-06-17",
+  "total_artifacts_checked": 23,
+  "missing_count": 0,
+  "mismatch_count": 0,
+  "patch_required_count": 0,
+  "verdict": "PASS",
+  "missing_artifacts": [],
+  "mismatched_artifacts": [],
+  "artifacts": [
+    {
+      "artifact_name": "g9a_home_credit_data_audit",
+      "artifact_type": "evidence_json",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence/g9a_home_credit_data_audit.json",
+      "exists": true,
+      "size_bytes": 2347,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {
+        "rows": 307511,
+        "DR": 0.08072908198107379,
+        "scale_pos_weight": 11.38710976837865,
+        "dataset": "Home Credit Default Risk"
+      },
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_feature_factory_report",
+      "artifact_type": "evidence_json",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence/g9a_feature_factory_report.json",
+      "exists": true,
+      "size_bytes": 2331,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {
+        "dataset": "Home Credit Default Risk (REAL \u2014 Kaggle)",
+        "n_features": 140,
+        "rows": 307511
+      },
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_model_tournament_report",
+      "artifact_type": "evidence_json",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence/g9a_model_tournament_report.json",
+      "exists": true,
+      "size_bytes": 3619,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {
+        "champion": "CatBoost_Platt",
+        "catboost_val_auc": 0.7716,
+        "n_models": 12
+      },
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_calibration_governance_report",
+      "artifact_type": "evidence_json",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence/g9a_calibration_governance_report.json",
+      "exists": true,
+      "size_bytes": 3716,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {
+        "champion": "CatBoost_Platt",
+        "champion_ece_post_platt": 0.0054
+      },
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_shap_summary",
+      "artifact_type": "evidence_json",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence/g9a_shap_summary.json",
+      "exists": true,
+      "size_bytes": 1026,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {
+        "top_feature": "EXT_SOURCE_3",
+        "sample_size": 500,
+        "model": "LightGBM_monotonic"
+      },
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_roc_curves",
+      "artifact_type": "plot",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/plots/g9a_roc_curves.png",
+      "exists": true,
+      "size_bytes": 163941,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_calibration_curves",
+      "artifact_type": "plot",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/plots/g9a_calibration_curves.png",
+      "exists": true,
+      "size_bytes": 93334,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "g9a_shap_importance",
+      "artifact_type": "plot",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/plots/g9a_shap_importance.png",
+      "exists": true,
+      "size_bytes": 102047,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_HOME_CREDIT_PRIMARY_SPINE",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_HOME_CREDIT_PRIMARY_SPINE.md",
+      "exists": true,
+      "size_bytes": 8922,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_HOME_CREDIT_FEATURE_FACTORY",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_HOME_CREDIT_FEATURE_FACTORY.md",
+      "exists": true,
+      "size_bytes": 11224,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_FULL_MODERN_MODEL_TOURNAMENT",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_FULL_MODERN_MODEL_TOURNAMENT.md",
+      "exists": true,
+      "size_bytes": 9978,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_VINTAGE_TEMPORAL_REALISM_AUDIT",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_VINTAGE_TEMPORAL_REALISM_AUDIT.md",
+      "exists": true,
+      "size_bytes": 6736,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_CREDIT_INTELLIGENCE_ARCHITECTURE",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_CREDIT_INTELLIGENCE_ARCHITECTURE.md",
+      "exists": true,
+      "size_bytes": 10726,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_LM_STUDIO_RAG_LLM_GOVERNANCE_LAYER",
+      "artifact_type": "doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/G9A_LM_STUDIO_RAG_LLM_GOVERNANCE_LAYER.md",
+      "exists": true,
+      "size_bytes": 10482,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "policy_rag",
+      "artifact_type": "python_src",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/src/pulseguard/policy_rag.py",
+      "exists": true,
+      "size_bytes": 8795,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "llm_governance_assistant",
+      "artifact_type": "python_src",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/src/pulseguard/llm_governance_assistant.py",
+      "exists": true,
+      "size_bytes": 13765,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "sample_credit_policy",
+      "artifact_type": "policy_doc",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/data/policy_docs/sample_credit_policy.md",
+      "exists": true,
+      "size_bytes": 9224,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_INTERVIEW_QA",
+      "artifact_type": "example",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/examples/G9A_INTERVIEW_QA.md",
+      "exists": true,
+      "size_bytes": 7152,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_CLAIM_SAFE_EXAMPLES",
+      "artifact_type": "example",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/examples/G9A_CLAIM_SAFE_EXAMPLES.md",
+      "exists": true,
+      "size_bytes": 4833,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "G9A_GOVERNANCE_ASSISTANT_DEMO",
+      "artifact_type": "example",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/docs/examples/G9A_GOVERNANCE_ASSISTANT_DEMO.md",
+      "exists": true,
+      "size_bytes": 6276,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "00_CONTROL_TOWER",
+      "artifact_type": "control",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/00_CONTROL_TOWER.md",
+      "exists": true,
+      "size_bytes": 33674,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "04_EVIDENCE_LEDGER",
+      "artifact_type": "control",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/04_EVIDENCE_LEDGER.md",
+      "exists": true,
+      "size_bytes": 24746,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    },
+    {
+      "artifact_name": "06_CLAIM_BOUNDARY",
+      "artifact_type": "control",
+      "artifact_path": "/sessions/modest-magical-johnson/mnt/pulseguard/06_CLAIM_BOUNDARY.md",
+      "exists": true,
+      "size_bytes": 44196,
+      "stale_or_current": "current",
+      "key_metrics_extracted": {},
+      "mismatch_found": false,
+      "patch_required": false
+    }
+  ]
+}

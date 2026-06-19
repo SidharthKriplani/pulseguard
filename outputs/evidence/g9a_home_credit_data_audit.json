@@ -1,0 +1,76 @@
+{
+  "gate": "G9A",
+  "dataset": "Home Credit Default Risk",
+  "generated_at": "2026-06-17",
+  "tables_used": [
+    "application_train",
+    "bureau",
+    "bureau_balance",
+    "previous_application",
+    "installments_payments",
+    "credit_card_balance",
+    "POS_CASH_balance"
+  ],
+  "application_train": {
+    "rows": 307511,
+    "cols": 122
+  },
+  "bureau": {
+    "rows": 1716428
+  },
+  "bureau_balance": {
+    "rows": 27299925
+  },
+  "previous_application": {
+    "rows": 1670214
+  },
+  "installments_payments": {
+    "rows": 13605401
+  },
+  "credit_card_balance": {
+    "rows": 3840312
+  },
+  "POS_CASH_balance": {
+    "rows": 10001358
+  },
+  "feature_engineering": {
+    "total_features_after_merge": 158,
+    "numeric_features_used": 140,
+    "dropped_non_numeric": 18
+  },
+  "splits": {
+    "method": "stratified_60_20_20",
+    "seed": 42,
+    "train": 184506,
+    "val": 61502,
+    "test": 61503,
+    "DR_train": 0.08072908198107379,
+    "DR_val": 0.08072908198107379,
+    "DR_test": 0.08072776937710356
+  },
+  "temporal_split_possible": false,
+  "temporal_note": "No timestamp field in application_train. DAYS_BIRTH/DAYS_EMPLOYED are relative (negative int), not absolute dates. Pseudo-temporal split via DAYS_DECISION from previous_application not linked at application level. Stratified random split used; documented as known limitation.",
+  "reject_inference": {
+    "applicable": true,
+    "implemented": false,
+    "reason": "Home Credit dataset contains approved applicants only (MNAR selection bias). Reject inference would require semi-supervised or counterfactual imputation. Documented as G9A known limitation per G9A spec."
+  },
+  "feature_categories": {
+    "application": 18,
+    "bureau": 13,
+    "prev": 5,
+    "installments": 5,
+    "credit_card": 5,
+    "pos_cash": 3,
+    "behavioral": 1,
+    "application_raw": 90
+  },
+  "key_engineered_features": {
+    "BEHAVIORAL_RISK_SCORE": "0.4*INST_LATE_RATIO + 0.3*CC_DPD_RATIO + 0.2*POS_IS_DPD_RATIO + 0.1*BUREAU_OVERDUE_RATIO",
+    "FLAG_EMPLOYED_ANOMALY": "DAYS_EMPLOYED==365243 \u2192 unemployed proxy, replaced with NaN",
+    "EXT_SOURCE_MEAN": "mean of EXT_SOURCE_1,2,3",
+    "ANNUITY_TO_INCOME": "AMT_ANNUITY/(AMT_INCOME_TOTAL+1) \u2014 FOIR proxy",
+    "CREDIT_TO_GOODS": "AMT_CREDIT/(AMT_GOODS_PRICE+1) \u2014 LTV proxy"
+  },
+  "scale_pos_weight": 11.38710976837865
+}

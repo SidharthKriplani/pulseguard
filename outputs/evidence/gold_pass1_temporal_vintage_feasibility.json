@@ -1,0 +1,124 @@
+{
+  "gate": "GOLD_PASS_1",
+  "pass_step": "G4_TEMPORAL_VINTAGE_FEASIBILITY",
+  "generated_at": "2026-06-17",
+  "verdict": "FEASIBILITY_LIMITED",
+  "true_temporal_split_possible": false,
+  "proxy_cohort_validation_possible": true,
+  "vintage_claims_safe": [
+    "Home Credit application_train has no absolute calendar timestamps \u2014 all date fields are relative integers (days/months before application)",
+    "SK_ID_CURR is sequential but DR is stable across quintiles (range=0.0033) \u2014 ID ordering does not proxy for temporal vintage drift",
+    "Age cohort analysis possible but reflects risk by demographics, not vintage drift",
+    "Monthly balance fields (MONTHS_BALANCE) in CC/POS tables are relative \u2014 cannot reconstruct absolute calendar",
+    "DAYS_DECISION in previous_application is relative to current application date \u2014 not absolute calendar"
+  ],
+  "vintage_claims_unsafe": [
+    "Full vintage curves proven",
+    "Out-of-time validation conducted",
+    "Model validated on future-dated holdout",
+    "Temporal stability demonstrated"
+  ],
+  "sk_id_curr_proxy_cohort": {
+    "dr_range_across_quintiles": 0.0033,
+    "dr_stable": true,
+    "verdict": "NOT_A_TIME_PROXY",
+    "quintile_dr": [
+      {
+        "quintile": "Q1",
+        "default_rate": 0.08012617270702242,
+        "count": 61503
+      },
+      {
+        "quintile": "Q2",
+        "default_rate": 0.08272901694253845,
+        "count": 61502
+      },
+      {
+        "quintile": "Q3",
+        "default_rate": 0.08110305355923385,
+        "count": 61502
+      },
+      {
+        "quintile": "Q4",
+        "default_rate": 0.08027381223374849,
+        "count": 61502
+      },
+      {
+        "quintile": "Q5",
+        "default_rate": 0.07941205164059706,
+        "count": 61502
+      }
+    ]
+  },
+  "age_proxy_cohort": {
+    "dr_range_across_quintiles": 0.0612,
+    "verdict": "DEMOGRAPHIC_SIGNAL_NOT_VINTAGE_DRIFT",
+    "quintile_dr": [
+      {
+        "age_quintile": "Q1_young",
+        "default_rate": 0.11282351411106777,
+        "count": 61512
+      },
+      {
+        "age_quintile": "Q2",
+        "default_rate": 0.09329474505723205,
+        "count": 61504
+      },
+      {
+        "age_quintile": "Q3",
+        "default_rate": 0.07849257832187159,
+        "count": 61509
+      },
+      {
+        "age_quintile": "Q4",
+        "default_rate": 0.06739197606153746,
+        "count": 61491
+      },
+      {
+        "age_quintile": "Q5_old",
+        "default_rate": 0.05163021383852346,
+        "count": 61495
+      }
+    ]
+  },
+  "time_field_audit": {
+    "application_train": {
+      "DAYS_BIRTH": "relative_negative_int \u2014 days before application; not absolute date",
+      "DAYS_EMPLOYED": "relative_negative_int \u2014 days employed before application; 365243=unemployed sentinel",
+      "DAYS_REGISTRATION": "relative_negative_int \u2014 days since document registration",
+      "DAYS_ID_PUBLISH": "relative_negative_int \u2014 days since ID published",
+      "DAYS_LAST_PHONE_CHANGE": "relative_negative_int \u2014 days since last phone change",
+      "SK_ID_CURR": "sequential integer application ID \u2014 potentially time-ordered if not shuffled; tested below"
+    },
+    "bureau": {
+      "DAYS_CREDIT": "relative \u2014 days before application when credit applied for",
+      "DAYS_CREDIT_ENDDATE": "relative \u2014 days before application when credit ends",
+      "DAYS_CREDIT_UPDATE": "relative \u2014 days before application of last update",
+      "DAYS_ENDDATE_FACT": "relative \u2014 actual end date (relative)"
+    },
+    "previous_application": {
+      "DAYS_DECISION": "relative \u2014 days before application when decision made on prior app",
+      "DAYS_FIRST_DRAWING": "relative",
+      "DAYS_FIRST_DUE": "relative",
+      "DAYS_LAST_DUE": "relative",
+      "DAYS_TERMINATION": "relative"
+    },
+    "installments_payments": {
+      "DAYS_INSTALMENT": "relative \u2014 scheduled instalment day",
+      "DAYS_ENTRY_PAYMENT": "relative \u2014 actual payment day"
+    },
+    "credit_card_balance": {
+      "MONTHS_BALANCE": "relative negative integer \u2014 months before application"
+    },
+    "POS_CASH_balance": {
+      "MONTHS_BALANCE": "relative negative integer \u2014 months before application"
+    }
+  },
+  "recommended_production_monitoring": [
+    "PSI monthly on top-20 SHAP features",
+    "Rolling 90-day actual DR on scored population",
+    "KS monthly on score distribution vs training distribution",
+    "AUC on rolling labelled subset"
+  ],
+  "proxy_cohort_safe_claim": "Home Credit supports proxy-cohort analyses (by age, employment status, SK_ID_CURR quintile) but these reflect demographic risk patterns, not temporal vintage drift. True out-of-time validation is not possible with the public data release."
+}

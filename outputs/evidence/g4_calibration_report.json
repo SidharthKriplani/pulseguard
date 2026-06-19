@@ -1,0 +1,51 @@
+{
+  "pulseguard_gate": "G4",
+  "artifact": "g4_calibration_report.json",
+  "run_timestamp": "2026-06-20T00:56:18",
+  "data_type": "synthetic_home_credit_like",
+  "dataset_label": "synthetic_home_credit_like",
+  "calibration_method": "Platt sigmoid",
+  "fit_set": "validation (10,000 rows)",
+  "eval_set": "test (10,000 rows)",
+  "n_bins_ece": 10,
+  "ece_before_calibration": 0.043901,
+  "ece_after_calibration": 0.003864,
+  "brier_before_calibration": 0.076111,
+  "brier_after_calibration": 0.073846,
+  "roc_auc_calibrated": 0.626081,
+  "pr_auc_calibrated": 0.130747,
+  "calibration_curve_raw": [
+    {
+      "mean_predicted_probability": 0.12547,
+      "fraction_of_positives": 0.08162
+    },
+    {
+      "mean_predicted_probability": 0.20428,
+      "fraction_of_positives": 0.5
+    }
+  ],
+  "calibration_curve_calibrated": [
+    {
+      "mean_predicted_probability": 0.06809,
+      "fraction_of_positives": 0.06754
+    },
+    {
+      "mean_predicted_probability": 0.13832,
+      "fraction_of_positives": 0.15295
+    },
+    {
+      "mean_predicted_probability": 0.22968,
+      "fraction_of_positives": 0.15854
+    },
+    {
+      "mean_predicted_probability": 0.3322,
+      "fraction_of_positives": 0.25
+    }
+  ],
+  "plot": "outputs/plots/g4_calibration_curve.png",
+  "source_reference_ece": {
+    "value": 0.0046,
+    "source": "RiskFrame Platt calibration on real Home Credit",
+    "status": "SOURCE_REFERENCE \u2014 not PulseGuard-built"
+  }
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head><title>PulseGuard G3 Leakage Report</title></head><body>
+<h1>PulseGuard G3 — Leakage Detection Report</h1>
+<table border="1"><tr><th>Field</th><th>Value</th></tr>
+<tr><td>Gate</td><td>G3</td></tr>
+<tr><td>Run timestamp</td><td>2026-06-16T20:32:52</td></tr>
+<tr><td>Dataset</td><td>synthetic_home_credit_like</td></tr>
+<tr><td>Kaggle available</td><td>No — synthetic fallback</td></tr>
+<tr><td>Total rows</td><td>50,000</td></tr>
+<tr><td>Default rate (train)</td><td>0.0817</td></tr>
+<tr><td>Overall status</td><td><strong>FAIL</strong></td></tr>
+</table>
+<h2>FeatureLeakageLens Findings</h2>
+<!doctype html>
+<html><head><meta charset='utf-8'><title>FeatureLeakageLens Report</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:40px;line-height:1.45;color:#1f2937}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;font-weight:700}
+table{border-collapse:collapse;width:100%;margin-top:20px}th,td{border:1px solid #e5e7eb;padding:10px;text-align:left;vertical-align:top}th{background:#f9fafb}
+.note{background:#fff7ed;border:1px solid #fed7aa;padding:14px;border-radius:12px;margin-top:24px}
+</style></head><body>
+<h1>FeatureLeakageLens Audit Report</h1>
+<p class='badge'>Overall status: FAIL</p>
+<h2>Summary</h2><ul><li><b>rows:</b> 50000</li><li><b>columns:</b> 36</li><li><b>candidate_features_checked:</b> 29</li><li><b>finding_count:</b> 2</li><li><b>warn_count:</b> 1</li><li><b>fail_count:</b> 1</li><li><b>insufficient_input_count:</b> 0</li></ul>
+<h2>Findings</h2>
+<table><thead><tr><th>Check</th><th>Status</th><th>Severity</th><th>Feature</th><th>Detail</th><th>Recommendation</th></tr></thead><tbody><tr><td>categorical_proxy_scan</td><td>WARN</td><td>medium</td><td>DAYS_ID_PUBLISH</td><td>Feature values have a large target-rate gap (0.667).</td><td>Check if this categorical feature encodes post-outcome state or business-process leakage.</td></tr><tr><td>temporal_availability</td><td>FAIL</td><td>high</td><td>EXTERNAL_BUREAU_QUERY_RESULT__INJECTED</td><td>Feature timestamp occurs after outcome timestamp for 50000 rows.</td><td>Do not use this feature unless the prediction-time workflow can prove availability before outcome.</td></tr></tbody></table>
+<div class='note'><b>Truth boundary:</b> This report flags suspicious leakage patterns. It does not prove leakage without business-time availability review.</div>
+</body></html></body></html>

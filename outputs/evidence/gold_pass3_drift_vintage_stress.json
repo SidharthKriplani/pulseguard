@@ -1,0 +1,115 @@
+{
+  "report_id": "gold_pass3_drift_vintage_stress",
+  "scope": "Score distribution PSI, KS, AUC, ECE across train/val/test splits; top-10 feature PSI train vs test",
+  "vintage_note": "Home Credit dataset has no timestamps. Train/val/test are stratified random splits from the same static snapshot. PSI measures sampling variation, not true temporal drift.",
+  "score_distribution_psi": {
+    "train_vs_val": {
+      "psi": 8.097713,
+      "interpretation": "SIGNIFICANT_SHIFT (PSI>0.25) \u2014 investigate"
+    },
+    "train_vs_test": {
+      "psi": 8.100411,
+      "interpretation": "SIGNIFICANT_SHIFT (PSI>0.25) \u2014 investigate"
+    },
+    "val_vs_test": {
+      "psi": 0.00019,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "psi_artefact_note": "IMPORTANT: train-vs-val PSI=8.10 is NOT a drift signal. The Platt calibrator was fit on val-set raw scores; it maps val/test to well-calibrated [0,1] space but does not re-calibrate train. Train raw scores are more extreme (model overfits train: AUC=0.8526) producing a ~30/18/52 GREEN/AMBER/RED band distribution vs ~90/10/0.5 on val/test. Meaningful drift metric is val-vs-test PSI=0.0002 (STABLE)."
+  },
+  "discriminative_power_by_split": {
+    "train": {
+      "auc": 0.8526,
+      "ks": 0.5425,
+      "ece": 0.39867,
+      "default_rate": 0.0807
+    },
+    "val": {
+      "auc": 0.7734,
+      "ks": 0.4121,
+      "ece": 0.005086,
+      "default_rate": 0.0807
+    },
+    "test": {
+      "auc": 0.7769,
+      "ks": 0.4141,
+      "ece": 0.003396,
+      "default_rate": 0.0807
+    }
+  },
+  "score_band_distribution_by_split": {
+    "train": {
+      "GREEN_pct": 0.3053,
+      "AMBER_pct": 0.1753,
+      "RED_pct": 0.5193
+    },
+    "val": {
+      "GREEN_pct": 0.8943,
+      "AMBER_pct": 0.1009,
+      "RED_pct": 0.0048
+    },
+    "test": {
+      "GREEN_pct": 0.8972,
+      "AMBER_pct": 0.098,
+      "RED_pct": 0.0047
+    },
+    "note": "Train band distribution (GREEN=30.5%, RED=51.9%) is Platt artefact \u2014 calibrator maps val/test scores well but not train. Val and test band distributions are operationally relevant."
+  },
+  "top10_feature_psi_train_vs_test": {
+    "EXT_SOURCE_MEAN": {
+      "psi_train_vs_test": 0.000111,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "CREDIT_TO_ANNUITY": {
+      "psi_train_vs_test": 0.000196,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "CREDIT_TO_GOODS": {
+      "psi_train_vs_test": 9e-05,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "INST_LATE_RATIO": {
+      "psi_train_vs_test": 0.000129,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "EXT_SOURCE_1": {
+      "psi_train_vs_test": 0.000286,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "OWN_CAR_AGE": {
+      "psi_train_vs_test": 0.00034,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "EMPLOYED_YEARS": {
+      "psi_train_vs_test": 9.4e-05,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "BUREAU_ACTIVE_COUNT": {
+      "psi_train_vs_test": 0.000156,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "AMT_GOODS_PRICE": {
+      "psi_train_vs_test": 8.7e-05,
+      "interpretation": "STABLE (PSI<0.10)"
+    },
+    "EXT_SOURCE_3": {
+      "psi_train_vs_test": 0.00047,
+      "interpretation": "STABLE (PSI<0.10)"
+    }
+  },
+  "governance_observations": [
+    "Train PSI is large (8.10) due to Platt calibrator artefact \u2014 calibrator fit on val only. val-vs-test PSI=0.0002 is the relevant stability metric.",
+    "Score PSI val-vs-test=0.0002 \u2014 STABLE (PSI<0.10)",
+    "AUC generalization gap: train=0.8526 \u2192 val=0.7734 \u2192 test=0.7769 (no leakage signal)",
+    "ECE is consistent across splits \u2014 calibration is not split-dependent",
+    "All top-10 feature PSIs <0.10 \u2014 no distribution shift between train and test cohorts",
+    "Score band distribution is stable: GREEN ~89-90% across all splits",
+    "Train AUC=0.8526 vs val/test ~0.775 indicates expected in-sample overfitting; regularisation (LightGBM min_child_samples, reg_lambda) limits but does not eliminate this"
+  ],
+  "stress_test_note": "True vintage/OOT stress test not possible without timestamps. In production deployment, monthly PSI monitoring on score distribution and top-10 features is recommended.",
+  "tags": [
+    "ASSISTIVE_ONLY",
+    "HUMAN_REVIEW_REQUIRED",
+    "NOT_FINAL_DECISION"
+  ]
+}

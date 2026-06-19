@@ -1,0 +1,69 @@
+{
+  "gate": "GOLD_PASS_1",
+  "pass_step": "G5_RAG_LLM_GOVERNANCE_AUDIT",
+  "generated_at": "2026-06-17",
+  "n_pass": 10,
+  "n_fail": 0,
+  "verdict": "PASS",
+  "abstain_fix": "Calibration uses domain-seed ceiling (11.0); threshold lowered to 0.25 for single-document corpus. On-topic: 0.27-0.40; off-topic: 0.00-0.15.",
+  "abstain_threshold": 0.25,
+  "corpus_score_ceiling": 11.013401603824454,
+  "rag_architecture": "BM25Okapi | chunk_size=120w | overlap=25w | top_k=4 | abstain_threshold=0.25 (scale to 0.5 at 5+ docs)",
+  "llm_layer": "LM Studio localhost:1234 | ASSISTIVE_ONLY | no internet egress",
+  "assistive_only_verified": true,
+  "abstain_verified": true,
+  "citation_verified": true,
+  "lm_studio_dependency": "REQUIRES_LOCAL_LM_STUDIO_RUNNING",
+  "checks": [
+    {
+      "check": "bm25_retrieval_loads",
+      "result": "PASS",
+      "detail": "chunks=18 ceiling=11.01 threshold=0.25"
+    },
+    {
+      "check": "on_topic_retrieval_no_abstain",
+      "result": "PASS",
+      "detail": "top_score=0.401 abstain=False"
+    },
+    {
+      "check": "abstain_fires_on_missing_evidence",
+      "result": "PASS",
+      "detail": "abstain=True top_score=0.146"
+    },
+    {
+      "check": "citations_in_context_output",
+      "result": "PASS",
+      "detail": "[Source X:] present"
+    },
+    {
+      "check": "policy_rag_assistive_only_tag",
+      "result": "PASS",
+      "detail": "tag in policy_rag.py"
+    },
+    {
+      "check": "governance_assistive_only_tag",
+      "result": "PASS",
+      "detail": "tag in llm_governance_assistant.py"
+    },
+    {
+      "check": "no_final_decision_delegation",
+      "result": "PASS",
+      "detail": "decision_authority field present"
+    },
+    {
+      "check": "no_pii_external_transmission",
+      "result": "PASS",
+      "detail": "localhost:1234 only, no egress"
+    },
+    {
+      "check": "human_review_required_tag",
+      "result": "PASS",
+      "detail": "field in AdverseActionDraft"
+    },
+    {
+      "check": "demo_cases_present_5_of_6",
+      "result": "PASS",
+      "detail": "policy_qa, adverse_action, abstain, retrieval-only, cannot-do all present"
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "report_id": "pulseguard_final_gold_audit",
+  "date": "2026-06-17",
+  "version": "Gold Pass 4/4",
+  "scoring": {
+    "total_raw": 134.0,
+    "total_max": 150.0,
+    "final_pct": 89.33,
+    "gold_threshold_pct": 85.0,
+    "final_score": 89.3,
+    "gold_status": "GOLD"
+  },
+  "dimension_scores": [
+    {
+      "dimension": "product_thesis_clarity",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "PulseGuard is crisply framed: end-to-end credit-risk governance stack on Home Credit, not a toy model. SR 26-2 alignment documented. Project identity locked. -1: one-liner occasionally slips into vague 'platform' language."
+    },
+    {
+      "dimension": "data_realism",
+      "weight": 1.0,
+      "score": 8,
+      "max": 10,
+      "rationale": "Home Credit: 307,511 applicants, 57.4M rows across 7 side-tables, 8.07% DR, real bureau/instalment/credit-card/POS data. SHA256 provenance verified. -2: no temporal split possible (no timestamps); single Eastern-European portfolio only."
+    },
+    {
+      "dimension": "feature_engineering_depth",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "140 features from 7 tables: ratio engineering (FOIR proxy, DTI, LTV), bureau aggregates (overdue count/ratio/amount), instalment payment ratios, credit-card/POS DPD ratios, BEHAVIORAL_RISK_SCORE composite, FLAG_EMPLOYED_ANOMALY sentinel. -1: no WOE/IV scorecard; missingness encoding documented but not systematically analysed."
+    },
+    {
+      "dimension": "leakage_discipline",
+      "weight": 1.0,
+      "score": 10,
+      "max": 10,
+      "rationale": "10/10 leakage audit PASS (Gold Pass 1). TARGET not in features. Platt fit on val only. Test never seen until single final evaluation. No post-outcome proxies detected. Group leakage 0 ID overlap. safe_to_tune=true."
+    },
+    {
+      "dimension": "model_tournament_depth",
+      "weight": 1.0,
+      "score": 8,
+      "max": 10,
+      "rationale": "12-model G9A baseline + 5-model Optuna tuning tournament. TabNet and sklearn GBM hard-failed with documented cause. LR, RF, SVM, GBM, XGBoost, CatBoost, LightGBM, monotonic variants all attempted. -1: no DeLong test p-values between champion and runner-up. -1: no neural baseline that actually runs."
+    },
+    {
+      "dimension": "tuning_discipline",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "Optuna TPE, validation-only. Test set never touched during HPO. LightGBM early-stopping bug identified and fixed (not hidden). Trial counts honestly documented (4\u20138 vs 100-trial plan). Composite 9-component champion score \u2014 not AUC alone. -1: trial count genuinely low due to CPU sandbox constraint."
+    },
+    {
+      "dimension": "calibration_quality",
+      "weight": 1.0,
+      "score": 10,
+      "max": 10,
+      "rationale": "Platt sigmoid selected; isotonic exclusion justified (ECE=0 on val = overfitting artifact). Final test ECE=0.0034 \u2014 near-perfect. Brier=0.0668. Calibration artefact in train PSI documented and explained. Calibration fit on val only \u2014 no data leakage."
+    },
+    {
+      "dimension": "threshold_economics",
+      "weight": 1.0,
+      "score": 8,
+      "max": 10,
+      "rationale": "3-zone score-band policy (GREEN/AMBER/RED) with PD-semantic rationale. Cost-sensitive decisioning with 3 scenarios documented. KS-optimal and cost-optimal thresholds both computed and compared. -1: economics are scenario-assumed, not real bank parameters. -1: no Bayes-optimal formula derivation for Home Credit context."
+    },
+    {
+      "dimension": "reason_code_explainability",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "LightGBM pred_contrib SHAP. 20 global features. 4 local cases (GREEN/AMBER/RED/CONFLICT). ECOA-style adverse-action drafts. Monotone constraints provide directional audit without SHAP. All ASSISTIVE_ONLY tagged. -1: reason codes not mapped to a real ECOA-standard approved code list."
+    },
+    {
+      "dimension": "reason_code_stability",
+      "weight": 1.0,
+      "score": 10,
+      "max": 10,
+      "rationale": "30-bootstrap stability check. Top-5 features appear in top-5 in all 30 resamples. EXT_SOURCE_MEAN rank-1 in 30/30. Stability tier documented. Governance conclusion: reason-code set robust to sampling variation."
+    },
+    {
+      "dimension": "fairness_proxy_audit_honesty",
+      "weight": 1.0,
+      "score": 8,
+      "max": 10,
+      "rationale": "Proxy audit on age/income/employment/region. Approval-rate differentials aligned with DR differentials \u2014 documented honestly. No overclaim: explicitly labelled SKELETON, not certification. Forbidden claims for fairness certification documented. -2: no protected-class labels \u2192 DI ratio not computable; proxy analysis cannot substitute for real fairness audit."
+    },
+    {
+      "dimension": "drift_vintage_stress",
+      "weight": 1.0,
+      "score": 8,
+      "max": 10,
+      "rationale": "val-vs-test PSI=0.0002 STABLE. All top-10 feature PSIs <0.001. Train PSI artefact explained. ECE and AUC consistent across splits. Monitoring recommendation documented (PSI thresholds for production). -2: no true temporal/vintage validation \u2014 only random-split PSI; no monthly monitoring harness implemented."
+    },
+    {
+      "dimension": "local_rag_llm_governance",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "6-case BM25+LLM demo. Abstain fires on OOD. LLM never approves/rejects in any case. ASSISTIVE_ONLY + HUMAN_REVIEW_REQUIRED + NOT_FINAL_DECISION enforced. Conflict/override and drift-alert cases included. -1: 5-doc policy corpus is thin; real deployment needs 50+ policy documents."
+    },
+    {
+      "dimension": "evidence_honesty",
+      "weight": 1.0,
+      "score": 10,
+      "max": 10,
+      "rationale": "Evidence ledger maps every claim to artifact. SOURCE_REFERENCE section separates inherited from PulseGuard-built metrics. Trial count limitations documented honestly. All limitations appear in model card, governance report, and claim boundary. No synthetic number presented as real bank result."
+    },
+    {
+      "dimension": "interview_dominance",
+      "weight": 1.0,
+      "score": 9,
+      "max": 10,
+      "rationale": "Claim boundary document has safe/forbidden split for every gate. G9A_CLAIM_SAFE_EXAMPLES covers resume, interview, portfolio scenarios. Comprehensive defense document produced. 30+ Q&As with honest, caveated, artifact-traceable answers. -1: no rehearsed spoken-word artifact (audio/video)."
+    }
+  ],
+  "top_strengths": [
+    "Leakage discipline: 10/10 pre-tuning leakage audit; test set evaluated exactly once",
+    "Calibration quality: ECE=0.0034 on 61k test set \u2014 near-production-quality probability estimates",
+    "Reason-code stability: EXT_SOURCE_MEAN rank-1 in 30/30 bootstraps; top-5 stable 30/30",
+    "Evidence honesty: every claim traceable to artifact; SOURCE_REFERENCE vs PulseGuard-built clearly separated",
+    "Tuning discipline: validation-only HPO; early-stopping bug documented and fixed; composite champion score",
+    "Governance completeness: model card + governance report + 7 evidence JSONs + control docs + claim boundary all present",
+    "RAG/LLM governance: LLM never approves/rejects; abstain fires on OOD; 6 cases cover full decisioning spectrum"
+  ],
+  "top_remaining_risks": [
+    "Trial count (4\u20138 Optuna trials): local optimum, not globally exhaustive \u2014 must be stated in every interview",
+    "No temporal validation: random split only \u2014 in-distribution stability only, not true out-of-time robustness",
+    "Fairness skeleton: no protected-class labels \u2192 DI ratio uncomputable \u2192 cannot claim fairness compliance",
+    "Scenario economics: cost matrix (C_bad=10, C_reject=1) not sourced from real bank data",
+    "Single geography: Home Credit Eastern European portfolio \u2014 no cross-market generalisation claim",
+    "SHAP on 500\u20131000 samples: global importance is a sample estimate, not full-corpus"
+  ],
+  "locked_safe_claims": [
+    "Tuned LightGBM_monotonic + Platt champion: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, ECE=0.0034 on 61k held-out test",
+    "Validation-only Optuna HPO; champion selected by 9-component composite score, not AUC alone",
+    "Monotone constraints on 15 features support SR 26-2 directional interpretability",
+    "EXT_SOURCE_MEAN dominant SHAP driver (mean |SHAP|=0.510); top-5 features stable in 30/30 bootstraps",
+    "Score-band policy: GREEN<0.20 (89.7%, DR=5.8%), AMBER 0.20\u20130.40 (9.8%, DR=27%), RED\u22650.40 (0.5%, DR=54%)",
+    "RAG/LLM governance assistant: ASSISTIVE_ONLY; abstains on OOD; LLM never makes credit decisions",
+    "Fairness proxy audit shows approval-rate differentials aligned with observed DR differentials \u2014 no amplification beyond base rates",
+    "val-vs-test PSI=0.0002; all top-10 feature PSIs STABLE between train and test"
+  ],
+  "locked_forbidden_claims": [
+    "Production lending system or live deployment",
+    "SR 26-2 certified or regulatory compliance certified",
+    "Legally compliant adverse action notice",
+    "Fairness certified or disparate impact compliant",
+    "Real bank data or real lender economics",
+    "Full vintage/out-of-time validation",
+    "LLM makes or influences credit decisions",
+    "100 Optuna trials completed (actual: 4\u20138)",
+    "CatBoost is the final champion (champion is LightGBM_monotonic)",
+    "AUC=0.7716 is the tuned result (that is the BASELINE untuned CatBoost)"
+  ],
+  "future_builds_not_needed_now": [
+    "Taiwan Default as primary dataset \u2014 Home Credit is materially stronger primary spine",
+    "LendingClub reintroduction \u2014 dropped; reject inference is a future workstream",
+    "Real-time FastAPI scoring API \u2014 out of scope for portfolio freeze",
+    "Streamlit UI \u2014 nice-to-have; not a blocker for resume/interview defense",
+    "LLM autonomous credit decisioning \u2014 explicitly prohibited by governance design"
+  ],
+  "audit_conclusion": "PulseGuard scores 89.3% (134/150) across 15 governance dimensions. Threshold for GOLD is 85%. Status: GOLD. Project is ready for resume and interview defense with documented limitations."
+}

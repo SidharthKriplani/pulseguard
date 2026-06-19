@@ -1,0 +1,186 @@
+{
+  "pulseguard_gate": "G8",
+  "gate_name": "Model Risk Governance + Decision Accountability Pack",
+  "generated_date": "2026-06-17",
+
+  "model_id": "pulseguard-taiwan-xgb-platt-v1",
+  "model_algorithm": "XGBoost (gradient boosted trees) + Platt sigmoid calibration",
+  "training_script": "scripts/g6_champion_challenger.py",
+  "model_artifacts": [
+    "outputs/evidence/g6_champion_challenger_report.json",
+    "outputs/evidence/g6_calibration_report.json",
+    "outputs/plots/g6_calibration_curve.png",
+    "outputs/plots/g6_model_comparison.png"
+  ],
+
+  "data_tag": "PUBLIC_REAL_TAIWAN_DEFAULT",
+  "dataset": "UCI ML Repository — Default of Credit Card Clients (Taiwan, 2005)",
+  "dataset_rows": 30000,
+  "dataset_default_rate": 0.2212,
+  "dataset_artifact": "data/public/taiwan_credit_default.xls",
+
+  "threshold_policy_id": "taiwan_real_data_v1.0",
+  "threshold_policy_artifact": "outputs/evidence/g7_taiwan_threshold_policy_report.json",
+  "theta_approve": 0.20,
+  "theta_reject": 0.40,
+  "cost_formula": "threshold = C_reject / (C_bad + C_reject)",
+  "c_bad": 10.0,
+  "c_reject": 1.0,
+  "c_review": 0.3,
+  "bayes_optimal_theta": 0.0909,
+
+  "governance_status": "PENDING_SIGNOFF",
+  "launch_status": "NOT_PRODUCTION_READY",
+  "launch_status_reason": "Portfolio research project. No real applicants. No regulatory review. No IMV sign-off. No adverse action infrastructure. Taiwan Default is 2005 vintage — 19+ year gap to any current deployment. See G8_GOVERNANCE_SIGNOFF_PACKET.md Section 3 for full pre-launch requirement list.",
+
+  "performance_summary": {
+    "roc_auc": 0.7852,
+    "pr_auc": 0.5709,
+    "brier_score": 0.1329,
+    "ece_raw": 0.2082,
+    "ece_calibrated": 0.0112,
+    "ece_reduction_pct": 94.6,
+    "test_n": 6000,
+    "test_default_rate": 0.2212
+  },
+
+  "policy_outcome_summary": {
+    "approve_rate": 0.651,
+    "review_rate": 0.190,
+    "reject_rate": 0.159,
+    "observed_dr_approve_zone": 0.107,
+    "observed_dr_review_zone": 0.272,
+    "observed_dr_reject_zone": 0.627,
+    "expected_loss_per_app": 1.140
+  },
+
+  "approval_checklist_summary": {
+    "development_evidence": "8/8 COMPLETE",
+    "threshold_evidence": "8/8 COMPLETE",
+    "risk_fairness_evidence": "3/6 COMPLETE (Taiwan Default fairness audit deferred to G9)",
+    "governance_documentation": "8/8 COMPLETE"
+  },
+
+  "pre_launch_gaps": [
+    "L1: Independent Model Validation (IMV) — not completed",
+    "L2: Fair-lending assessment at production thresholds — Taiwan Default only; fairness audit at 0.20/0.40 not done",
+    "L3: Adverse action code assignment — not implemented",
+    "L4: Data lineage and access controls — not applicable to public research dataset",
+    "L5: Model validated on recent vintage — 2005 dataset; 19+ year gap",
+    "L6: Stress testing under adverse scenarios — not implemented",
+    "L7: FastAPI serving with training-serving parity — deferred to G9",
+    "L8: Retraining pipeline tested end-to-end — not implemented",
+    "L9: Rollback procedure tested — defined but not tested",
+    "L10: Compliance officer sign-off — not assigned; out of scope"
+  ],
+
+  "monitoring_triggers": {
+    "psi_pay0_warn": 0.10,
+    "psi_pay0_alert": 0.20,
+    "psi_pay2_warn": 0.10,
+    "psi_pay2_alert": 0.20,
+    "ece_warn": 0.025,
+    "ece_alert": 0.05,
+    "ece_critical": 0.10,
+    "approve_zone_dr_warn": 0.20,
+    "approve_zone_dr_alert": 0.25,
+    "approve_zone_dr_critical": 0.35,
+    "approval_rate_change_warn_pp": 5.0,
+    "approval_rate_change_alert_pp": 10.0,
+    "score_ks_warn": 0.05,
+    "score_ks_alert": 0.10
+  },
+
+  "model_freeze_conditions": [
+    "ECE on recent cohort > 0.10",
+    "PAY_0 PSI > 0.30",
+    "Approve zone observed DR > 0.35 (3× baseline)",
+    "Approval rate change > 15 pp in 30 days",
+    "Rank-order failure in score deciles",
+    "Data pipeline FAIL in feature production"
+  ],
+
+  "human_review_rules": {
+    "review_zone": "0.20 <= PD < 0.40 (19.0% of applicants)",
+    "auto_approve_zone": "PD < 0.20 (65.1%)",
+    "auto_reject_zone": "PD >= 0.40 (15.9%)",
+    "mandatory_escalation_conditions": [
+      "PD in 0.18–0.22 or 0.38–0.42 AND PAY_0 = 8",
+      "LIMIT_BAL > NT$800,000 AND PD in review zone",
+      "Any monitor in ALERT during review",
+      "Reviewer uncertainty — cannot justify with standard reason codes"
+    ],
+    "prohibited_reviewer_behaviours": [
+      "Use SEX as a decision factor",
+      "Approve PD > 0.40 without escalation",
+      "Submit override with reason code RC-99 only (no narrative)",
+      "Approve without confirming payment history reviewed"
+    ],
+    "override_logging": "Tamper-evident hash-chained JSONL; all fields mandatory"
+  },
+
+  "fairness_status": {
+    "synthetic_lane_g5": {
+      "disparate_impact_fm": 1.0127,
+      "disparate_impact_status": "PASS (0.80-1.25 band)",
+      "equal_opportunity_gap_pp": 2.2,
+      "code_gender_feature_rank": "24/28 (not a primary driver)"
+    },
+    "taiwan_real_data_lane": {
+      "status": "NOT YET COMPUTED",
+      "gap": "SEX/EDUCATION/MARRIAGE approval rates at theta_approve=0.20 and theta_reject=0.40 not evaluated",
+      "required_at": "G9",
+      "note": "Male default rate 24.17%; female default rate 20.78%. Identical thresholds will produce different group-level outcomes. Whether this constitutes disparate impact is unknown."
+    }
+  },
+
+  "evidence_artifacts": {
+    "G3_leakage": "outputs/evidence/leakage_report.json",
+    "G3_1_dgp": "outputs/evidence/g3_1_dgp_calibration_report.json",
+    "G4_champion": "outputs/evidence/g4_champion_training_report.json",
+    "G4_calibration": "outputs/evidence/g4_calibration_report.json",
+    "G4_drift": "outputs/evidence/g4_drift_report.json",
+    "G5_fairness": "outputs/evidence/g5_fairness_report.json",
+    "G5_5_research": "outputs/evidence/g5_5_dataset_research_summary.json",
+    "G6_data_profile": "outputs/evidence/g6_taiwan_data_profile.json",
+    "G6_champion": "outputs/evidence/g6_champion_challenger_report.json",
+    "G6_calibration": "outputs/evidence/g6_calibration_report.json",
+    "G7_threshold_policy": "outputs/evidence/g7_taiwan_threshold_policy_report.json",
+    "G7_cost_sensitivity": "outputs/evidence/g7_cost_sensitivity_report.json",
+    "G8_governance_summary": "outputs/evidence/g8_governance_packet_summary.json"
+  },
+
+  "governance_documents": {
+    "model_card": "docs/G8_MODEL_CARD.md",
+    "governance_signoff": "docs/G8_GOVERNANCE_SIGNOFF_PACKET.md",
+    "monitoring_policy": "docs/G8_MONITORING_AND_INCIDENT_POLICY.md",
+    "human_review_policy": "docs/G8_HUMAN_REVIEW_AND_OVERRIDE_POLICY.md",
+    "limitations_boundary": "docs/G8_LIMITATIONS_AND_ADVERSE_ACTION_BOUNDARY.md"
+  },
+
+  "forbidden_claims": [
+    "PulseGuard is deployed in production",
+    "Real credit decisions have been made using this model",
+    "This model is production-ready",
+    "This model complies with ECOA, FCRA, RBI, or any financial regulation",
+    "This model is SR 26-2 compliant or certified",
+    "Adverse action notices are generated by this system",
+    "This model is fair across demographic groups (Taiwan fairness audit not completed)",
+    "The C_bad=10 / C_reject=1 cost matrix reflects real lender economics",
+    "This model outperforms RiskFrame's Home Credit model (different datasets)",
+    "LightGBM is inferior to XGBoost in general (only tested uncalibrated vs calibrated champion)"
+  ],
+
+  "safe_target_claim": "PulseGuard adds a model-risk governance packet around the calibrated Taiwan Default champion, including model card, approval checklist, monitoring triggers, human review policy, override logging, and explicit non-production claim boundaries.",
+
+  "next_gate": "G9",
+  "g9_required_deliverables": [
+    "Fair-lending assessment on Taiwan Default at thresholds 0.20/0.40 (SEX/EDUCATION/MARRIAGE)",
+    "Calibrated LightGBM vs calibrated XGBoost champion/challenger comparison",
+    "SHAP-based adverse action reason code assignment",
+    "Optuna HPO with calibration gate documented",
+    "FastAPI serving with training-serving parity check",
+    "Reject inference study or documented justification for omission",
+    "Delayed label validation pipeline on Taiwan Default"
+  ]
+}

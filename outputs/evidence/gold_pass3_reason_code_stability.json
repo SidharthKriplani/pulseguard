@@ -1,0 +1,55 @@
+{
+  "report_id": "gold_pass3_reason_code_stability",
+  "method": "Bootstrap resampling: 30 iterations x 500-row samples, pred_contrib",
+  "n_bootstraps": 30,
+  "sample_size_per_boot": 500,
+  "interpretation": "top_5_presence_rate = fraction of bootstraps where feature appears in global top-5",
+  "stability_table": [
+    {
+      "feature": "EXT_SOURCE_1",
+      "top5_presence": 30,
+      "top5_presence_rate": 1.0,
+      "stability_tier": "HIGH"
+    },
+    {
+      "feature": "CREDIT_TO_GOODS",
+      "top5_presence": 30,
+      "top5_presence_rate": 1.0,
+      "stability_tier": "HIGH"
+    },
+    {
+      "feature": "CREDIT_TO_ANNUITY",
+      "top5_presence": 30,
+      "top5_presence_rate": 1.0,
+      "stability_tier": "HIGH"
+    },
+    {
+      "feature": "EXT_SOURCE_MEAN",
+      "top5_presence": 30,
+      "top5_presence_rate": 1.0,
+      "stability_tier": "HIGH"
+    },
+    {
+      "feature": "INST_LATE_RATIO",
+      "top5_presence": 30,
+      "top5_presence_rate": 1.0,
+      "stability_tier": "HIGH"
+    }
+  ],
+  "top1_stability": {
+    "feature": "EXT_SOURCE_MEAN",
+    "is_rank1_rate": 1.0,
+    "assessment": "STABLE \u2014 dominant #1 feature in all 30 bootstraps"
+  },
+  "governance_conclusions": [
+    "EXT_SOURCE_MEAN is #1 global driver in 30/30 bootstraps \u2014 unambiguous primary risk signal",
+    "Top-3 features (EXT_SOURCE_MEAN, CREDIT_TO_ANNUITY, CREDIT_TO_GOODS) show HIGH stability across resamples",
+    "Stable top-3 supports reproducible adverse action reason code selection",
+    "SHAP reason codes derived from these features are robust to sampling variation"
+  ],
+  "tags": [
+    "ASSISTIVE_ONLY",
+    "HUMAN_REVIEW_REQUIRED",
+    "NOT_FINAL_DECISION"
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "pulseguard_gate": "G5",
+  "artifact": "g5_fairness_report.json",
+  "run_timestamp": "2026-06-16T21:14:57",
+  "data_type": "synthetic_home_credit_like",
+  "dataset_label": "synthetic_home_credit_like",
+  "group_col": "CODE_GENDER",
+  "group_vals": [
+    "F",
+    "M"
+  ],
+  "n_test": 10000,
+  "split_context": "test set only (10,000 rows); same 60/20/20 split as train_champion.py, seed=42",
+  "policy_thresholds": {
+    "approve_below": 0.06,
+    "reject_above_or_equal": 0.28,
+    "policy_version": "v1.0 (synthetic \u2014 not a real credit policy)"
+  },
+  "group_metrics": {
+    "F": {
+      "group": "F",
+      "n": 6444,
+      "n_defaults": 517,
+      "default_rate": 0.08023,
+      "score_mean_pd": 0.08148,
+      "score_median_pd": 0.069473,
+      "score_std_pd": 0.036454,
+      "approval_rate": 0.229826,
+      "review_rate": 0.766915,
+      "reject_rate": 0.003259,
+      "tpr": 0.882012,
+      "ppv": 0.09188,
+      "roc_auc": 0.637402,
+      "ece": 0.003576
+    },
+    "M": {
+      "group": "M",
+      "n": 3556,
+      "n_defaults": 300,
+      "default_rate": 0.084364,
+      "score_mean_pd": 0.080868,
+      "score_median_pd": 0.069068,
+      "score_std_pd": 0.036008,
+      "approval_rate": 0.22694,
+      "review_rate": 0.770247,
+      "reject_rate": 0.002812,
+      "tpr": 0.86,
+      "ppv": 0.093852,
+      "roc_auc": 0.600215,
+      "ece": 0.009177
+    }
+  },
+  "fairness_metrics": {
+    "disparate_impact_F_over_M": 1.012717,
+    "di_acceptable_band": "0.8\u20131.25",
+    "di_status": "PASS",
+    "equal_opportunity_gap_abs": 0.022012,
+    "predictive_parity_gap_abs": 0.001972,
+    "roc_auc_gap_abs": 0.037187,
+    "ece_gap_abs": 0.005601
+  },
+  "code_gender_importance": {
+    "top10_features": [
+      {
+        "rank": 1,
+        "feature": "DAYS_EMPLOYED",
+        "gain": 27.208397
+      },
+      {
+        "rank": 2,
+        "feature": "EXT_SOURCE_2",
+        "gain": 9.561845
+      },
+      {
+        "rank": 3,
+        "feature": "AMT_INCOME_TOTAL",
+        "gain": 8.47341
+      },
+      {
+        "rank": 4,
+        "feature": "EXT_SOURCE_3",
+        "gain": 8.365357
+      },
+      {
+        "rank": 5,
+        "feature": "REGION_RATING_CLIENT",
+        "gain": 7.996159
+      },
+      {
+        "rank": 6,
+        "feature": "DEF_30_CNT_SOCIAL_CIRCLE",
+        "gain": 7.242306
+      },
+      {
+        "rank": 7,
+        "feature": "AMT_CREDIT",
+        "gain": 7.034339
+      },
+      {
+        "rank": 8,
+        "feature": "REGION_POPULATION_RELATIVE",
+        "gain": 6.972721
+      },
+      {
+        "rank": 9,
+        "feature": "AMT_ANNUITY",
+        "gain": 6.885677
+      },
+      {
+        "rank": 10,
+        "feature": "AMT_GOODS_PRICE",
+        "gain": 6.881224
+      }
+    ],
+    "code_gender_rank": 24,
+    "code_gender_gain": 5.621861,
+    "n_features_with_nonzero_gain": 28,
+    "note": "Gain importance from XGBoost booster. CODE_GENDER rank and gain determine whether gender is a primary driver."
+  },
+  "scope_boundary": {
+    "allowed": [
+      "group performance comparison",
+      "group calibration comparison",
+      "approval-rate / score-distribution analysis",
+      "fairness caveats and claim boundaries"
+    ],
+    "forbidden": [
+      "SHAP explanation system",
+      "adverse-action notices",
+      "FOIR routing",
+      "decision engine",
+      "compliance certification",
+      "real protected-class claim",
+      "production fairness claim"
+    ]
+  },
+  "caveats": [
+    "CODE_GENDER is a synthetic proxy attribute generated with p=[0.65, 0.35] (F/M). It is NOT a real protected class.",
+    "CODE_GENDER is NOT in the DGP logit formula; default rates are near-identical (F=0.0823, M=0.0806).",
+    "Fairness methodology is production-pattern. Results apply only to synthetic_home_credit_like data.",
+    "DI 4/5ths rule is a heuristic \u2014 not a legal or regulatory standard.",
+    "Threshold (0.06) is a synthetic policy parameter, not a real credit-decision threshold."
+  ],
+  "source_reference": {
+    "SR-8": {
+      "metric": "Disparate Impact",
+      "value": 1.059,
+      "source": "RiskFrame on real Home Credit",
+      "status": "SOURCE_REFERENCE \u2014 not PulseGuard-built"
+    },
+    "SR-9": {
+      "metric": "Equal Opportunity gap",
+      "value": "<5pp",
+      "source": "RiskFrame on real Home Credit",
+      "status": "SOURCE_REFERENCE \u2014 not PulseGuard-built"
+    }
+  }
+}

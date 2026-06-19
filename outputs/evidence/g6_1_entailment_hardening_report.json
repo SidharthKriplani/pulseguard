@@ -1,0 +1,1920 @@
+{
+  "gate": "G6.1 \u2014 NLI Citation Entailment Hardening Gate",
+  "gate_passed": false,
+  "date": "2026-06-17",
+  "evaluation_integrity": {
+    "pre_registered": true,
+    "criteria_revised_post_hoc": false,
+    "note": "All success criteria frozen before running this eval. This is the hardened pre-registered pass."
+  },
+  "data_classification": {
+    "source": "SYNTHETIC_VERSIONED + PUBLIC_NIST_SP800_53",
+    "note": "Chunk texts verbatim from make_synthetic_docs.py + nist_sp800-53r5_ac_ia_au_sc_chunks.jsonl",
+    "quarantined_excluded": "SP 800-63B \u2014 remains quarantined, no probes from it"
+  },
+  "model": {
+    "name": "cross-encoder/nli-deberta-v3-small",
+    "backend": "onnx",
+    "load_time_s": 5.95
+  },
+  "probe_counts": {
+    "total": 73,
+    "SUPPORTS": 23,
+    "CONTRADICTS": 33,
+    "NOT_ENOUGH_INFO": 17
+  },
+  "summary": {
+    "correct": 49,
+    "total": 73,
+    "overall_accuracy": 0.6712,
+    "macro_f1": 0.6625,
+    "avg_confidence": 0.9357,
+    "avg_latency_ms": 15.4
+  },
+  "confusion_matrix": {
+    "SUPPORTS": {
+      "TP": 14,
+      "FP": 1,
+      "FN": 9
+    },
+    "CONTRADICTS": {
+      "TP": 24,
+      "FP": 6,
+      "FN": 9
+    },
+    "NOT_ENOUGH_INFO": {
+      "TP": 11,
+      "FP": 17,
+      "FN": 6
+    }
+  },
+  "per_class_metrics": {
+    "SUPPORTS": {
+      "precision": 0.9333,
+      "recall": 0.6087,
+      "f1": 0.7368,
+      "TP": 14,
+      "FP": 1,
+      "FN": 9
+    },
+    "CONTRADICTS": {
+      "precision": 0.8,
+      "recall": 0.7273,
+      "f1": 0.7619,
+      "TP": 24,
+      "FP": 6,
+      "FN": 9
+    },
+    "NOT_ENOUGH_INFO": {
+      "precision": 0.3929,
+      "recall": 0.6471,
+      "f1": 0.4889,
+      "TP": 11,
+      "FP": 17,
+      "FN": 6
+    }
+  },
+  "tag_metrics": {
+    "CONTRADICTS": {
+      "total": 33,
+      "correct": 24,
+      "accuracy": 0.7273
+    },
+    "NEGATION": {
+      "total": 11,
+      "correct": 9,
+      "accuracy": 0.8182
+    },
+    "NOT_ENOUGH_INFO": {
+      "total": 17,
+      "correct": 11,
+      "accuracy": 0.6471
+    },
+    "NUMERIC_POLICY": {
+      "total": 20,
+      "correct": 14,
+      "accuracy": 0.7
+    },
+    "OUT_OF_CORPUS_OR_NEI": {
+      "total": 7,
+      "correct": 5,
+      "accuracy": 0.7143
+    },
+    "PUBLIC_NIST_SP800_53": {
+      "total": 16,
+      "correct": 5,
+      "accuracy": 0.3125
+    },
+    "SEMANTIC_NEAR_MISS": {
+      "total": 10,
+      "correct": 6,
+      "accuracy": 0.6
+    },
+    "SUPPORTS": {
+      "total": 23,
+      "correct": 14,
+      "accuracy": 0.6087
+    },
+    "SYNTHETIC_VERSIONED": {
+      "total": 51,
+      "correct": 40,
+      "accuracy": 0.7843
+    },
+    "VERSION_CONFLICT": {
+      "total": 12,
+      "correct": 10,
+      "accuracy": 0.8333
+    }
+  },
+  "numeric_routing": {
+    "numeric_mismatch_total": 13,
+    "numeric_mismatch_routed_correctly": 13,
+    "rate": 1.0
+  },
+  "success_criteria": {
+    "supports_precision_gte_70pct": true,
+    "contradicts_recall_gte_75pct": false,
+    "nei_recall_gte_75pct": false,
+    "overall_accuracy_gte_75pct": false,
+    "macro_f1_gte_70pct": false,
+    "numeric_mismatch_routing_gte_80pct": true,
+    "negation_accuracy_gte_75pct": true,
+    "version_conflict_contradicts_gte_80pct": true
+  },
+  "confidence_distribution": {
+    "SUPPORTS": {
+      "count": 15,
+      "mean": 0.9492,
+      "min": 0.7677,
+      "max": 0.9971
+    },
+    "CONTRADICTS": {
+      "count": 30,
+      "mean": 0.9435,
+      "min": 0.5817,
+      "max": 0.9995
+    },
+    "NOT_ENOUGH_INFO": {
+      "count": 28,
+      "mean": 0.92,
+      "min": 0.5379,
+      "max": 0.9988
+    }
+  },
+  "failure_examples": [
+    {
+      "probe_id": "sv_s05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.5633,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "vc_c07",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.5379,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "vc_c12",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.7868,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "np_c04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.8996,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "np_c05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9948,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "np_c08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.7677,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "neg_c06",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.8207,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s01",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9984,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s02",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9967,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s03",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s04",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.997,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s05",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9866,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s06",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s07",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_s08",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9988,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_c01",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS",
+        "NEGATION"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9966,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_c03",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nist_c04",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9945,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "routing_action": "ABSTAIN"
+    },
+    {
+      "probe_id": "nei_sm01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.932,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "nei_sm02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.8283,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "nei_sm05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9985,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "nei_sm09",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9865,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "ooc_n01",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9995,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "BLOCK"
+    },
+    {
+      "probe_id": "ooc_n07",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9014,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "routing_action": "BLOCK"
+    }
+  ],
+  "probe_results": [
+    {
+      "probe_id": "sv_s01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9971,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 16.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.997. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.625,
+      "correct": true,
+      "nli_latency_ms": 26.5
+    },
+    {
+      "probe_id": "sv_s02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9911,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.991. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 1.0,
+      "correct": true,
+      "nli_latency_ms": 16.3
+    },
+    {
+      "probe_id": "sv_s03",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9859,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.986. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 1.0,
+      "correct": true,
+      "nli_latency_ms": 52.2
+    },
+    {
+      "probe_id": "sv_s04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9818,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 2.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.982. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8182,
+      "correct": true,
+      "nli_latency_ms": 26.9
+    },
+    {
+      "probe_id": "sv_s05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.5633,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 200.0 found in chunk.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 1.0,
+      "correct": false,
+      "nli_latency_ms": 20.3
+    },
+    {
+      "probe_id": "sv_s06",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9949,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 750.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.995. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8889,
+      "correct": true,
+      "nli_latency_ms": 16.8
+    },
+    {
+      "probe_id": "sv_s07",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.8922,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.892. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.7273,
+      "correct": true,
+      "nli_latency_ms": 15.3
+    },
+    {
+      "probe_id": "sv_s08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.95,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 2.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.950. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8182,
+      "correct": true,
+      "nli_latency_ms": 21.7
+    },
+    {
+      "probe_id": "sv_s09",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.8883,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 750.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.888. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": true,
+      "nli_latency_ms": 15.1
+    },
+    {
+      "probe_id": "sv_s10",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9125,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 429.0 found in chunk.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.912. Numeric check: NUMERIC_MATCH.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8,
+      "correct": true,
+      "nli_latency_ms": 14.8
+    },
+    {
+      "probe_id": "sv_s11",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9852,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.985. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 1.0,
+      "correct": true,
+      "nli_latency_ms": 16.8
+    },
+    {
+      "probe_id": "sv_s12",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9943,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.994. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.875,
+      "correct": true,
+      "nli_latency_ms": 15.1
+    },
+    {
+      "probe_id": "sv_s13",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9037,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.904. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.7273,
+      "correct": true,
+      "nli_latency_ms": 15.7
+    },
+    {
+      "probe_id": "sv_s14",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9968,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.997. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 1.0,
+      "correct": true,
+      "nli_latency_ms": 19.0
+    },
+    {
+      "probe_id": "sv_s15",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.9958,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "CITE",
+      "routing_reason": "NLI SUPPORTS with confidence 0.996. Numeric check: NUMERIC_NOT_PRESENT.",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.875,
+      "correct": true,
+      "nli_latency_ms": 11.9
+    },
+    {
+      "probe_id": "vc_c01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.997,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_HEDGED",
+      "numeric_explanation": "Claim number 16.0 \u2265 chunk lower bound 12.0 ('at least' hedge). May be consistent \u2014 requires domain k",
+      "routing_action": "ESCALATE",
+      "routing_reason": "Hedged numeric bound ('up to N', 'at least N') \u2014 NLI cannot reliably resolve; re",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": true,
+      "nli_latency_ms": 14.3
+    },
+    {
+      "probe_id": "vc_c02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9897,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [750.0] not found in chunk number(s) [500.0]. No covering hedge. Deterministic MISMA",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3333,
+      "correct": true,
+      "nli_latency_ms": 11.4
+    },
+    {
+      "probe_id": "vc_c03",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NEGATION"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9961,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8,
+      "correct": true,
+      "nli_latency_ms": 13.6
+    },
+    {
+      "probe_id": "vc_c04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NEGATION"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9945,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 2.0 found in chunk.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.6,
+      "correct": true,
+      "nli_latency_ms": 15.2
+    },
+    {
+      "probe_id": "vc_c05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.5951,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [200.0] not found in chunk number(s) [100.0, 429.0]. No covering hedge. Deterministi",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8889,
+      "correct": true,
+      "nli_latency_ms": 14.2
+    },
+    {
+      "probe_id": "vc_c06",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.5817,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.7778,
+      "correct": true,
+      "nli_latency_ms": 15.2
+    },
+    {
+      "probe_id": "vc_c07",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.5379,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [75.0] not found in chunk number(s) [20.0, 25.0, 50.0]. No covering hedge. Determini",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4444,
+      "correct": false,
+      "nli_latency_ms": 16.3
+    },
+    {
+      "probe_id": "vc_c08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9944,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [12.0] not found in chunk number(s) [16.0]. No covering hedge. Deterministic MISMATC",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": true,
+      "nli_latency_ms": 12.6
+    },
+    {
+      "probe_id": "vc_c09",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9859,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [500.0] not found in chunk number(s) [750.0]. No covering hedge. Deterministic MISMA",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3333,
+      "correct": true,
+      "nli_latency_ms": 11.1
+    },
+    {
+      "probe_id": "vc_c10",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9933,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [100.0] not found in chunk number(s) [200.0]. No covering hedge. Deterministic MISMA",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8889,
+      "correct": true,
+      "nli_latency_ms": 10.7
+    },
+    {
+      "probe_id": "vc_c11",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9679,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": true,
+      "nli_latency_ms": 14.2
+    },
+    {
+      "probe_id": "vc_c12",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "VERSION_CONFLICT",
+        "CONTRADICTS",
+        "NUMERIC_POLICY"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.7868,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.7143,
+      "correct": false,
+      "nli_latency_ms": 13.8
+    },
+    {
+      "probe_id": "np_c01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9944,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_HEDGED",
+      "numeric_explanation": "Claim number 60.0 \u2265 chunk lower bound 14.0 ('at least' hedge). May be consistent \u2014 requires domain k",
+      "routing_action": "ESCALATE",
+      "routing_reason": "Hedged numeric bound ('up to N', 'at least N') \u2014 NLI cannot reliably resolve; re",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8571,
+      "correct": true,
+      "nli_latency_ms": 13.3
+    },
+    {
+      "probe_id": "np_c02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.979,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [1000.0] not found in chunk number(s) [750.0]. No covering hedge. Deterministic MISM",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3333,
+      "correct": true,
+      "nli_latency_ms": 11.7
+    },
+    {
+      "probe_id": "np_c03",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9628,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [500.0] not found in chunk number(s) [200.0]. No covering hedge. Deterministic MISMA",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.6,
+      "correct": true,
+      "nli_latency_ms": 11.4
+    },
+    {
+      "probe_id": "np_c04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.8996,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8,
+      "correct": false,
+      "nli_latency_ms": 14.7
+    },
+    {
+      "probe_id": "np_c05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9948,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5714,
+      "correct": false,
+      "nli_latency_ms": 14.9
+    },
+    {
+      "probe_id": "np_c06",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9967,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [8.0] not found in chunk number(s) [16.0]. No covering hedge. Deterministic MISMATCH",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5714,
+      "correct": true,
+      "nli_latency_ms": 13.4
+    },
+    {
+      "probe_id": "np_c07",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9929,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_HEDGED",
+      "numeric_explanation": "Claim number 30.0 \u2264 chunk upper bound 75.0 ('up to' hedge). May be consistent \u2014 requires domain know",
+      "routing_action": "ESCALATE",
+      "routing_reason": "Hedged numeric bound ('up to N', 'at least N') \u2014 NLI cannot reliably resolve; re",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.1429,
+      "correct": true,
+      "nli_latency_ms": 14.2
+    },
+    {
+      "probe_id": "np_c08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NUMERIC_POLICY",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "SUPPORTS",
+      "nli_confidence": 0.7677,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [7200.0] not found in chunk number(s) [2.0, 3600.0, 1.0]. No covering hedge. Determi",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.625,
+      "correct": false,
+      "nli_latency_ms": 13.9
+    },
+    {
+      "probe_id": "neg_c01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9992,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8,
+      "correct": true,
+      "nli_latency_ms": 13.0
+    },
+    {
+      "probe_id": "neg_c02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.6831,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MATCH",
+      "numeric_explanation": "Claim number 2.0 found in chunk.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8571,
+      "correct": true,
+      "nli_latency_ms": 11.8
+    },
+    {
+      "probe_id": "neg_c03",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.998,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8889,
+      "correct": true,
+      "nli_latency_ms": 15.1
+    },
+    {
+      "probe_id": "neg_c04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9966,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.8,
+      "correct": true,
+      "nli_latency_ms": 12.1
+    },
+    {
+      "probe_id": "neg_c05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9994,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.6,
+      "correct": true,
+      "nli_latency_ms": 14.0
+    },
+    {
+      "probe_id": "neg_c06",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.8207,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": false,
+      "nli_latency_ms": 13.9
+    },
+    {
+      "probe_id": "neg_c07",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9992,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "SUPPORTED",
+      "proxy_overlap": 0.7,
+      "correct": true,
+      "nli_latency_ms": 14.9
+    },
+    {
+      "probe_id": "neg_c08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "NEGATION",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9915,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4444,
+      "correct": true,
+      "nli_latency_ms": 12.1
+    },
+    {
+      "probe_id": "nist_s01",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9984,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4667,
+      "correct": false,
+      "nli_latency_ms": 14.0
+    },
+    {
+      "probe_id": "nist_s02",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9967,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": false,
+      "nli_latency_ms": 13.4
+    },
+    {
+      "probe_id": "nist_s03",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3333,
+      "correct": false,
+      "nli_latency_ms": 11.4
+    },
+    {
+      "probe_id": "nist_s04",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.997,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5,
+      "correct": false,
+      "nli_latency_ms": 16.5
+    },
+    {
+      "probe_id": "nist_s05",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9866,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3636,
+      "correct": false,
+      "nli_latency_ms": 19.0
+    },
+    {
+      "probe_id": "nist_s06",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4167,
+      "correct": false,
+      "nli_latency_ms": 13.6
+    },
+    {
+      "probe_id": "nist_s07",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4375,
+      "correct": false,
+      "nli_latency_ms": 17.4
+    },
+    {
+      "probe_id": "nist_s08",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SUPPORTS"
+      ],
+      "expected": "SUPPORTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9988,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4667,
+      "correct": false,
+      "nli_latency_ms": 15.7
+    },
+    {
+      "probe_id": "nist_c01",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS",
+        "NEGATION"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9966,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.2941,
+      "correct": false,
+      "nli_latency_ms": 16.5
+    },
+    {
+      "probe_id": "nist_c02",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9716,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3077,
+      "correct": true,
+      "nli_latency_ms": 17.2
+    },
+    {
+      "probe_id": "nist_c03",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.998,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4375,
+      "correct": false,
+      "nli_latency_ms": 19.5
+    },
+    {
+      "probe_id": "nist_c04",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9945,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.2308,
+      "correct": false,
+      "nli_latency_ms": 14.6
+    },
+    {
+      "probe_id": "nist_c05",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "CONTRADICTS"
+      ],
+      "expected": "CONTRADICTS",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9991,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3077,
+      "correct": true,
+      "nli_latency_ms": 15.8
+    },
+    {
+      "probe_id": "nei_sm01",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.932,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [3600.0] not found in chunk number(s) [200.0]. No covering hedge. Deterministic MISM",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PHANTOM",
+      "proxy_overlap": 0.0,
+      "correct": false,
+      "nli_latency_ms": 20.1
+    },
+    {
+      "probe_id": "nei_sm02",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.8283,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [14.0] not found in chunk number(s) [2.0]. No covering hedge. Deterministic MISMATCH",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.1,
+      "correct": false,
+      "nli_latency_ms": 15.1
+    },
+    {
+      "probe_id": "nei_sm03",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.6717,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.25,
+      "correct": true,
+      "nli_latency_ms": 18.8
+    },
+    {
+      "probe_id": "nei_sm04",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9589,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3,
+      "correct": true,
+      "nli_latency_ms": 13.1
+    },
+    {
+      "probe_id": "nei_sm05",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9985,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_MISMATCH",
+      "numeric_explanation": "Claim number(s) [30.0] not found in chunk number(s) [2.0]. No covering hedge. Deterministic MISMATCH",
+      "routing_action": "BLOCK",
+      "routing_reason": "Numeric mismatch detected by deterministic verifier. NLI cannot be trusted for t",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.5385,
+      "correct": false,
+      "nli_latency_ms": 17.1
+    },
+    {
+      "probe_id": "nei_sm06",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9918,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.1,
+      "correct": true,
+      "nli_latency_ms": 13.7
+    },
+    {
+      "probe_id": "nei_sm07",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9734,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.3,
+      "correct": true,
+      "nli_latency_ms": 15.8
+    },
+    {
+      "probe_id": "nei_sm08",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9496,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.0909,
+      "correct": true,
+      "nli_latency_ms": 14.0
+    },
+    {
+      "probe_id": "nei_sm09",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9865,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.125,
+      "correct": false,
+      "nli_latency_ms": 13.4
+    },
+    {
+      "probe_id": "nei_sm10",
+      "tags": [
+        "SYNTHETIC_VERSIONED",
+        "SEMANTIC_NEAR_MISS",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.6948,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.1111,
+      "correct": true,
+      "nli_latency_ms": 14.3
+    },
+    {
+      "probe_id": "ooc_n01",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9995,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.375,
+      "correct": false,
+      "nli_latency_ms": 13.9
+    },
+    {
+      "probe_id": "ooc_n02",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9966,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.1,
+      "correct": true,
+      "nli_latency_ms": 12.1
+    },
+    {
+      "probe_id": "ooc_n03",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9962,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.4,
+      "correct": true,
+      "nli_latency_ms": 9.8
+    },
+    {
+      "probe_id": "ooc_n04",
+      "tags": [
+        "PUBLIC_NIST_SP800_53",
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9953,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_UNCERTAIN",
+      "numeric_explanation": "Claim has numbers but chunk has none \u2014 cannot confirm or deny.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.0667,
+      "correct": true,
+      "nli_latency_ms": 14.1
+    },
+    {
+      "probe_id": "ooc_n05",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9731,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PHANTOM",
+      "proxy_overlap": 0.0,
+      "correct": true,
+      "nli_latency_ms": 11.8
+    },
+    {
+      "probe_id": "ooc_n06",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "NOT_ENOUGH_INFO",
+      "nli_confidence": 0.9953,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "ABSTAIN",
+      "routing_reason": "Retrieved chunk does not provide enough evidence for this claim. Do not answer f",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.25,
+      "correct": true,
+      "nli_latency_ms": 11.2
+    },
+    {
+      "probe_id": "ooc_n07",
+      "tags": [
+        "OUT_OF_CORPUS_OR_NEI",
+        "NOT_ENOUGH_INFO"
+      ],
+      "expected": "NOT_ENOUGH_INFO",
+      "nli_verdict": "CONTRADICTS",
+      "nli_confidence": 0.9014,
+      "nli_low_confidence": false,
+      "numeric_verdict": "NUMERIC_NOT_PRESENT",
+      "numeric_explanation": "No numeric values in claim; NLI handles entailment alone.",
+      "routing_action": "BLOCK",
+      "routing_reason": "NLI cross-encoder returned CONTRADICTS. Citation must not be used to support thi",
+      "proxy_verdict": "PARTIAL",
+      "proxy_overlap": 0.2222,
+      "correct": false,
+      "nli_latency_ms": 11.9
+    }
+  ],
+  "hard_boundaries": [
+    "Does not prove production citation reliability",
+    "Evaluated on synthetic + public NIST corpus \u2014 not real enterprise data",
+    "NLI cross-encoder is not infallible; quantized ONNX is conservative on hedged financial language",
+    "SP 800-63B corpus remains quarantined",
+    "PUBLIC / SYNTHETIC_VERSIONED corpus labels preserved",
+    "Numeric policy claims require deterministic verifier, not NLI alone",
+    "Keyword proxy is not called faithfulness"
+  ]
+}

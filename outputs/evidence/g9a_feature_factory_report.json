@@ -1,0 +1,90 @@
+{
+  "gate": "G9A",
+  "dataset": "Home Credit Default Risk (REAL \u2014 Kaggle)",
+  "data_label": "REAL \u2014 307,511 applicants, 8.07% DR",
+  "generated_at": "2026-06-17",
+  "table_stats": {
+    "application_train": {
+      "rows": 307511,
+      "cols": 122,
+      "default_rate": 0.0807
+    },
+    "bureau": {
+      "rows": 1716428,
+      "cols": 17
+    },
+    "bureau_balance": {
+      "rows": 27299925,
+      "cols": 3
+    },
+    "previous_application": {
+      "rows": 1670214,
+      "cols": 37
+    },
+    "installments_payments": {
+      "rows": 13605401,
+      "cols": 8
+    },
+    "credit_card_balance": {
+      "rows": 3840312,
+      "cols": 23
+    },
+    "POS_CASH_balance": {
+      "rows": 10001358,
+      "cols": 8
+    }
+  },
+  "total_rows_across_tables": 57440948,
+  "feature_engineering": {
+    "total_features_in_matrix": 158,
+    "numeric_features_after_filter": 140,
+    "engineered_ratios": 10,
+    "behavioral_composites": 1,
+    "anomaly_flags": 1,
+    "behavioral_composite_formula": "0.4*INST_LATE_RATIO + 0.3*CC_DPD_RATIO + 0.2*POS_IS_DPD_RATIO + 0.1*BUREAU_OVERDUE_RATIO",
+    "foir_proxy": "ANNUITY_TO_INCOME",
+    "ltv_proxy": "CREDIT_TO_GOODS",
+    "employed_sentinel_fix": "DAYS_EMPLOYED==365243 \u2192 FLAG_EMPLOYED_ANOMALY=1, DAYS_EMPLOYED\u2192NaN",
+    "ext_source_composite": "mean(EXT_SOURCE_1, EXT_SOURCE_2, EXT_SOURCE_3)"
+  },
+  "monotone_constraints": {
+    "risk_increasing_features": [
+      "CREDIT_TO_INCOME",
+      "ANNUITY_TO_INCOME",
+      "CREDIT_TO_GOODS",
+      "BUREAU_OVERDUE_RATIO",
+      "INST_LATE_RATIO",
+      "CC_DPD_RATIO",
+      "POS_IS_DPD_RATIO",
+      "BEHAVIORAL_RISK_SCORE",
+      "CC_UTILIZATION_MEAN",
+      "PREV_REFUSAL_RATE",
+      "BUREAU_AMT_OVERDUE",
+      "FLAG_EMPLOYED_ANOMALY"
+    ],
+    "risk_decreasing_features": [
+      "EXT_SOURCE_MEAN",
+      "AGE_YEARS",
+      "EMPLOYED_YEARS"
+    ],
+    "total_constrained": 15
+  },
+  "splits": {
+    "method": "stratified_60_20_20",
+    "seed": 42,
+    "train": 184506,
+    "val": 61502,
+    "test": 61503,
+    "DR_train": 0.0807,
+    "DR_val": 0.0807,
+    "DR_test": 0.0807
+  },
+  "scale_pos_weight": 11.39,
+  "temporal_split_possible": false,
+  "reject_inference_implemented": false,
+  "known_limitations": [
+    "approved_applicants_only_MNAR",
+    "no_timestamp_no_temporal_split",
+    "single_geography"
+  ]
+}

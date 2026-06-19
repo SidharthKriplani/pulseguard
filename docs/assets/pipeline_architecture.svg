@@ -1,0 +1,115 @@
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="560" fill="#0f172a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#f1f5f9" letter-spacing="1">PULSEGUARD — TWO-LANE ARCHITECTURE</text>
+
+  <!-- Lane headers -->
+  <rect x="28" y="50" width="390" height="32" rx="6" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="223" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#60a5fa">SYNTHETIC LANE — G4</text>
+
+  <rect x="482" y="50" width="390" height="32" rx="6" fill="#1e293b" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="677" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#4ade80">REAL DATA LANE — GP2 (CHAMPION)</text>
+
+  <!-- ─── SYNTHETIC LANE ─── -->
+
+  <!-- DGP box -->
+  <rect x="68" y="100" width="310" height="56" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="223" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#93c5fd">Synthetic DGP</text>
+  <text x="223" y="140" text-anchor="middle" font-size="10.5" fill="#60a5fa">50,000 rows · 6 signal features · Calibrated DR=8%</text>
+
+  <!-- arrow -->
+  <line x1="223" y1="156" x2="223" y2="178" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- G4 XGBoost box -->
+  <rect x="68" y="178" width="310" height="62" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="223" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#93c5fd">G4 XGBoost (28 features)</text>
+  <text x="223" y="218" text-anchor="middle" font-size="10.5" fill="#60a5fa">AUC = 0.6261 · ECE = 0.00386</text>
+  <text x="223" y="233" text-anchor="middle" font-size="10" fill="#94a3b8">Bayes ceiling efficiency: 99.6%</text>
+
+  <!-- arrow down to serving gap -->
+  <line x1="223" y1="240" x2="223" y2="265" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-amber)"/>
+
+  <!-- Serving Gap box -->
+  <rect x="68" y="265" width="310" height="70" rx="8" fill="#2d1d0f" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="223" y="288" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fb923c">⚠ SERVING GAP</text>
+  <text x="223" y="307" text-anchor="middle" font-size="10" fill="#fdba74">GP2 pkl saved with sklearn 1.7.2 (Python 3.10+)</text>
+  <text x="223" y="322" text-anchor="middle" font-size="10" fill="#fdba74">Deployment runs Python 3.9 (max sklearn 1.6.1)</text>
+
+  <!-- arrow to Cloud Run -->
+  <line x1="223" y1="335" x2="223" y2="358" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+
+  <!-- Cloud Run box -->
+  <rect x="68" y="358" width="310" height="62" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+  <text x="223" y="380" text-anchor="middle" font-size="12" font-weight="700" fill="#38bdf8">☁ LIVE — Cloud Run (GCP)</text>
+  <text x="223" y="398" text-anchor="middle" font-size="10.5" fill="#60a5fa">Serves G4 XGBoost · AUC = 0.6261</text>
+  <text x="223" y="413" text-anchor="middle" font-size="9.5" fill="#475569">pulseguard-api-98058433335.us-central1.run.app</text>
+
+  <!-- ─── REAL DATA LANE ─── -->
+
+  <!-- Home Credit box -->
+  <rect x="522" y="100" width="310" height="56" rx="8" fill="#0f2d1e" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="677" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#86efac">Home Credit Default Risk</text>
+  <text x="677" y="140" text-anchor="middle" font-size="10.5" fill="#4ade80">307,511 applicants · 140 features · 7 tables</text>
+
+  <!-- arrow -->
+  <line x1="677" y1="156" x2="677" y2="178" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ABT Builder box -->
+  <rect x="522" y="178" width="310" height="56" rx="8" fill="#0f2d1e" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="677" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#86efac">ABT Builder + Feature Engineering</text>
+  <text x="677" y="218" text-anchor="middle" font-size="10.5" fill="#4ade80">Bureau · Prev App · Installments aggregations</text>
+
+  <!-- arrow -->
+  <line x1="677" y1="234" x2="677" y2="256" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Tournament box -->
+  <rect x="522" y="256" width="310" height="62" rx="8" fill="#0f2d1e" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="677" y="277" text-anchor="middle" font-size="12" font-weight="600" fill="#86efac">Model Tournament — Gold Pass 2</text>
+  <text x="677" y="295" text-anchor="middle" font-size="10.5" fill="#4ade80">CatBoost · LightGBM_mono · XGBoost (+ Optuna HPO)</text>
+  <text x="677" y="311" text-anchor="middle" font-size="10" fill="#94a3b8">Early stopping bug caught and fixed</text>
+
+  <!-- arrow -->
+  <line x1="677" y1="318" x2="677" y2="340" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+  <!-- Champion box -->
+  <rect x="522" y="340" width="310" height="76" rx="8" fill="#052e16" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="677" y="362" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e">🏆 CHAMPION</text>
+  <text x="677" y="381" text-anchor="middle" font-size="11.5" font-weight="600" fill="#86efac">LightGBM_monotonic + Platt Calibration</text>
+  <text x="677" y="398" text-anchor="middle" font-size="10.5" fill="#4ade80">AUC=0.7769 · ECE=0.0034 · KS=0.4141</text>
+  <text x="677" y="412" text-anchor="middle" font-size="10" fill="#6b7280">[pkl locked — not deployed]</text>
+
+  <!-- ─── BOTTOM: SHARED SERVING LAYER ─── -->
+  <!-- Merge arrows from both lanes down -->
+  <line x1="223" y1="420" x2="223" y2="455" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- SHAP / Banding / Governance box -->
+  <rect x="140" y="455" width="620" height="74" rx="8" fill="#1e1b4b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="450" y="477" text-anchor="middle" font-size="12" font-weight="700" fill="#a5b4fc">FastAPI Serving Layer · SHAP Reason Codes · GREEN / AMBER / RED Banding</text>
+  <text x="450" y="496" text-anchor="middle" font-size="10.5" fill="#818cf8">Pydantic validation · OrdinalEncoder (unknown_value=−1) · ASSISTIVE_ONLY tag</text>
+  <text x="450" y="513" text-anchor="middle" font-size="10" fill="#6b7280">HUMAN_REVIEW_REQUIRED · NOT_FINAL_DECISION · pred_contribs=True (XGBoost booster)</text>
+
+  <!-- Divider -->
+  <line x1="440" y1="50" x2="440" y2="450" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Label at bottom of left lane connecting to serving box -->
+  <line x1="677" y1="416" x2="677" y2="450" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="677" y="448" text-anchor="middle" font-size="9" fill="#475569">[AUC=0.7769 not served]</text>
+
+</svg>

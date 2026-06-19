@@ -1,0 +1,125 @@
+{
+  "gate": "G9A",
+  "dataset": "Home Credit Default Risk",
+  "generated_at": "2026-06-17",
+  "champion": "CatBoost_Platt",
+  "champion_rationale": "Highest AUC (0.7716) + acceptable post-Platt ECE (0.0054) + KS=0.4094. AUC advantage over LightGBM_mono (+0.051) justifies selection. Governance alternative documented.",
+  "governance_alternative": "LightGBM_monotonic_Platt \u2014 monotone constraints on 15 features, lowest ECE post-Platt (0.0016), AUC=0.7203",
+  "champion_selection_rule": "NOT AUC-only: requires AUC + calibration ECE + governance tradeoff documentation.",
+  "models": [
+    {
+      "model": "CatBoost",
+      "val_auc": 0.7716,
+      "test_auc": 0.7765,
+      "brier_val": 0.1854,
+      "best_iter": 496,
+      "status": "PASS",
+      "ece_uncal": 0.3157,
+      "ece_platt": 0.0054,
+      "ece_isotonic": 0.0,
+      "ks_stat": 0.4094
+    },
+    {
+      "model": "XGBoost",
+      "val_auc": 0.7703,
+      "test_auc": 0.7747,
+      "brier_val": 0.1733,
+      "best_iter": 269,
+      "status": "PASS",
+      "ece_uncal": 0.2944,
+      "ece_platt": 0.004,
+      "ece_isotonic": 0.0,
+      "ks_stat": 0.4097
+    },
+    {
+      "model": "RandomForest",
+      "val_auc": 0.7523,
+      "test_auc": 0.7575,
+      "brier_val": 0.1635,
+      "status": "PASS",
+      "note": "200 trees depth=12",
+      "ece_uncal": 0.2945,
+      "ece_platt": 0.0044,
+      "ece_isotonic": 0.0,
+      "ks_stat": 0.3805
+    },
+    {
+      "model": "LightGBM_monotonic",
+      "val_auc": 0.7203,
+      "test_auc": 0.7243,
+      "brier_val": 0.0733,
+      "best_iter": 1,
+      "mc_constrained_count": 15,
+      "status": "PASS",
+      "governance_tag": "MONOTONE_CONSTRAINED",
+      "ece_uncal": 0.037,
+      "ece_platt": 0.0016,
+      "ece_isotonic": 0.0,
+      "ks_stat": 0.3322
+    },
+    {
+      "model": "LightGBM_base",
+      "val_auc": 0.7197,
+      "test_auc": 0.7237,
+      "brier_val": 0.0733,
+      "best_iter": 1,
+      "status": "PASS",
+      "ece_uncal": 0.0385,
+      "ece_platt": 0.0005,
+      "ece_isotonic": 0.0,
+      "ks_stat": 0.3265
+    },
+    {
+      "model": "LDA",
+      "val_auc": 0.7044,
+      "test_auc": 0.7062,
+      "brier_val": 0.0708,
+      "status": "PASS"
+    },
+    {
+      "model": "LogisticRegression",
+      "val_auc": 0.682,
+      "test_auc": 0.6875,
+      "brier_val": 0.2227,
+      "status": "PASS",
+      "note": "40k subsample baseline"
+    },
+    {
+      "model": "ExtraTrees",
+      "val_auc": 0.6735,
+      "test_auc": 0.6765,
+      "brier_val": 0.2266,
+      "status": "PASS",
+      "note": "150 trees depth=10"
+    },
+    {
+      "model": "MLP_NeuralNet",
+      "val_auc": 0.6582,
+      "test_auc": 0.6621,
+      "brier_val": 0.0722,
+      "status": "PASS",
+      "note": "30k subsample 2-layer"
+    },
+    {
+      "model": "GaussianNB",
+      "val_auc": 0.5375,
+      "test_auc": 0.5417,
+      "brier_val": 0.8881,
+      "status": "PASS"
+    },
+    {
+      "model": "TabNet",
+      "status": "HARD_FAIL",
+      "hard_fail_reason": "CPU-only environment. TabNet training on 184k rows estimated 400-800h on CPU (benchmark: ~6min/epoch on CPU vs ~15s/epoch on GPU; need ~500 epochs). No GPU available. torch.cuda.is_available()=False. Deliberately excluded per G9A spec.",
+      "val_auc": null,
+      "test_auc": null
+    },
+    {
+      "model": "GradientBoosting_sklearn",
+      "status": "HARD_FAIL",
+      "hard_fail_reason": "sklearn GradientBoostingClassifier exceeded 44s wall-time limit even on 50k subsample (CPU, no parallelism). Superseded by LightGBM/XGBoost/CatBoost which use histogram methods and n_jobs=-1.",
+      "val_auc": null,
+      "test_auc": null
+    }
+  ]
+}

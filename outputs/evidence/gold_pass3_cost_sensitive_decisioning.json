@@ -1,0 +1,102 @@
+{
+  "artifact": "gold_pass3_cost_sensitive_decisioning",
+  "scenario_label": "SCENARIO_ASSUMPTIONS_NOT_REAL_BANK_ECONOMICS",
+  "cost_assumptions": {
+    "C_bad": 10,
+    "C_reject": 1,
+    "C_review": 0.3,
+    "note": "Normalised scenario costs. C_bad=approving a defaulter (bad-debt proxy). C_reject=rejecting a good applicant (opportunity cost). C_review=manual review labour. NOT derived from real lender P&L."
+  },
+  "threshold_cost_sweep_top10": [
+    {
+      "threshold": 0.47,
+      "expected_loss": 0.080695
+    },
+    {
+      "threshold": 0.48,
+      "expected_loss": 0.080712
+    },
+    {
+      "threshold": 0.49,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.5,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.51,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.52,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.53,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.54,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.55,
+      "expected_loss": 0.080728
+    },
+    {
+      "threshold": 0.56,
+      "expected_loss": 0.080728
+    }
+  ],
+  "cost_optimal_threshold": {
+    "threshold": 0.47,
+    "expected_loss_per_applicant": 0.080695
+  },
+  "three_zone_balanced_policy": {
+    "expected_loss_per_applicant": 0.549134,
+    "green_n": 55183,
+    "green_defaults_captured": 3183,
+    "amber_n": 6028,
+    "red_n": 292,
+    "red_false_rejects": 135,
+    "note": "3-zone EL includes review cost for all amber applicants + opportunity cost for good applicants in red zone"
+  },
+  "tradeoff_scenarios": [
+    {
+      "scenario": "conservative (lo=0.15, hi=0.35)",
+      "approve_rate": 0.8358,
+      "dr_approve": 0.0488,
+      "review_rate": 0.148,
+      "dr_review": 0.2231,
+      "profile": "Lower false-approvals; higher review burden; misses more good applicants"
+    },
+    {
+      "scenario": "balanced (lo=0.20, hi=0.40) \u2014 SELECTED",
+      "approve_rate": 0.8972,
+      "dr_approve": 0.0577,
+      "review_rate": 0.098,
+      "dr_review": 0.2696,
+      "profile": "Balanced false-approval vs opportunity cost; review band manageable"
+    },
+    {
+      "scenario": "aggressive (lo=0.30, hi=0.50)",
+      "approve_rate": 0.9658,
+      "dr_approve": 0.0694,
+      "review_rate": 0.0342,
+      "dr_review": 0.4001,
+      "profile": "Highest approval rate; higher risk in green zone; review DR=40%"
+    }
+  ],
+  "default_capture_by_scenario": {
+    "conservative_red_capture": 0.086,
+    "balanced_red_capture": 0.0316,
+    "aggressive_red_capture": 0.0
+  },
+  "safe_claim": "Calibrated PD supports cost-sensitive threshold optimisation under explicit scenario assumptions. Not real bank economics. Not a production credit policy.",
+  "forbidden_claims": [
+    "I optimized real bank profit",
+    "This is a production credit policy",
+    "These cost parameters are from a real lender"
+  ]
+}

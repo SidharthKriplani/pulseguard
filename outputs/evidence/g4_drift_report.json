@@ -1,0 +1,4214 @@
+{
+  "pulseguard_gate": "G4",
+  "artifact": "g4_drift_report.json",
+  "data_type": "synthetic_home_credit_like",
+  "dataset_label": "synthetic_home_credit_like",
+  "reference": "training split (30,000 rows, seed=42)",
+  "n_days": 30,
+  "batch_size": 2000,
+  "n_psi_bins": 10,
+  "psi_warn_threshold": 0.1,
+  "psi_alert_threshold": 0.2,
+  "drift_schedule": {
+    "days_1_6": {
+      "regime": "BASELINE",
+      "shift": 0.0,
+      "expected_status": "OK"
+    },
+    "days_7_13": {
+      "regime": "WARN_INJECTED",
+      "shift": -0.07,
+      "expected_status": "WARN"
+    },
+    "days_14_30": {
+      "regime": "ALERT_INJECTED",
+      "shift": -0.12,
+      "expected_status": "ALERT"
+    },
+    "drift_note": "All drift is SYNTHETIC/INJECTED. Not observed production telemetry."
+  },
+  "monitored_features": [
+    "EXT_SOURCE_2",
+    "EXT_SOURCE_3",
+    "AMT_CREDIT",
+    "AMT_INCOME_TOTAL",
+    "AMT_ANNUITY",
+    "AMT_GOODS_PRICE",
+    "DAYS_BIRTH",
+    "DAYS_EMPLOYED",
+    "REGION_POPULATION_RELATIVE",
+    "DAYS_REGISTRATION",
+    "DAYS_ID_PUBLISH",
+    "CNT_CHILDREN",
+    "CNT_FAM_MEMBERS",
+    "DEF_30_CNT_SOCIAL_CIRCLE",
+    "DEF_60_CNT_SOCIAL_CIRCLE",
+    "OBS_30_CNT_SOCIAL_CIRCLE",
+    "FLAG_DOCUMENT_3",
+    "HOUR_APPR_PROCESS_START",
+    "LIVE_REGION_NOT_WORK_REGION",
+    "REGION_RATING_CLIENT"
+  ],
+  "n_monitored_features": 20,
+  "daily_results": [
+    {
+      "day": 1,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.006705,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.002584,
+      "EXT_SOURCE_2_ks": 0.017433,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.002584,
+          "ks_stat": 0.017433,
+          "ks_pvalue": 0.61254728,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.006436,
+          "ks_stat": 0.024218,
+          "ks_pvalue": 0.6111093,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.002585,
+          "ks_stat": 0.0121,
+          "ks_pvalue": 0.94339936,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.00237,
+          "ks_stat": 0.018767,
+          "ks_pvalue": 0.51764421,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.006705,
+          "ks_stat": 0.0226,
+          "ks_pvalue": 0.28929365,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.002407,
+          "ks_stat": 0.013487,
+          "ks_pvalue": 0.88290001,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.004949,
+          "ks_stat": 0.016733,
+          "ks_pvalue": 0.66361409,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.003089,
+          "ks_stat": 0.018533,
+          "ks_pvalue": 0.53387344,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.004578,
+          "ks_stat": 0.018467,
+          "ks_pvalue": 0.5385458,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.004981,
+          "ks_stat": 0.0239,
+          "ks_pvalue": 0.23075856,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.006606,
+          "ks_stat": 0.0286,
+          "ks_pvalue": 0.09130389,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000533,
+          "ks_stat": 0.0109,
+          "ks_pvalue": 0.97737539,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001299,
+          "ks_stat": 0.014667,
+          "ks_pvalue": 0.80900989,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000799,
+          "ks_stat": 0.013329,
+          "ks_pvalue": 0.89829915,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.0,
+          "ks_stat": 0.00141,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001223,
+          "ks_stat": 0.012367,
+          "ks_pvalue": 0.93317533,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 3e-05,
+          "ks_stat": 0.0025,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.001844,
+          "ks_stat": 0.014633,
+          "ks_pvalue": 0.81118293,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000229,
+          "ks_stat": 0.0054,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001569,
+          "ks_stat": 0.0105,
+          "ks_pvalue": 0.98456845,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 2,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.009834,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.003046,
+      "EXT_SOURCE_2_ks": 0.021533,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.003046,
+          "ks_stat": 0.021533,
+          "ks_pvalue": 0.34465876,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009776,
+          "ks_stat": 0.031211,
+          "ks_pvalue": 0.30426142,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.002856,
+          "ks_stat": 0.020033,
+          "ks_pvalue": 0.43356227,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003966,
+          "ks_stat": 0.0228,
+          "ks_pvalue": 0.27965402,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.003792,
+          "ks_stat": 0.0165,
+          "ks_pvalue": 0.68063256,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.004123,
+          "ks_stat": 0.0187,
+          "ks_pvalue": 0.52986176,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.005343,
+          "ks_stat": 0.016067,
+          "ks_pvalue": 0.71204804,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.005226,
+          "ks_stat": 0.017267,
+          "ks_pvalue": 0.62467789,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.009834,
+          "ks_stat": 0.0234,
+          "ks_pvalue": 0.2521268,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003856,
+          "ks_stat": 0.015367,
+          "ks_pvalue": 0.7617076,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.006063,
+          "ks_stat": 0.0263,
+          "ks_pvalue": 0.14679592,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000229,
+          "ks_stat": 0.0071,
+          "ks_pvalue": 0.99997641,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001985,
+          "ks_stat": 0.018833,
+          "ks_pvalue": 0.51304456,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000278,
+          "ks_stat": 0.00784,
+          "ks_pvalue": 0.99984516,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000591,
+          "ks_stat": 0.009266,
+          "ks_pvalue": 0.99736612,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001339,
+          "ks_stat": 0.008367,
+          "ks_pvalue": 0.99931346,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000936,
+          "ks_stat": 0.014,
+          "ks_pvalue": 0.85075457,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003722,
+          "ks_stat": 0.015433,
+          "ks_pvalue": 0.75706086,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000189,
+          "ks_stat": 0.0049,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000585,
+          "ks_stat": 0.0095,
+          "ks_pvalue": 0.9953032,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 3,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.010013,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.009776,
+      "EXT_SOURCE_2_ks": 0.0289,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.009776,
+          "ks_stat": 0.0289,
+          "ks_pvalue": 0.08556757,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.003586,
+          "ks_stat": 0.028535,
+          "ks_pvalue": 0.44581595,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.002694,
+          "ks_stat": 0.026267,
+          "ks_pvalue": 0.14776598,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.00626,
+          "ks_stat": 0.025,
+          "ks_pvalue": 0.18859424,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004365,
+          "ks_stat": 0.0204,
+          "ks_pvalue": 0.41068486,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.00303,
+          "ks_stat": 0.025542,
+          "ks_pvalue": 0.17487926,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003742,
+          "ks_stat": 0.026967,
+          "ks_pvalue": 0.12844954,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.001871,
+          "ks_stat": 0.0118,
+          "ks_pvalue": 0.95372971,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.003676,
+          "ks_stat": 0.0239,
+          "ks_pvalue": 0.23075856,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.002513,
+          "ks_stat": 0.017833,
+          "ks_pvalue": 0.58360476,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.004145,
+          "ks_stat": 0.026767,
+          "ks_pvalue": 0.13374615,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.002232,
+          "ks_stat": 0.0224,
+          "ks_pvalue": 0.29916699,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.006082,
+          "ks_stat": 0.031,
+          "ks_pvalue": 0.05330976,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 8e-05,
+          "ks_stat": 0.006654,
+          "ks_pvalue": 0.9999971,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000266,
+          "ks_stat": 0.006327,
+          "ks_pvalue": 0.99999935,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.004139,
+          "ks_stat": 0.0093,
+          "ks_pvalue": 0.99647604,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.00012,
+          "ks_stat": 0.005,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.010013,
+          "ks_stat": 0.026467,
+          "ks_pvalue": 0.14202229,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 3.5e-05,
+          "ks_stat": 0.0021,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001444,
+          "ks_stat": 0.0145,
+          "ks_pvalue": 0.81979136,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 4,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.023603,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.002711,
+      "EXT_SOURCE_2_ks": 0.021,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.002711,
+          "ks_stat": 0.021,
+          "ks_pvalue": 0.3748249,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.004454,
+          "ks_stat": 0.024837,
+          "ks_pvalue": 0.57958361,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.007502,
+          "ks_stat": 0.033767,
+          "ks_pvalue": 0.02716967,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.001684,
+          "ks_stat": 0.017733,
+          "ks_pvalue": 0.5908126,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.007516,
+          "ks_stat": 0.0348,
+          "ks_pvalue": 0.02081368,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.006617,
+          "ks_stat": 0.030635,
+          "ks_pvalue": 0.0595579,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003244,
+          "ks_stat": 0.015433,
+          "ks_pvalue": 0.75706086,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.023603,
+          "ks_stat": 0.024033,
+          "ks_pvalue": 0.22529722,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.002358,
+          "ks_stat": 0.014467,
+          "ks_pvalue": 0.82192187,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005353,
+          "ks_stat": 0.022433,
+          "ks_pvalue": 0.29750517,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.00542,
+          "ks_stat": 0.016867,
+          "ks_pvalue": 0.653876,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.001352,
+          "ks_stat": 0.0174,
+          "ks_pvalue": 0.61497078,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000559,
+          "ks_stat": 0.008,
+          "ks_pvalue": 0.99969454,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000997,
+          "ks_stat": 0.014719,
+          "ks_pvalue": 0.81734671,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 7e-05,
+          "ks_stat": 0.003238,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.007044,
+          "ks_stat": 0.0148,
+          "ks_pvalue": 0.80023795,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000593,
+          "ks_stat": 0.011,
+          "ks_pvalue": 0.97527363,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.008566,
+          "ks_stat": 0.011533,
+          "ks_pvalue": 0.96186993,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000229,
+          "ks_stat": 0.0054,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00304,
+          "ks_stat": 0.020933,
+          "ks_pvalue": 0.37871007,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 5,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.014194,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.003378,
+      "EXT_SOURCE_2_ks": 0.0157,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.003378,
+          "ks_stat": 0.0157,
+          "ks_pvalue": 0.73828123,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.014194,
+          "ks_stat": 0.025133,
+          "ks_pvalue": 0.57097442,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.004498,
+          "ks_stat": 0.023167,
+          "ks_pvalue": 0.26258513,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003493,
+          "ks_stat": 0.0215,
+          "ks_pvalue": 0.34649606,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.001471,
+          "ks_stat": 0.017367,
+          "ks_pvalue": 0.61739568,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.008655,
+          "ks_stat": 0.020704,
+          "ks_pvalue": 0.3999122,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.005317,
+          "ks_stat": 0.020267,
+          "ks_pvalue": 0.41892156,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.004101,
+          "ks_stat": 0.024567,
+          "ks_pvalue": 0.20442777,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.004327,
+          "ks_stat": 0.020833,
+          "ks_pvalue": 0.38458486,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.004737,
+          "ks_stat": 0.030067,
+          "ks_pvalue": 0.06605725,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.001715,
+          "ks_stat": 0.016433,
+          "ks_pvalue": 0.68548545,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 2e-05,
+          "ks_stat": 0.0021,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000866,
+          "ks_stat": 0.0095,
+          "ks_pvalue": 0.9953032,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 4e-06,
+          "ks_stat": 0.006057,
+          "ks_pvalue": 0.99999984,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 8.1e-05,
+          "ks_stat": 0.003602,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.004985,
+          "ks_stat": 0.017867,
+          "ks_pvalue": 0.58120694,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 1.9e-05,
+          "ks_stat": 0.002,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003593,
+          "ks_stat": 0.017633,
+          "ks_pvalue": 0.59804041,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000678,
+          "ks_stat": 0.0091,
+          "ks_pvalue": 0.99740813,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00049,
+          "ks_stat": 0.008567,
+          "ks_pvalue": 0.99897843,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 6,
+      "drift_regime": "BASELINE",
+      "drift_injected": false,
+      "drift_shift": 0.0,
+      "overall_status": "OK",
+      "max_psi_any_feature": 0.009342,
+      "n_alert_features": 0,
+      "n_warn_features": 0,
+      "alert_features": [],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.005463,
+      "EXT_SOURCE_2_ks": 0.014567,
+      "EXT_SOURCE_2_status": "OK",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.005463,
+          "ks_stat": 0.014567,
+          "ks_pvalue": 0.81550416,
+          "status": "OK"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009342,
+          "ks_stat": 0.041226,
+          "ks_pvalue": 0.08880698,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005205,
+          "ks_stat": 0.024967,
+          "ks_pvalue": 0.18977723,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003209,
+          "ks_stat": 0.0205,
+          "ks_pvalue": 0.40457024,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.006624,
+          "ks_stat": 0.0317,
+          "ks_pvalue": 0.04519651,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.004669,
+          "ks_stat": 0.021957,
+          "ks_pvalue": 0.32647684,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.00929,
+          "ks_stat": 0.0336,
+          "ks_pvalue": 0.02834165,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.001882,
+          "ks_stat": 0.0137,
+          "ks_pvalue": 0.86820398,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.005765,
+          "ks_stat": 0.018167,
+          "ks_pvalue": 0.55974873,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.002204,
+          "ks_stat": 0.0099,
+          "ks_pvalue": 0.99209028,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.005119,
+          "ks_stat": 0.0242,
+          "ks_pvalue": 0.21860879,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.00042,
+          "ks_stat": 0.0096,
+          "ks_pvalue": 0.99461521,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000615,
+          "ks_stat": 0.009833,
+          "ks_pvalue": 0.99271505,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 5.4e-05,
+          "ks_stat": 0.00389,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 7.5e-05,
+          "ks_stat": 0.003331,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003505,
+          "ks_stat": 0.0078,
+          "ks_pvalue": 0.99981323,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000312,
+          "ks_stat": 0.008,
+          "ks_pvalue": 0.99969454,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.001305,
+          "ks_stat": 0.0122,
+          "ks_pvalue": 0.93967971,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000616,
+          "ks_stat": 0.0089,
+          "ks_pvalue": 0.99813466,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00342,
+          "ks_stat": 0.022,
+          "ks_pvalue": 0.31961674,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 7,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.153195,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.153195,
+      "EXT_SOURCE_2_ks": 0.1935,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.153195,
+          "ks_stat": 0.1935,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009525,
+          "ks_stat": 0.036043,
+          "ks_pvalue": 0.16446253,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.004713,
+          "ks_stat": 0.024933,
+          "ks_pvalue": 0.19096601,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.005134,
+          "ks_stat": 0.029933,
+          "ks_pvalue": 0.06807539,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.009895,
+          "ks_stat": 0.031367,
+          "ks_pvalue": 0.04891568,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.005422,
+          "ks_stat": 0.025101,
+          "ks_pvalue": 0.1892887,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.001455,
+          "ks_stat": 0.010933,
+          "ks_pvalue": 0.97668875,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.005882,
+          "ks_stat": 0.019667,
+          "ks_pvalue": 0.45713233,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.003122,
+          "ks_stat": 0.016933,
+          "ks_pvalue": 0.64900602,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.00618,
+          "ks_stat": 0.0301,
+          "ks_pvalue": 0.06556076,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.008087,
+          "ks_stat": 0.0234,
+          "ks_pvalue": 0.2521268,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.00143,
+          "ks_stat": 0.0179,
+          "ks_pvalue": 0.57881164,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.003219,
+          "ks_stat": 0.022,
+          "ks_pvalue": 0.31961674,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 1.9e-05,
+          "ks_stat": 0.003132,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000123,
+          "ks_stat": 0.006833,
+          "ks_pvalue": 0.99999431,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.005469,
+          "ks_stat": 0.0148,
+          "ks_pvalue": 0.80023795,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.002955,
+          "ks_stat": 0.025,
+          "ks_pvalue": 0.18859424,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.007028,
+          "ks_stat": 0.0232,
+          "ks_pvalue": 0.26107195,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.00076,
+          "ks_stat": 0.0099,
+          "ks_pvalue": 0.99209028,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000304,
+          "ks_stat": 0.005933,
+          "ks_pvalue": 0.99999988,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 8,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.122037,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.122037,
+      "EXT_SOURCE_2_ks": 0.175367,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.122037,
+          "ks_stat": 0.175367,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.008859,
+          "ks_stat": 0.044091,
+          "ks_pvalue": 0.05118794,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.008141,
+          "ks_stat": 0.018167,
+          "ks_pvalue": 0.55974873,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003991,
+          "ks_stat": 0.020467,
+          "ks_pvalue": 0.40660242,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004341,
+          "ks_stat": 0.0173,
+          "ks_pvalue": 0.62224932,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.007742,
+          "ks_stat": 0.019031,
+          "ks_pvalue": 0.50470086,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.007824,
+          "ks_stat": 0.027267,
+          "ks_pvalue": 0.12082644,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.001685,
+          "ks_stat": 0.013867,
+          "ks_pvalue": 0.85862226,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.006513,
+          "ks_stat": 0.022867,
+          "ks_pvalue": 0.2764926,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.004804,
+          "ks_stat": 0.019767,
+          "ks_pvalue": 0.45063761,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.008295,
+          "ks_stat": 0.0183,
+          "ks_pvalue": 0.55029083,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 2e-05,
+          "ks_stat": 0.0021,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 5.8e-05,
+          "ks_stat": 0.003233,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002601,
+          "ks_stat": 0.024137,
+          "ks_pvalue": 0.23540147,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000153,
+          "ks_stat": 0.004783,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.006591,
+          "ks_stat": 0.017867,
+          "ks_pvalue": 0.58120694,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000441,
+          "ks_stat": 0.0095,
+          "ks_pvalue": 0.9953032,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.005489,
+          "ks_stat": 0.0182,
+          "ks_pvalue": 0.55737936,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000919,
+          "ks_stat": 0.0109,
+          "ks_pvalue": 0.97737539,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001111,
+          "ks_stat": 0.0125,
+          "ks_pvalue": 0.92769965,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 9,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.133542,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.133542,
+      "EXT_SOURCE_2_ks": 0.160167,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.133542,
+          "ks_stat": 0.160167,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.007263,
+          "ks_stat": 0.032655,
+          "ks_pvalue": 0.2441845,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.007307,
+          "ks_stat": 0.023333,
+          "ks_pvalue": 0.25508305,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.005856,
+          "ks_stat": 0.0208,
+          "ks_pvalue": 0.38655561,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.00529,
+          "ks_stat": 0.037433,
+          "ks_pvalue": 0.0101779,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.008456,
+          "ks_stat": 0.023751,
+          "ks_pvalue": 0.24289194,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.005902,
+          "ks_stat": 0.0311,
+          "ks_pvalue": 0.05207887,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.021959,
+          "ks_stat": 0.020933,
+          "ks_pvalue": 0.37871007,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.005517,
+          "ks_stat": 0.023067,
+          "ks_pvalue": 0.26716311,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.002335,
+          "ks_stat": 0.010633,
+          "ks_pvalue": 0.98238001,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003015,
+          "ks_stat": 0.0157,
+          "ks_pvalue": 0.73828123,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000281,
+          "ks_stat": 0.0079,
+          "ks_pvalue": 0.99976,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002197,
+          "ks_stat": 0.012833,
+          "ks_pvalue": 0.91297286,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000316,
+          "ks_stat": 0.00837,
+          "ks_pvalue": 0.99949871,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001908,
+          "ks_stat": 0.016512,
+          "ks_pvalue": 0.69997379,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.004523,
+          "ks_stat": 0.026133,
+          "ks_pvalue": 0.15169783,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000433,
+          "ks_stat": 0.0095,
+          "ks_pvalue": 0.9953032,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003553,
+          "ks_stat": 0.012433,
+          "ks_pvalue": 0.93046754,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.00159,
+          "ks_stat": 0.0144,
+          "ks_pvalue": 0.82615604,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.003629,
+          "ks_stat": 0.018067,
+          "ks_pvalue": 0.56687553,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 10,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.106411,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.106411,
+      "EXT_SOURCE_2_ks": 0.1667,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.106411,
+          "ks_stat": 0.1667,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.007209,
+          "ks_stat": 0.024759,
+          "ks_pvalue": 0.61367206,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.00641,
+          "ks_stat": 0.023033,
+          "ks_pvalue": 0.26870194,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003643,
+          "ks_stat": 0.017033,
+          "ks_pvalue": 0.64170209,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.006137,
+          "ks_stat": 0.0253,
+          "ks_pvalue": 0.17820462,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.005573,
+          "ks_stat": 0.023413,
+          "ks_pvalue": 0.25514088,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.002215,
+          "ks_stat": 0.0249,
+          "ks_pvalue": 0.19216057,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.004364,
+          "ks_stat": 0.018133,
+          "ks_pvalue": 0.56212127,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.007747,
+          "ks_stat": 0.021033,
+          "ks_pvalue": 0.37289177,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.012118,
+          "ks_stat": 0.0279,
+          "ks_pvalue": 0.10594866,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003058,
+          "ks_stat": 0.014967,
+          "ks_pvalue": 0.78910356,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.001588,
+          "ks_stat": 0.0186,
+          "ks_pvalue": 0.52921645,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001174,
+          "ks_stat": 0.013333,
+          "ks_pvalue": 0.88822614,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000278,
+          "ks_stat": 0.007842,
+          "ks_pvalue": 0.99984686,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 3e-06,
+          "ks_stat": 0.004678,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002463,
+          "ks_stat": 0.0078,
+          "ks_pvalue": 0.99981323,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 1.1e-05,
+          "ks_stat": 0.0015,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003455,
+          "ks_stat": 0.0162,
+          "ks_pvalue": 0.7024188,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.00111,
+          "ks_stat": 0.0116,
+          "ks_pvalue": 0.95992634,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 5.9e-05,
+          "ks_stat": 0.003,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 11,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.113633,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.113633,
+      "EXT_SOURCE_2_ks": 0.163667,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.113633,
+          "ks_stat": 0.163667,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.028911,
+          "ks_stat": 0.057403,
+          "ks_pvalue": 0.00489854,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.006801,
+          "ks_stat": 0.024567,
+          "ks_pvalue": 0.20442777,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002828,
+          "ks_stat": 0.021267,
+          "ks_pvalue": 0.35953733,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.007811,
+          "ks_stat": 0.025733,
+          "ks_pvalue": 0.16399835,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.003454,
+          "ks_stat": 0.025897,
+          "ks_pvalue": 0.16275591,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.008012,
+          "ks_stat": 0.021033,
+          "ks_pvalue": 0.37289177,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.021387,
+          "ks_stat": 0.019033,
+          "ks_pvalue": 0.4993512,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.007474,
+          "ks_stat": 0.0202,
+          "ks_pvalue": 0.42307545,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005767,
+          "ks_stat": 0.025467,
+          "ks_pvalue": 0.17263012,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.002629,
+          "ks_stat": 0.019467,
+          "ks_pvalue": 0.4702664,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000784,
+          "ks_stat": 0.0131,
+          "ks_pvalue": 0.9001579,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001139,
+          "ks_stat": 0.013,
+          "ks_pvalue": 0.90506837,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000232,
+          "ks_stat": 0.007801,
+          "ks_pvalue": 0.99987139,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000196,
+          "ks_stat": 0.005363,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003901,
+          "ks_stat": 0.017867,
+          "ks_pvalue": 0.58120694,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000353,
+          "ks_stat": 0.0085,
+          "ks_pvalue": 0.99910232,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.00689,
+          "ks_stat": 0.026067,
+          "ks_pvalue": 0.15369498,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.002453,
+          "ks_stat": 0.0171,
+          "ks_pvalue": 0.63683463,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000348,
+          "ks_stat": 0.005067,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 12,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.127511,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.127511,
+      "EXT_SOURCE_2_ks": 0.174533,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.127511,
+          "ks_stat": 0.174533,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.013735,
+          "ks_stat": 0.035846,
+          "ks_pvalue": 0.17204141,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.002694,
+          "ks_stat": 0.010967,
+          "ks_pvalue": 0.9759882,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002682,
+          "ks_stat": 0.0214,
+          "ks_pvalue": 0.35204663,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004019,
+          "ks_stat": 0.017833,
+          "ks_pvalue": 0.58360476,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.005678,
+          "ks_stat": 0.017456,
+          "ks_pvalue": 0.61797013,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.008195,
+          "ks_stat": 0.0269,
+          "ks_pvalue": 0.13019575,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.022825,
+          "ks_stat": 0.0097,
+          "ks_pvalue": 0.99385343,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.006386,
+          "ks_stat": 0.026867,
+          "ks_pvalue": 0.13107607,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003394,
+          "ks_stat": 0.0208,
+          "ks_pvalue": 0.38655561,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.004181,
+          "ks_stat": 0.030767,
+          "ks_pvalue": 0.05627971,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 3.8e-05,
+          "ks_stat": 0.0029,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000387,
+          "ks_stat": 0.007333,
+          "ks_pvalue": 0.99994971,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 7e-06,
+          "ks_stat": 0.002991,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000131,
+          "ks_stat": 0.004421,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003395,
+          "ks_stat": 0.0157,
+          "ks_pvalue": 0.73828123,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 6e-05,
+          "ks_stat": 0.0035,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003014,
+          "ks_stat": 0.0112,
+          "ks_pvalue": 0.97068712,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 2e-05,
+          "ks_stat": 0.0016,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000488,
+          "ks_stat": 0.007,
+          "ks_pvalue": 0.99998335,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 13,
+      "drift_regime": "WARN_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.07,
+      "overall_status": "WARN",
+      "max_psi_any_feature": 0.148023,
+      "n_alert_features": 0,
+      "n_warn_features": 1,
+      "alert_features": [],
+      "warn_features": [
+        "EXT_SOURCE_2"
+      ],
+      "EXT_SOURCE_2_psi": 0.148023,
+      "EXT_SOURCE_2_ks": 0.189967,
+      "EXT_SOURCE_2_status": "WARN",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.148023,
+          "ks_stat": 0.189967,
+          "ks_pvalue": 0.0,
+          "status": "WARN"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009353,
+          "ks_stat": 0.023746,
+          "ks_pvalue": 0.65969908,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.006108,
+          "ks_stat": 0.0157,
+          "ks_pvalue": 0.73828123,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002931,
+          "ks_stat": 0.018733,
+          "ks_pvalue": 0.51995041,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004265,
+          "ks_stat": 0.022167,
+          "ks_pvalue": 0.31098201,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.004273,
+          "ks_stat": 0.019024,
+          "ks_pvalue": 0.50724043,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.00408,
+          "ks_stat": 0.030867,
+          "ks_pvalue": 0.05498989,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.005693,
+          "ks_stat": 0.014767,
+          "ks_pvalue": 0.80244264,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.008352,
+          "ks_stat": 0.040267,
+          "ks_pvalue": 0.00444735,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005838,
+          "ks_stat": 0.029567,
+          "ks_pvalue": 0.07389791,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.001814,
+          "ks_stat": 0.017767,
+          "ks_pvalue": 0.58840767,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000118,
+          "ks_stat": 0.0051,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002163,
+          "ks_stat": 0.019833,
+          "ks_pvalue": 0.44633521,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002128,
+          "ks_stat": 0.021815,
+          "ks_pvalue": 0.34913563,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000434,
+          "ks_stat": 0.008095,
+          "ks_pvalue": 0.99970668,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001021,
+          "ks_stat": 0.011633,
+          "ks_pvalue": 0.95893175,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 3e-05,
+          "ks_stat": 0.0025,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004177,
+          "ks_stat": 0.013867,
+          "ks_pvalue": 0.85862226,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000372,
+          "ks_stat": 0.0069,
+          "ks_pvalue": 0.99998843,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000311,
+          "ks_stat": 0.0055,
+          "ks_pvalue": 0.99999999,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 14,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.297411,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.297411,
+      "EXT_SOURCE_2_ks": 0.2927,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.297411,
+          "ks_stat": 0.2927,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.006001,
+          "ks_stat": 0.023356,
+          "ks_pvalue": 0.68681366,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.004961,
+          "ks_stat": 0.0191,
+          "ks_pvalue": 0.49482326,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.005576,
+          "ks_stat": 0.017267,
+          "ks_pvalue": 0.62467789,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.003454,
+          "ks_stat": 0.0182,
+          "ks_pvalue": 0.55737936,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.004059,
+          "ks_stat": 0.020425,
+          "ks_pvalue": 0.41685556,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.005197,
+          "ks_stat": 0.0154,
+          "ks_pvalue": 0.75938683,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.021397,
+          "ks_stat": 0.021633,
+          "ks_pvalue": 0.33918561,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.003695,
+          "ks_stat": 0.018433,
+          "ks_pvalue": 0.54088759,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003876,
+          "ks_stat": 0.011567,
+          "ks_pvalue": 0.96090573,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003213,
+          "ks_stat": 0.015733,
+          "ks_pvalue": 0.7359142,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000281,
+          "ks_stat": 0.0079,
+          "ks_pvalue": 0.99976,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001231,
+          "ks_stat": 0.010333,
+          "ks_pvalue": 0.98702573,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001478,
+          "ks_stat": 0.01754,
+          "ks_pvalue": 0.62700745,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000488,
+          "ks_stat": 0.008582,
+          "ks_pvalue": 0.99917952,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002679,
+          "ks_stat": 0.020633,
+          "ks_pvalue": 0.39650233,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000236,
+          "ks_stat": 0.007,
+          "ks_pvalue": 0.99998335,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.002014,
+          "ks_stat": 0.011067,
+          "ks_pvalue": 0.97380211,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 6.6e-05,
+          "ks_stat": 0.0029,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000448,
+          "ks_stat": 0.008,
+          "ks_pvalue": 0.99969454,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 15,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.293357,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.293357,
+      "EXT_SOURCE_2_ks": 0.3008,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.293357,
+          "ks_stat": 0.3008,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009479,
+          "ks_stat": 0.032655,
+          "ks_pvalue": 0.26804864,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.003415,
+          "ks_stat": 0.0155,
+          "ks_pvalue": 0.75239383,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.001083,
+          "ks_stat": 0.014833,
+          "ks_pvalue": 0.79802569,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.006611,
+          "ks_stat": 0.025833,
+          "ks_pvalue": 0.16085123,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.008767,
+          "ks_stat": 0.020656,
+          "ks_pvalue": 0.4001014,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.001409,
+          "ks_stat": 0.011367,
+          "ks_pvalue": 0.96646474,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.004044,
+          "ks_stat": 0.0139,
+          "ks_pvalue": 0.85667183,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.005178,
+          "ks_stat": 0.0206,
+          "ks_pvalue": 0.39851015,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005713,
+          "ks_stat": 0.013167,
+          "ks_pvalue": 0.89681577,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.002015,
+          "ks_stat": 0.014767,
+          "ks_pvalue": 0.80244264,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.003329,
+          "ks_stat": 0.0274,
+          "ks_pvalue": 0.11755947,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.003941,
+          "ks_stat": 0.027,
+          "ks_pvalue": 0.12758362,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000102,
+          "ks_stat": 0.005966,
+          "ks_pvalue": 0.99999991,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000102,
+          "ks_stat": 0.00388,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003362,
+          "ks_stat": 0.013233,
+          "ks_pvalue": 0.89341971,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.001074,
+          "ks_stat": 0.015,
+          "ks_pvalue": 0.78685542,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003158,
+          "ks_stat": 0.012567,
+          "ks_pvalue": 0.924872,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 1e-06,
+          "ks_stat": 0.0004,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.002004,
+          "ks_stat": 0.0175,
+          "ks_pvalue": 0.60770482,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 16,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.242432,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.242432,
+      "EXT_SOURCE_2_ks": 0.276467,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.242432,
+          "ks_stat": 0.276467,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.004158,
+          "ks_stat": 0.011778,
+          "ks_pvalue": 0.99911724,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005289,
+          "ks_stat": 0.016333,
+          "ks_pvalue": 0.69275358,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002256,
+          "ks_stat": 0.014133,
+          "ks_pvalue": 0.84271557,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.002148,
+          "ks_stat": 0.018633,
+          "ks_pvalue": 0.52689387,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.005696,
+          "ks_stat": 0.020039,
+          "ks_pvalue": 0.4396329,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.007405,
+          "ks_stat": 0.0227,
+          "ks_pvalue": 0.28444467,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.02133,
+          "ks_stat": 0.013133,
+          "ks_pvalue": 0.89849363,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.002609,
+          "ks_stat": 0.0195,
+          "ks_pvalue": 0.46806423,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.002138,
+          "ks_stat": 0.014767,
+          "ks_pvalue": 0.80244264,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003305,
+          "ks_stat": 0.014167,
+          "ks_pvalue": 0.84067999,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000533,
+          "ks_stat": 0.0109,
+          "ks_pvalue": 0.97737539,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.003421,
+          "ks_stat": 0.022833,
+          "ks_pvalue": 0.27807008,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001478,
+          "ks_stat": 0.018157,
+          "ks_pvalue": 0.58023681,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 1.6e-05,
+          "ks_stat": 0.001554,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.005818,
+          "ks_stat": 0.0167,
+          "ks_pvalue": 0.66604762,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.001341,
+          "ks_stat": 0.0165,
+          "ks_pvalue": 0.68063256,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.003807,
+          "ks_stat": 0.012933,
+          "ks_pvalue": 0.90827252,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.001774,
+          "ks_stat": 0.0146,
+          "ks_pvalue": 0.81334774,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00178,
+          "ks_stat": 0.0165,
+          "ks_pvalue": 0.68063256,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 17,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.325432,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.325432,
+      "EXT_SOURCE_2_ks": 0.306767,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.325432,
+          "ks_stat": 0.306767,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.009924,
+          "ks_stat": 0.019822,
+          "ks_pvalue": 0.8584813,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.003594,
+          "ks_stat": 0.015767,
+          "ks_pvalue": 0.73354325,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.005344,
+          "ks_stat": 0.0297,
+          "ks_pvalue": 0.07173354,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.008967,
+          "ks_stat": 0.015867,
+          "ks_pvalue": 0.72640802,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.002266,
+          "ks_stat": 0.016508,
+          "ks_pvalue": 0.68416823,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.010575,
+          "ks_stat": 0.034667,
+          "ks_pvalue": 0.02155154,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.006273,
+          "ks_stat": 0.016967,
+          "ks_pvalue": 0.64657114,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.008308,
+          "ks_stat": 0.0267,
+          "ks_pvalue": 0.13555062,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.004656,
+          "ks_stat": 0.015467,
+          "ks_pvalue": 0.75472981,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.002364,
+          "ks_stat": 0.013933,
+          "ks_pvalue": 0.85471033,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 9.6e-05,
+          "ks_stat": 0.005933,
+          "ks_pvalue": 0.99999988,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000124,
+          "ks_stat": 0.007267,
+          "ks_pvalue": 0.99995918,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001117,
+          "ks_stat": 0.015769,
+          "ks_pvalue": 0.75153892,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 4.6e-05,
+          "ks_stat": 0.00261,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.0043,
+          "ks_stat": 0.018867,
+          "ks_pvalue": 0.5107512,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 1.9e-05,
+          "ks_stat": 0.002,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004416,
+          "ks_stat": 0.0202,
+          "ks_pvalue": 0.42307545,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.002052,
+          "ks_stat": 0.0164,
+          "ks_pvalue": 0.68790977,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.002378,
+          "ks_stat": 0.0165,
+          "ks_pvalue": 0.68063256,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 18,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.276067,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.276067,
+      "EXT_SOURCE_2_ks": 0.274433,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.276067,
+          "ks_stat": 0.274433,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.006074,
+          "ks_stat": 0.021939,
+          "ks_pvalue": 0.746953,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.007474,
+          "ks_stat": 0.020633,
+          "ks_pvalue": 0.39650233,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002412,
+          "ks_stat": 0.017033,
+          "ks_pvalue": 0.64170209,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004988,
+          "ks_stat": 0.021,
+          "ks_pvalue": 0.3748249,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.007644,
+          "ks_stat": 0.01815,
+          "ks_pvalue": 0.5653798,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.010972,
+          "ks_stat": 0.027733,
+          "ks_pvalue": 0.10970864,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.005202,
+          "ks_stat": 0.013633,
+          "ks_pvalue": 0.87195493,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.00179,
+          "ks_stat": 0.012033,
+          "ks_pvalue": 0.94580251,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005039,
+          "ks_stat": 0.022333,
+          "ks_pvalue": 0.30251014,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.00392,
+          "ks_stat": 0.021467,
+          "ks_pvalue": 0.34833981,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 3.8e-05,
+          "ks_stat": 0.004433,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000735,
+          "ks_stat": 0.009333,
+          "ks_pvalue": 0.99629825,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 4e-06,
+          "ks_stat": 0.014362,
+          "ks_pvalue": 0.84211633,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000198,
+          "ks_stat": 0.005455,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003332,
+          "ks_stat": 0.011867,
+          "ks_pvalue": 0.95154161,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000689,
+          "ks_stat": 0.012,
+          "ks_pvalue": 0.94698106,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.001859,
+          "ks_stat": 0.010967,
+          "ks_pvalue": 0.9759882,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000152,
+          "ks_stat": 0.0044,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000457,
+          "ks_stat": 0.0085,
+          "ks_pvalue": 0.99910232,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 19,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.283723,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.283723,
+      "EXT_SOURCE_2_ks": 0.2915,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.283723,
+          "ks_stat": 0.2915,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.007622,
+          "ks_stat": 0.027824,
+          "ks_pvalue": 0.46420596,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.002306,
+          "ks_stat": 0.0256,
+          "ks_pvalue": 0.16827039,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.008433,
+          "ks_stat": 0.0277,
+          "ks_pvalue": 0.11047371,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.005919,
+          "ks_stat": 0.024267,
+          "ks_pvalue": 0.21597612,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.00453,
+          "ks_stat": 0.021233,
+          "ks_pvalue": 0.36627234,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003547,
+          "ks_stat": 0.0231,
+          "ks_pvalue": 0.26563071,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.003348,
+          "ks_stat": 0.012833,
+          "ks_pvalue": 0.91297286,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.001821,
+          "ks_stat": 0.024367,
+          "ks_pvalue": 0.21207256,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003149,
+          "ks_stat": 0.0196,
+          "ks_pvalue": 0.46148915,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.006565,
+          "ks_stat": 0.016233,
+          "ks_pvalue": 0.70000558,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000583,
+          "ks_stat": 0.0114,
+          "ks_pvalue": 0.96557579,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000367,
+          "ks_stat": 0.007,
+          "ks_pvalue": 0.99998335,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 9.7e-05,
+          "ks_stat": 0.004604,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000623,
+          "ks_stat": 0.009712,
+          "ks_pvalue": 0.99486938,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002863,
+          "ks_stat": 0.021633,
+          "ks_pvalue": 0.33918561,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.002984,
+          "ks_stat": 0.0245,
+          "ks_pvalue": 0.20695211,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.007599,
+          "ks_stat": 0.021133,
+          "ks_pvalue": 0.36713031,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000354,
+          "ks_stat": 0.0066,
+          "ks_pvalue": 0.99999649,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001415,
+          "ks_stat": 0.0145,
+          "ks_pvalue": 0.81979136,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 20,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.276857,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.276857,
+      "EXT_SOURCE_2_ks": 0.285233,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.276857,
+          "ks_stat": 0.285233,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.010057,
+          "ks_stat": 0.030946,
+          "ks_pvalue": 0.3217429,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005811,
+          "ks_stat": 0.0222,
+          "ks_pvalue": 0.30927461,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.008495,
+          "ks_stat": 0.0338,
+          "ks_pvalue": 0.02694048,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.005464,
+          "ks_stat": 0.028367,
+          "ks_pvalue": 0.09598497,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.003417,
+          "ks_stat": 0.021987,
+          "ks_pvalue": 0.32803611,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.001371,
+          "ks_stat": 0.018867,
+          "ks_pvalue": 0.5107512,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.023146,
+          "ks_stat": 0.016367,
+          "ks_pvalue": 0.69033251,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.0092,
+          "ks_stat": 0.018333,
+          "ks_pvalue": 0.54793474,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005428,
+          "ks_stat": 0.016033,
+          "ks_pvalue": 0.71444885,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.015839,
+          "ks_stat": 0.0501,
+          "ks_pvalue": 0.00015736,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000263,
+          "ks_stat": 0.012933,
+          "ks_pvalue": 0.90827252,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000564,
+          "ks_stat": 0.009267,
+          "ks_pvalue": 0.99664714,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000543,
+          "ks_stat": 0.010887,
+          "ks_pvalue": 0.98076696,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 5.6e-05,
+          "ks_stat": 0.004157,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001685,
+          "ks_stat": 0.009867,
+          "ks_pvalue": 0.99240744,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.00208,
+          "ks_stat": 0.0205,
+          "ks_pvalue": 0.40457024,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.006985,
+          "ks_stat": 0.014567,
+          "ks_pvalue": 0.81550416,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000686,
+          "ks_stat": 0.0094,
+          "ks_pvalue": 0.99592196,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001025,
+          "ks_stat": 0.012567,
+          "ks_pvalue": 0.924872,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 21,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.243339,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.243339,
+      "EXT_SOURCE_2_ks": 0.284333,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.243339,
+          "ks_stat": 0.284333,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.014974,
+          "ks_stat": 0.030873,
+          "ks_pvalue": 0.34459149,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.003823,
+          "ks_stat": 0.017267,
+          "ks_pvalue": 0.62467789,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.00284,
+          "ks_stat": 0.019233,
+          "ks_pvalue": 0.48582439,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.007696,
+          "ks_stat": 0.020533,
+          "ks_pvalue": 0.40254413,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.002928,
+          "ks_stat": 0.015591,
+          "ks_pvalue": 0.75009416,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.004585,
+          "ks_stat": 0.015267,
+          "ks_pvalue": 0.76863739,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.020926,
+          "ks_stat": 0.014433,
+          "ks_pvalue": 0.82404347,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.007496,
+          "ks_stat": 0.0277,
+          "ks_pvalue": 0.11047371,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005389,
+          "ks_stat": 0.0264,
+          "ks_pvalue": 0.14391649,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.005179,
+          "ks_stat": 0.013633,
+          "ks_pvalue": 0.87195493,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 8.7e-05,
+          "ks_stat": 0.007933,
+          "ks_pvalue": 0.99973964,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002444,
+          "ks_stat": 0.0175,
+          "ks_pvalue": 0.60770482,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000355,
+          "ks_stat": 0.008866,
+          "ks_pvalue": 0.99858087,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000351,
+          "ks_stat": 0.007267,
+          "ks_pvalue": 0.99997336,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001336,
+          "ks_stat": 0.014133,
+          "ks_pvalue": 0.84271557,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 3e-05,
+          "ks_stat": 0.0025,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.002665,
+          "ks_stat": 0.014433,
+          "ks_pvalue": 0.82404347,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000755,
+          "ks_stat": 0.0096,
+          "ks_pvalue": 0.99461521,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.001965,
+          "ks_stat": 0.014,
+          "ks_pvalue": 0.85075457,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 22,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.246674,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.246674,
+      "EXT_SOURCE_2_ks": 0.287733,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.246674,
+          "ks_stat": 0.287733,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.007566,
+          "ks_stat": 0.023741,
+          "ks_pvalue": 0.65345789,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.00899,
+          "ks_stat": 0.0315,
+          "ks_pvalue": 0.04739738,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003026,
+          "ks_stat": 0.018467,
+          "ks_pvalue": 0.5385458,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.003472,
+          "ks_stat": 0.015967,
+          "ks_pvalue": 0.71924186,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.008175,
+          "ks_stat": 0.032551,
+          "ks_pvalue": 0.03879757,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003981,
+          "ks_stat": 0.012467,
+          "ks_pvalue": 0.92909109,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.002254,
+          "ks_stat": 0.013267,
+          "ks_pvalue": 0.89170168,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.002865,
+          "ks_stat": 0.019067,
+          "ks_pvalue": 0.4970849,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003432,
+          "ks_stat": 0.021833,
+          "ks_pvalue": 0.32841423,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.00409,
+          "ks_stat": 0.0207,
+          "ks_pvalue": 0.39250512,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000337,
+          "ks_stat": 0.0086,
+          "ks_pvalue": 0.99891148,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000237,
+          "ks_stat": 0.004,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 4e-06,
+          "ks_stat": 0.006881,
+          "ks_pvalue": 0.99999235,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000332,
+          "ks_stat": 0.007066,
+          "ks_pvalue": 0.9999851,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001886,
+          "ks_stat": 0.012367,
+          "ks_pvalue": 0.93317533,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 5e-06,
+          "ks_stat": 0.001,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004887,
+          "ks_stat": 0.016067,
+          "ks_pvalue": 0.71204804,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000321,
+          "ks_stat": 0.0064,
+          "ks_pvalue": 0.99999856,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00026,
+          "ks_stat": 0.006433,
+          "ks_pvalue": 0.99999832,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 23,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.295372,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.295372,
+      "EXT_SOURCE_2_ks": 0.2849,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.295372,
+          "ks_stat": 0.2849,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.008619,
+          "ks_stat": 0.022243,
+          "ks_pvalue": 0.71808176,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.003697,
+          "ks_stat": 0.0253,
+          "ks_pvalue": 0.17820462,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002455,
+          "ks_stat": 0.026567,
+          "ks_pvalue": 0.13921879,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.00549,
+          "ks_stat": 0.025233,
+          "ks_pvalue": 0.18047367,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.003234,
+          "ks_stat": 0.02527,
+          "ks_pvalue": 0.18501245,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003432,
+          "ks_stat": 0.0207,
+          "ks_pvalue": 0.39250512,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.021648,
+          "ks_stat": 0.025633,
+          "ks_pvalue": 0.1671942,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.004435,
+          "ks_stat": 0.014067,
+          "ks_pvalue": 0.84675599,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.004819,
+          "ks_stat": 0.0236,
+          "ks_pvalue": 0.24341,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003375,
+          "ks_stat": 0.024,
+          "ks_pvalue": 0.2266533,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 1.6e-05,
+          "ks_stat": 0.0019,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000396,
+          "ks_stat": 0.005833,
+          "ks_pvalue": 0.99999993,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 1.8e-05,
+          "ks_stat": 0.004932,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000365,
+          "ks_stat": 0.007416,
+          "ks_pvalue": 0.99995087,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001459,
+          "ks_stat": 0.0122,
+          "ks_pvalue": 0.93967971,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000396,
+          "ks_stat": 0.009,
+          "ks_pvalue": 0.99779495,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.007741,
+          "ks_stat": 0.020133,
+          "ks_pvalue": 0.42725278,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.0,
+          "ks_stat": 0.0001,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000809,
+          "ks_stat": 0.007433,
+          "ks_pvalue": 0.99993194,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 24,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.264116,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.264116,
+      "EXT_SOURCE_2_ks": 0.292167,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.264116,
+          "ks_stat": 0.292167,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.007388,
+          "ks_stat": 0.028361,
+          "ks_pvalue": 0.43705632,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.001617,
+          "ks_stat": 0.0176,
+          "ks_pvalue": 0.60045374,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002862,
+          "ks_stat": 0.021533,
+          "ks_pvalue": 0.34465876,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004109,
+          "ks_stat": 0.020933,
+          "ks_pvalue": 0.37871007,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.002968,
+          "ks_stat": 0.015489,
+          "ks_pvalue": 0.75922543,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.005596,
+          "ks_stat": 0.030433,
+          "ks_pvalue": 0.06076862,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.00146,
+          "ks_stat": 0.015333,
+          "ks_pvalue": 0.76402303,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.003454,
+          "ks_stat": 0.0136,
+          "ks_pvalue": 0.87381243,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003598,
+          "ks_stat": 0.0152,
+          "ks_pvalue": 0.77322886,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.0039,
+          "ks_stat": 0.019333,
+          "ks_pvalue": 0.47912648,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000614,
+          "ks_stat": 0.0116,
+          "ks_pvalue": 0.95992634,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002832,
+          "ks_stat": 0.020333,
+          "ks_pvalue": 0.4147913,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 8.1e-05,
+          "ks_stat": 0.004236,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001504,
+          "ks_stat": 0.015173,
+          "ks_pvalue": 0.79161193,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003637,
+          "ks_stat": 0.0108,
+          "ks_pvalue": 0.97935283,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.00058,
+          "ks_stat": 0.011,
+          "ks_pvalue": 0.97527363,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004267,
+          "ks_stat": 0.022067,
+          "ks_pvalue": 0.31614331,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.001483,
+          "ks_stat": 0.0139,
+          "ks_pvalue": 0.85667183,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.00026,
+          "ks_stat": 0.005433,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 25,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.295571,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.295571,
+      "EXT_SOURCE_2_ks": 0.298367,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.295571,
+          "ks_stat": 0.298367,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.020078,
+          "ks_stat": 0.040147,
+          "ks_pvalue": 0.0970932,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005966,
+          "ks_stat": 0.032167,
+          "ks_pvalue": 0.04040314,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.001416,
+          "ks_stat": 0.016767,
+          "ks_pvalue": 0.66118006,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.00791,
+          "ks_stat": 0.0369,
+          "ks_pvalue": 0.01181436,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.006684,
+          "ks_stat": 0.037231,
+          "ks_pvalue": 0.01126024,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.007931,
+          "ks_stat": 0.018533,
+          "ks_pvalue": 0.53387344,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.003813,
+          "ks_stat": 0.022867,
+          "ks_pvalue": 0.2764926,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.007127,
+          "ks_stat": 0.031233,
+          "ks_pvalue": 0.05047587,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005909,
+          "ks_stat": 0.0415,
+          "ks_pvalue": 0.00304371,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.005282,
+          "ks_stat": 0.019067,
+          "ks_pvalue": 0.4970849,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000614,
+          "ks_stat": 0.0116,
+          "ks_pvalue": 0.95992634,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002767,
+          "ks_stat": 0.0135,
+          "ks_pvalue": 0.87931163,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000316,
+          "ks_stat": 0.008361,
+          "ks_pvalue": 0.9994885,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000302,
+          "ks_stat": 0.006743,
+          "ks_pvalue": 0.99999527,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.007182,
+          "ks_stat": 0.032867,
+          "ks_pvalue": 0.03404459,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000173,
+          "ks_stat": 0.006,
+          "ks_pvalue": 0.99999982,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.005894,
+          "ks_stat": 0.0172,
+          "ks_pvalue": 0.62953808,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000152,
+          "ks_stat": 0.0044,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000742,
+          "ks_stat": 0.010933,
+          "ks_pvalue": 0.97668875,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 26,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.217451,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.217451,
+      "EXT_SOURCE_2_ks": 0.2527,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.217451,
+          "ks_stat": 0.2527,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.012935,
+          "ks_stat": 0.053256,
+          "ks_pvalue": 0.00855083,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005368,
+          "ks_stat": 0.028333,
+          "ks_pvalue": 0.09666977,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003683,
+          "ks_stat": 0.0138,
+          "ks_pvalue": 0.86248939,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.004142,
+          "ks_stat": 0.028033,
+          "ks_pvalue": 0.10301808,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.005549,
+          "ks_stat": 0.025365,
+          "ks_pvalue": 0.18127911,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.006052,
+          "ks_stat": 0.0225,
+          "ks_pvalue": 0.29420106,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.001352,
+          "ks_stat": 0.0192,
+          "ks_pvalue": 0.48806687,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.005974,
+          "ks_stat": 0.027,
+          "ks_pvalue": 0.12758362,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003857,
+          "ks_stat": 0.024233,
+          "ks_pvalue": 0.21728941,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.008099,
+          "ks_stat": 0.022767,
+          "ks_pvalue": 0.28124443,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000184,
+          "ks_stat": 0.0064,
+          "ks_pvalue": 0.99999856,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 6.9e-05,
+          "ks_stat": 0.003333,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000941,
+          "ks_stat": 0.014302,
+          "ks_pvalue": 0.84499911,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 1e-05,
+          "ks_stat": 0.001226,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000928,
+          "ks_stat": 0.006733,
+          "ks_pvalue": 0.99999392,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000206,
+          "ks_stat": 0.0065,
+          "ks_pvalue": 0.99999773,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.002701,
+          "ks_stat": 0.009867,
+          "ks_pvalue": 0.99240744,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000104,
+          "ks_stat": 0.0036,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.002701,
+          "ks_stat": 0.0185,
+          "ks_pvalue": 0.53620772,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 27,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.260587,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.260587,
+      "EXT_SOURCE_2_ks": 0.2849,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.260587,
+          "ks_stat": 0.2849,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.004134,
+          "ks_stat": 0.027195,
+          "ks_pvalue": 0.50201705,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.004609,
+          "ks_stat": 0.019733,
+          "ks_pvalue": 0.45279707,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.002384,
+          "ks_stat": 0.019433,
+          "ks_pvalue": 0.47247375,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.003861,
+          "ks_stat": 0.0147,
+          "ks_pvalue": 0.80682874,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.002851,
+          "ks_stat": 0.022746,
+          "ks_pvalue": 0.28690949,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003893,
+          "ks_stat": 0.0194,
+          "ks_pvalue": 0.47468624,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.00436,
+          "ks_stat": 0.012767,
+          "ks_pvalue": 0.91603495,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.002188,
+          "ks_stat": 0.014,
+          "ks_pvalue": 0.85075457,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.007902,
+          "ks_stat": 0.0259,
+          "ks_pvalue": 0.15878001,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.004053,
+          "ks_stat": 0.021467,
+          "ks_pvalue": 0.34833981,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 2.6e-05,
+          "ks_stat": 0.003567,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.002179,
+          "ks_stat": 0.016,
+          "ks_pvalue": 0.71684683,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 1.2e-05,
+          "ks_stat": 0.00179,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 2.8e-05,
+          "ks_stat": 0.005092,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.00247,
+          "ks_stat": 0.012867,
+          "ks_pvalue": 0.9114203,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 9.9e-05,
+          "ks_stat": 0.0045,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.002845,
+          "ks_stat": 0.010933,
+          "ks_pvalue": 0.97668875,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.0,
+          "ks_stat": 0.0001,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.002214,
+          "ks_stat": 0.018933,
+          "ks_pvalue": 0.5061777,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 28,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.259753,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.259753,
+      "EXT_SOURCE_2_ks": 0.290067,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.259753,
+          "ks_stat": 0.290067,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.005805,
+          "ks_stat": 0.027525,
+          "ks_pvalue": 0.48154834,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005949,
+          "ks_stat": 0.0174,
+          "ks_pvalue": 0.61497078,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.001739,
+          "ks_stat": 0.016133,
+          "ks_pvalue": 0.70723838,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.00695,
+          "ks_stat": 0.016333,
+          "ks_pvalue": 0.69275358,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.004091,
+          "ks_stat": 0.015731,
+          "ks_pvalue": 0.74227896,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.002316,
+          "ks_stat": 0.016833,
+          "ks_pvalue": 0.65631091,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.002956,
+          "ks_stat": 0.014267,
+          "ks_pvalue": 0.83451332,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.004215,
+          "ks_stat": 0.012433,
+          "ks_pvalue": 0.93046754,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.006729,
+          "ks_stat": 0.017867,
+          "ks_pvalue": 0.58120694,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.00269,
+          "ks_stat": 0.019333,
+          "ks_pvalue": 0.47912648,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000184,
+          "ks_stat": 0.006567,
+          "ks_pvalue": 0.99999696,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.001678,
+          "ks_stat": 0.015833,
+          "ks_pvalue": 0.72879003,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000849,
+          "ks_stat": 0.013595,
+          "ks_pvalue": 0.88457007,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 6.6e-05,
+          "ks_stat": 0.003143,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.004676,
+          "ks_stat": 0.020633,
+          "ks_pvalue": 0.39650233,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.00012,
+          "ks_stat": 0.005,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.005078,
+          "ks_stat": 0.0131,
+          "ks_pvalue": 0.9001579,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.00012,
+          "ks_stat": 0.0039,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000745,
+          "ks_stat": 0.010933,
+          "ks_pvalue": 0.97668875,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 29,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.289434,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.289434,
+      "EXT_SOURCE_2_ks": 0.278633,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.289434,
+          "ks_stat": 0.278633,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.008673,
+          "ks_stat": 0.018213,
+          "ks_pvalue": 0.91445216,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.010846,
+          "ks_stat": 0.032267,
+          "ks_pvalue": 0.03943567,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003188,
+          "ks_stat": 0.015833,
+          "ks_pvalue": 0.72879003,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.006716,
+          "ks_stat": 0.034167,
+          "ks_pvalue": 0.02452995,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.006731,
+          "ks_stat": 0.029562,
+          "ks_pvalue": 0.07594157,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.003695,
+          "ks_stat": 0.020367,
+          "ks_pvalue": 0.4127351,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.024625,
+          "ks_stat": 0.025433,
+          "ks_pvalue": 0.17373387,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.00478,
+          "ks_stat": 0.027,
+          "ks_pvalue": 0.12758362,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.005446,
+          "ks_stat": 0.015567,
+          "ks_pvalue": 0.74770753,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.003518,
+          "ks_stat": 0.0225,
+          "ks_pvalue": 0.29420106,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 0.000118,
+          "ks_stat": 0.011067,
+          "ks_pvalue": 0.97380211,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000713,
+          "ks_stat": 0.0105,
+          "ks_pvalue": 0.98456845,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001895,
+          "ks_stat": 0.020578,
+          "ks_pvalue": 0.41975391,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.002837,
+          "ks_stat": 0.020954,
+          "ks_pvalue": 0.39612562,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.003202,
+          "ks_stat": 0.016867,
+          "ks_pvalue": 0.653876,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000633,
+          "ks_stat": 0.0115,
+          "ks_pvalue": 0.962819,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004184,
+          "ks_stat": 0.019567,
+          "ks_pvalue": 0.46367557,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 7.7e-05,
+          "ks_stat": 0.0031,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.000203,
+          "ks_stat": 0.004,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "day": 30,
+      "drift_regime": "ALERT_INJECTED",
+      "drift_injected": true,
+      "drift_shift": -0.12,
+      "overall_status": "ALERT",
+      "max_psi_any_feature": 0.272487,
+      "n_alert_features": 1,
+      "n_warn_features": 0,
+      "alert_features": [
+        "EXT_SOURCE_2"
+      ],
+      "warn_features": [],
+      "EXT_SOURCE_2_psi": 0.272487,
+      "EXT_SOURCE_2_ks": 0.2802,
+      "EXT_SOURCE_2_status": "ALERT",
+      "feature_stats": {
+        "EXT_SOURCE_2": {
+          "psi": 0.272487,
+          "ks_stat": 0.2802,
+          "ks_pvalue": 0.0,
+          "status": "ALERT"
+        },
+        "EXT_SOURCE_3": {
+          "psi": 0.017846,
+          "ks_stat": 0.040079,
+          "ks_pvalue": 0.09746864,
+          "status": "OK"
+        },
+        "AMT_CREDIT": {
+          "psi": 0.005961,
+          "ks_stat": 0.028333,
+          "ks_pvalue": 0.09666977,
+          "status": "OK"
+        },
+        "AMT_INCOME_TOTAL": {
+          "psi": 0.003683,
+          "ks_stat": 0.0277,
+          "ks_pvalue": 0.11047371,
+          "status": "OK"
+        },
+        "AMT_ANNUITY": {
+          "psi": 0.002468,
+          "ks_stat": 0.0221,
+          "ks_pvalue": 0.31441636,
+          "status": "OK"
+        },
+        "AMT_GOODS_PRICE": {
+          "psi": 0.00335,
+          "ks_stat": 0.022889,
+          "ks_pvalue": 0.28208833,
+          "status": "OK"
+        },
+        "DAYS_BIRTH": {
+          "psi": 0.002105,
+          "ks_stat": 0.0099,
+          "ks_pvalue": 0.99209028,
+          "status": "OK"
+        },
+        "DAYS_EMPLOYED": {
+          "psi": 0.005498,
+          "ks_stat": 0.012933,
+          "ks_pvalue": 0.90827252,
+          "status": "OK"
+        },
+        "REGION_POPULATION_RELATIVE": {
+          "psi": 0.003368,
+          "ks_stat": 0.013333,
+          "ks_pvalue": 0.88822614,
+          "status": "OK"
+        },
+        "DAYS_REGISTRATION": {
+          "psi": 0.003803,
+          "ks_stat": 0.0138,
+          "ks_pvalue": 0.86248939,
+          "status": "OK"
+        },
+        "DAYS_ID_PUBLISH": {
+          "psi": 0.002364,
+          "ks_stat": 0.0187,
+          "ks_pvalue": 0.52226079,
+          "status": "OK"
+        },
+        "CNT_CHILDREN": {
+          "psi": 9.6e-05,
+          "ks_stat": 0.0046,
+          "ks_pvalue": 1.0,
+          "status": "OK"
+        },
+        "CNT_FAM_MEMBERS": {
+          "psi": 0.000801,
+          "ks_stat": 0.009833,
+          "ks_pvalue": 0.99271505,
+          "status": "OK"
+        },
+        "DEF_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.000798,
+          "ks_stat": 0.013319,
+          "ks_pvalue": 0.8982836,
+          "status": "OK"
+        },
+        "DEF_60_CNT_SOCIAL_CIRCLE": {
+          "psi": 4.8e-05,
+          "ks_stat": 0.005909,
+          "ks_pvalue": 0.99999995,
+          "status": "OK"
+        },
+        "OBS_30_CNT_SOCIAL_CIRCLE": {
+          "psi": 0.001168,
+          "ks_stat": 0.006367,
+          "ks_pvalue": 0.99999877,
+          "status": "OK"
+        },
+        "FLAG_DOCUMENT_3": {
+          "psi": 0.000829,
+          "ks_stat": 0.013,
+          "ks_pvalue": 0.90506837,
+          "status": "OK"
+        },
+        "HOUR_APPR_PROCESS_START": {
+          "psi": 0.004017,
+          "ks_stat": 0.013933,
+          "ks_pvalue": 0.85471033,
+          "status": "OK"
+        },
+        "LIVE_REGION_NOT_WORK_REGION": {
+          "psi": 0.000755,
+          "ks_stat": 0.0096,
+          "ks_pvalue": 0.99461521,
+          "status": "OK"
+        },
+        "REGION_RATING_CLIENT": {
+          "psi": 0.002729,
+          "ks_stat": 0.018933,
+          "ks_pvalue": 0.5061777,
+          "status": "OK"
+        }
+      }
+    }
+  ],
+  "run_timestamp": "2026-06-16T20:48:53"
+}

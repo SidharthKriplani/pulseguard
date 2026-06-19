@@ -1,0 +1,136 @@
+{
+  "gate": "GOLD_PASS_2",
+  "step": "TUNING_TRACE",
+  "generated_at": "2026-06-17",
+  "runtime_constraint_note": "CPU-only sandbox, 44s bash limit per call. Trial counts reflect actual completions within wall-clock budget.",
+  "lgb_early_stopping_note": "LightGBM AUC eval_metric with scale_pos_weight causes early stopping to fire at iter=1 (known imbalanced-class bug). Fix: use fixed n_estimators as hyperparameter instead.",
+  "models": {
+    "LightGBM_base": {
+      "n_trials_completed": 6,
+      "best_validation_auc": 0.772449,
+      "runtime_seconds": 37.2,
+      "search_method": "optuna_tpe",
+      "best_params": {
+        "n_estimators": 279,
+        "learning_rate": 0.06598254106850841,
+        "num_leaves": 35,
+        "max_depth": 7,
+        "min_child_samples": 42,
+        "subsample": 0.6260206371941118,
+        "colsample_bytree": 0.9795542149013333,
+        "reg_alpha": 2.9426595861790874,
+        "reg_lambda": 0.26027328087893187
+      },
+      "search_space": {
+        "n_estimators": "[150,400]",
+        "learning_rate": "[0.02,0.15] log",
+        "num_leaves": "[31,127]",
+        "max_depth": "[4,8]",
+        "min_child_samples": "[20,150]",
+        "subsample": "[0.6,1.0]",
+        "colsample_bytree": "[0.6,1.0]",
+        "reg_alpha": "[1e-6,5.0] log",
+        "reg_lambda": "[1e-6,5.0] log",
+        "scale_pos_weight": "11.39 fixed"
+      },
+      "notes": "budget=35s; no early_stopping (LGB AUC metric bug on imbalanced); fixed n_estimators range"
+    },
+    "LightGBM_monotonic": {
+      "n_trials_completed": 5,
+      "best_validation_auc": 0.773449,
+      "runtime_seconds": 40.4,
+      "search_method": "optuna_tpe",
+      "best_params": {
+        "n_estimators": 279,
+        "learning_rate": 0.06598254106850841,
+        "num_leaves": 35,
+        "max_depth": 7,
+        "min_child_samples": 42,
+        "subsample": 0.6260206371941118,
+        "colsample_bytree": 0.9795542149013333,
+        "reg_alpha": 2.9426595861790874,
+        "reg_lambda": 0.26027328087893187
+      },
+      "monotone_constraints_count": 15,
+      "monotone_constraint_rationale": "+1=risk-increasing (FLAG_EMPLOYED_ANOMALY, CREDIT_TO_INCOME, ANNUITY_TO_INCOME, CREDIT_TO_GOODS, BUREAU_OVERDUE/AMT, PREV_REFUSAL_RATE, INST_LATE_RATIO, CC_DPD_RATIO, POS_IS_DPD_RATIO, BEHAVIORAL_RISK_SCORE, BB_DPD_RATIO_MEAN, CC_UTILIZATION_MEAN); -1=risk-decreasing (AGE_YEARS, EMPLOYED_YEARS, EXT_SOURCE_MEAN)",
+      "search_space": "same as LightGBM_base + monotone_constraints fixed",
+      "notes": "budget=35s; 15 monotone constraints (+1=12 risk-increasing -1=3 risk-decreasing); no early_stopping"
+    },
+    "CatBoost": {
+      "n_trials_completed": 7,
+      "best_validation_auc": 0.770814,
+      "runtime_seconds": 75.19999999999999,
+      "search_method": "optuna_tpe (2 runs)",
+      "best_params": {
+        "iterations": 225,
+        "learning_rate": 0.1385613281701473,
+        "depth": 6,
+        "l2_leaf_reg": 5.190609389379256,
+        "bagging_temperature": 0.15601864044243652,
+        "random_strength": 1.0459808211767092,
+        "border_count": 69
+      },
+      "search_space": {
+        "iterations": "[150,350]",
+        "learning_rate": "[0.03,0.15] log",
+        "depth": "[4,7]",
+        "l2_leaf_reg": "[1,8]",
+        "bagging_temperature": "[0,1]",
+        "random_strength": "[0.5,4]",
+        "border_count": "[64,150]",
+        "auto_class_weights": "Balanced fixed"
+      },
+      "notes": "budget=35s; eval_set+early_stopping_rounds=20+use_best_model; iter_range=150-350 depth=4-7 | Run1+Run2 combined; best params from Run2"
+    },
+    "XGBoost": {
+      "n_trials_completed": 4,
+      "best_validation_auc": 0.770442,
+      "runtime_seconds": 17.2,
+      "search_method": "optuna_tpe",
+      "best_params": {
+        "n_estimators": 292,
+        "learning_rate": 0.020846957895078073,
+        "max_depth": 7,
+        "min_child_weight": 68,
+        "subsample": 0.6849356442713105,
+        "colsample_bytree": 0.6727299868828402,
+        "gamma": 0.36680901970686763,
+        "reg_alpha": 9.345744384425808e-05,
+        "reg_lambda": 0.0025055959412498977
+      },
+      "search_space": {
+        "n_estimators": "[150,350]",
+        "learning_rate": "[0.02,0.15] log",
+        "max_depth": "[3,7]",
+        "min_child_weight": "[5,80]",
+        "subsample": "[0.6,1.0]",
+        "colsample_bytree": "[0.6,1.0]",
+        "gamma": "[0,2]",
+        "reg_alpha": "[1e-6,3] log",
+        "reg_lambda": "[1e-6,3] log",
+        "scale_pos_weight": "11.39 fixed"
+      },
+      "notes": "budget=16s; no early_stopping; mono=False; n_est range 150-350"
+    },
+    "XGBoost_monotonic": {
+      "n_trials_completed": 4,
+      "best_validation_auc": 0.769934,
+      "runtime_seconds": 17.5,
+      "search_method": "optuna_tpe",
+      "best_params": {
+        "n_estimators": 292,
+        "learning_rate": 0.020846957895078073,
+        "max_depth": 7,
+        "min_child_weight": 68,
+        "subsample": 0.6849356442713105,
+        "colsample_bytree": 0.6727299868828402,
+        "gamma": 0.36680901970686763,
+        "reg_alpha": 9.345744384425808e-05,
+        "reg_lambda": 0.0025055959412498977
+      },
+      "monotone_constraints_count": 15,
+      "search_space": "same as XGBoost + monotone_constraints tuple fixed",
+      "notes": "budget=16s; no early_stopping; mono=True; n_est range 150-350"
+    }
+  }
+}

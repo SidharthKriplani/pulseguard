@@ -1,0 +1,300 @@
+{
+  "report_id": "gold_pass3_rag_llm_demo_report",
+  "system_description": {
+    "retriever": "BM25 (simplified single-doc-corpus implementation, seed corpus: 5 policy documents)",
+    "abstain_threshold": 0.25,
+    "llm_role": "Draft memo and adverse action text from retrieved policy; ASSISTIVE_ONLY",
+    "hard_rules": [
+      "LLM never approves or rejects applicant",
+      "All outputs tagged ASSISTIVE_ONLY + HUMAN_REVIEW_REQUIRED + NOT_FINAL_DECISION",
+      "No live applicant data sent to external API \u2014 demo uses anonymised summaries",
+      "Adverse action draft is NOT legally compliant without credit officer review and sign-off"
+    ]
+  },
+  "policy_corpus": [
+    {
+      "doc_id": "POL-001",
+      "title": "Credit Decisioning Policy \u2014 Score Band Assignment"
+    },
+    {
+      "doc_id": "POL-002",
+      "title": "Adverse Action Reason Code Policy"
+    },
+    {
+      "doc_id": "POL-003",
+      "title": "Model Monitoring and Drift Alert Policy"
+    },
+    {
+      "doc_id": "POL-004",
+      "title": "Conflict Case \u2014 Override Protocol"
+    },
+    {
+      "doc_id": "POL-005",
+      "title": "LLM Governance Assistant \u2014 Scope and Limitations"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "CASE_1_GREEN_APPROVE",
+      "query": "applicant score green band automatic approval eligibility",
+      "applicant_summary": "Applicant A \u2014 PD=0.034, strong external bureau score, 12yr employment, no payment arrears.",
+      "model_output": {
+        "pd_score": 0.0335,
+        "band": "GREEN",
+        "actual_default": 0,
+        "top_shap_features": [
+          "EXT_SOURCE_MEAN",
+          "CREDIT_TO_ANNUITY",
+          "EMPLOYED_YEARS",
+          "EXT_SOURCE_1"
+        ]
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 7.5709,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-001",
+            "title": "Credit Decisioning Policy \u2014 Score Band Assignment",
+            "score": 7.5709
+          },
+          {
+            "doc_id": "POL-003",
+            "title": "Model Monitoring and Drift Alert Policy",
+            "score": 1.7241
+          }
+        ],
+        "abstain": false
+      },
+      "llm_output": {
+        "abstain": false,
+        "draft_memo": "[ASSISTIVE DRAFT \u2014 HUMAN REVIEW REQUIRED]\nApplicant summary: Applicant A \u2014 PD=0.034, strong external bureau score, 12yr employment, no payment arrears.\nModel score (PD): 0.0335 \u2014 GREEN band (PD<0.20).\nPer POL-001: eligible for automatic approval subject to hard-stop verification.\nRecommended action: Proceed to hard-stop check and approve if no flags.\n[NOT_FINAL_DECISION \u2014 Credit officer must confirm.]",
+        "draft_adverse_action": null
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    },
+    {
+      "case_id": "CASE_2_AMBER_REVIEW",
+      "query": "applicant manual review amber band credit officer",
+      "applicant_summary": "Applicant B \u2014 PD=0.206, moderate external score, 3yr employment, some late instalment history.",
+      "model_output": {
+        "pd_score": 0.2056,
+        "band": "AMBER",
+        "actual_default": 0,
+        "top_shap_features": [
+          "EXT_SOURCE_MEAN",
+          "INST_LATE_RATIO",
+          "CREDIT_TO_GOODS",
+          "CREDIT_TO_ANNUITY"
+        ]
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 9.2906,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-001",
+            "title": "Credit Decisioning Policy \u2014 Score Band Assignment",
+            "score": 9.2906
+          },
+          {
+            "doc_id": "POL-004",
+            "title": "Conflict Case \u2014 Override Protocol",
+            "score": 5.0548
+          }
+        ],
+        "abstain": false
+      },
+      "llm_output": {
+        "abstain": false,
+        "draft_memo": "[ASSISTIVE DRAFT \u2014 HUMAN REVIEW REQUIRED]\nApplicant summary: Applicant B \u2014 PD=0.206, moderate external score, 3yr employment, some late instalment history.\nModel score (PD): 0.2056 \u2014 AMBER band (0.20\u2264PD<0.40). Manual review required.\nPer POL-001: credit officer review required before any decision.\nTop risk drivers (SHAP): EXT_SOURCE_MEAN, INST_LATE_RATIO, CREDIT_TO_GOODS.\n[NOT_FINAL_DECISION \u2014 Credit officer must make final call.]",
+        "draft_adverse_action": "[DRAFT ADVERSE / REVIEW REASON \u2014 NOT FINAL, NOT LEGALLY COMPLIANT WITHOUT OFFICER SIGN-OFF]\nYour application has been referred for manual review. Factors considered include: Ext Source Mean, Inst Late Ratio. A credit officer will contact you with a final decision."
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    },
+    {
+      "case_id": "CASE_3_RED_DECLINE",
+      "query": "applicant high risk red band adverse action decline reason codes",
+      "applicant_summary": "Applicant C \u2014 PD=0.416, poor external score, bureau overdue balance, high credit-to-annuity.",
+      "model_output": {
+        "pd_score": 0.4164,
+        "band": "RED",
+        "actual_default": 0,
+        "top_shap_features": [
+          "EXT_SOURCE_MEAN",
+          "BUREAU_OVERDUE_RATIO",
+          "CREDIT_TO_ANNUITY",
+          "INST_LATE_RATIO"
+        ]
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 6.5095,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-002",
+            "title": "Adverse Action Reason Code Policy",
+            "score": 6.5095
+          },
+          {
+            "doc_id": "POL-001",
+            "title": "Credit Decisioning Policy \u2014 Score Band Assignment",
+            "score": 4.5406
+          }
+        ],
+        "abstain": false
+      },
+      "llm_output": {
+        "abstain": false,
+        "draft_memo": "[ASSISTIVE DRAFT \u2014 HUMAN REVIEW REQUIRED]\nApplicant summary: Applicant C \u2014 PD=0.416, poor external score, bureau overdue balance, high credit-to-annuity.\nModel score (PD): 0.4164 \u2014 RED band (PD\u22650.40). Enhanced underwriting review required.\nPer POL-002: subject to enhanced review or decline at credit officer discretion.\nTop risk drivers (SHAP): EXT_SOURCE_MEAN, BUREAU_OVERDUE_RATIO, CREDIT_TO_ANNUITY, INST_LATE_RATIO.\n[NOT_FINAL_DECISION \u2014 Credit officer must confirm any decline.]",
+        "draft_adverse_action": "[DRAFT ADVERSE ACTION \u2014 NOT FINAL, NOT LEGALLY COMPLIANT WITHOUT OFFICER SIGN-OFF]\nWe are unable to approve your application at this time. Primary reasons: Ext Source Mean; Bureau Overdue Ratio; Credit To Annuity. You have the right to request a copy of your credit report."
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    },
+    {
+      "case_id": "CASE_4_CONFLICT_OVERRIDE",
+      "query": "credit officer override amber band conflict independent information verified employment",
+      "applicant_summary": "Applicant D \u2014 PD=0.348, AMBER band, but officer has verified employer letter confirming 5yr stable tenure not captured in bureau at scoring time.",
+      "model_output": {
+        "pd_score": 0.3475,
+        "band": "AMBER_CONFLICT",
+        "actual_default": 0,
+        "top_shap_features": [
+          "EXT_SOURCE_MEAN",
+          "CREDIT_TO_ANNUITY",
+          "BUREAU_ACTIVE_COUNT",
+          "CREDIT_TO_GOODS"
+        ]
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 13.2984,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-004",
+            "title": "Conflict Case \u2014 Override Protocol",
+            "score": 13.2984
+          },
+          {
+            "doc_id": "POL-001",
+            "title": "Credit Decisioning Policy \u2014 Score Band Assignment",
+            "score": 6.2603
+          }
+        ],
+        "abstain": false
+      },
+      "llm_output": {
+        "abstain": false,
+        "draft_memo": "[ASSISTIVE DRAFT \u2014 HUMAN REVIEW REQUIRED]\nApplicant summary: Applicant D \u2014 PD=0.348, AMBER band, but officer has verified employer letter confirming 5yr stable tenure not captured in bureau at scoring time.\nModel score (PD): 0.3475 \u2014 AMBER band (0.20\u2264PD<0.40). Manual review required.\nPer POL-004: credit officer review required before any decision.\n  Note: Credit officer indicates verified employment letter on file \u2014 override candidate per POL-004.\nTop risk drivers (SHAP): EXT_SOURCE_MEAN, CREDIT_TO_ANNUITY, BUREAU_ACTIVE_COUNT.\n[NOT_FINAL_DECISION \u2014 Credit officer must make final call.]",
+        "draft_adverse_action": null
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    },
+    {
+      "case_id": "CASE_5_ABSTAIN",
+      "query": "mortgage interest rate comparison fixed variable",
+      "applicant_summary": "Non-credit-decisioning query submitted by error.",
+      "model_output": {
+        "pd_score": null,
+        "band": "N/A",
+        "actual_default": null,
+        "top_shap_features": []
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 0.0,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-001",
+            "title": "Credit Decisioning Policy \u2014 Score Band Assignment",
+            "score": 0.0
+          },
+          {
+            "doc_id": "POL-002",
+            "title": "Adverse Action Reason Code Policy",
+            "score": 0.0
+          }
+        ],
+        "abstain": true
+      },
+      "llm_output": {
+        "abstain": true,
+        "reason": "BM25 top-score=0.0000 below abstain threshold 0.25. No sufficiently relevant policy found. Escalate to credit policy team.",
+        "draft_memo": null,
+        "draft_adverse_action": null
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    },
+    {
+      "case_id": "CASE_6_DRIFT_ALERT",
+      "query": "monthly PSI score distribution drift monitoring escalation model risk committee",
+      "applicant_summary": "Monthly monitoring report \u2014 score PSI=0.31 detected on 2026-07-01.",
+      "model_output": {
+        "pd_score": 0.31,
+        "band": "DRIFT_ALERT",
+        "actual_default": null,
+        "top_shap_features": []
+      },
+      "rag_retrieval": {
+        "abstain_threshold": 0.25,
+        "top_score": 14.0689,
+        "retrieved_docs": [
+          {
+            "doc_id": "POL-003",
+            "title": "Model Monitoring and Drift Alert Policy",
+            "score": 14.0689
+          },
+          {
+            "doc_id": "POL-004",
+            "title": "Conflict Case \u2014 Override Protocol",
+            "score": 6.2393
+          }
+        ],
+        "abstain": false
+      },
+      "llm_output": {
+        "abstain": false,
+        "draft_memo": "[DRIFT ALERT \u2014 HUMAN REVIEW REQUIRED]\nMonthly PSI monitoring detected: score PSI = 0.31 (above threshold 0.25).\nPer POL-003: mandatory escalation to Model Risk Committee within 5 business days.\nAction: Suspend automated scoring pending model review.\n[ASSISTIVE_ONLY \u2014 Model Risk Officer must initiate formal review.]",
+        "draft_adverse_action": null
+      },
+      "tags": [
+        "ASSISTIVE_ONLY",
+        "HUMAN_REVIEW_REQUIRED",
+        "NOT_FINAL_DECISION"
+      ],
+      "hard_rule": "LLM must never approve or reject applicant. Credit officer makes final decision."
+    }
+  ],
+  "governance_design_notes": [
+    "6 cases cover: approve (GREEN), review (AMBER), high-risk (RED), conflict/override, abstain (out-of-domain), drift alert",
+    "Abstain fires when no policy document is sufficiently relevant (BM25 < 0.25) \u2014 prevents hallucinated policy citations",
+    "Conflict case explicitly routed to override protocol doc (POL-004) \u2014 credit officer authority preserved",
+    "Drift alert case retrieves monitoring policy (POL-003) and surfaces MRC escalation requirement",
+    "SHAP features sourced from gold_pass3_shap_reason_code_report.json \u2014 reason codes traceable to evidence"
+  ]
+}

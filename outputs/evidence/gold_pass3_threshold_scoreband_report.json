@@ -1,0 +1,108 @@
+{
+  "artifact": "gold_pass3_threshold_scoreband_report",
+  "champion": "LightGBM_monotonic + Platt",
+  "dataset": "Home Credit held-out test (61,503 rows, DR=0.0807)",
+  "base_default_rate": 0.0807,
+  "ks_optimal_threshold": 0.0961,
+  "ks_max": 0.4141,
+  "score_band_candidates": {
+    "conservative": {
+      "green_threshold": "<0.15",
+      "amber_range": "0.15\u20130.35",
+      "red_threshold": ">=0.35",
+      "green_n": 51402,
+      "green_rate": 0.8358,
+      "green_dr": 0.0488,
+      "amber_n": 9102,
+      "amber_rate": 0.148,
+      "amber_dr": 0.2231,
+      "red_n": 999,
+      "red_rate": 0.0162,
+      "red_dr": 0.4274,
+      "lo": 0.15,
+      "hi": 0.35,
+      "label": "Low false-approvals; smaller approve zone"
+    },
+    "balanced": {
+      "green_threshold": "<0.20",
+      "amber_range": "0.20\u20130.40",
+      "red_threshold": ">=0.40",
+      "green_n": 55183,
+      "green_rate": 0.8972,
+      "green_dr": 0.0577,
+      "amber_n": 6028,
+      "amber_rate": 0.098,
+      "amber_dr": 0.2696,
+      "red_n": 292,
+      "red_rate": 0.0047,
+      "red_dr": 0.5377,
+      "lo": 0.2,
+      "hi": 0.4,
+      "label": "Balanced tradeoff; matches PD semantics (20%=1-in-5 default)"
+    },
+    "aggressive": {
+      "green_threshold": "<0.30",
+      "amber_range": "0.30\u20130.50",
+      "red_threshold": ">=0.50",
+      "green_n": 59401,
+      "green_rate": 0.9658,
+      "green_dr": 0.0694,
+      "amber_n": 2102,
+      "amber_rate": 0.0342,
+      "amber_dr": 0.4001,
+      "red_n": 0,
+      "red_rate": 0.0,
+      "red_dr": null,
+      "lo": 0.3,
+      "hi": 0.5,
+      "label": "High approval rate; more risk in green zone"
+    }
+  },
+  "selected_policy": {
+    "name": "balanced",
+    "green_threshold": 0.2,
+    "amber_lo": 0.2,
+    "amber_hi": 0.4,
+    "red_threshold": 0.4,
+    "green_n": 55183,
+    "green_rate": 0.8972,
+    "green_dr": 0.0577,
+    "amber_n": 6028,
+    "amber_rate": 0.098,
+    "amber_dr": 0.2696,
+    "red_n": 292,
+    "red_rate": 0.0047,
+    "red_dr": 0.5377,
+    "rationale": "PD=0.20 means ~20% observed default \u2014 semantically defensible zone boundary. Approve zone DR=5.77% (acceptable risk). Review zone DR=26.96% (manual evaluation warranted). Red zone DR=53.77% (high-risk escalation). Calibrated PD justifies threshold choice; not arbitrary.",
+    "alternatives_rejected": [
+      "conservative (lo=0.15, hi=0.35): Approve zone DR=4.88% \u2014 marginally safer but approve rate shrinks; review burden grows",
+      "aggressive (lo=0.30, hi=0.50): Approve zone DR=6.94% \u2014 too many borderline applicants auto-approved; review zone DR=40% impractical",
+      "ks-optimal single-threshold (t=0.0961): Best discrimination but collapses three-zone business logic"
+    ],
+    "threshold_limitations": [
+      "Thresholds derived on public Home Credit data (2007\u20132011 vintage); transfer to other portfolios or eras untested",
+      "No real lending economics \u2014 cost matrix is scenario-assumed (C_bad=10, C_reject=1)",
+      "Review zone capacity not modelled \u2014 operational constraint may require narrower amber band",
+      "No demographic-group threshold calibration; uniform threshold applied to all subgroups",
+      "Temporal stability of bands not guaranteed without out-of-time validation"
+    ]
+  },
+  "confusion_matrix_at_t020": {
+    "TN": 52000,
+    "FP": 4538,
+    "FN": 3183,
+    "TP": 1782,
+    "n_approve_zone": 55183,
+    "n_flag_zone": 6320,
+    "approval_rate": 0.8972,
+    "dr_in_approve_zone": 0.0577,
+    "default_capture_rate": 0.3589,
+    "note": "pred=1 means PD>=0.20 (flag/reject zone). Approve=TN+FN. FN=defaulters approved (false negatives)."
+  },
+  "hard_rules": [
+    "Threshold derived from calibrated Platt probabilities only \u2014 raw uncalibrated scores not used for banding",
+    "Test set was not used for threshold optimisation \u2014 thresholds chosen on semantics + val-set cost sweep",
+    "No production lending claim",
+    "No regulatory compliance claim"
+  ]
+}

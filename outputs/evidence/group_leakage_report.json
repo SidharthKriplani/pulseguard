@@ -1,0 +1,68 @@
+{
+  "pulseguard_gate": "G3",
+  "check_name": "group_leakage_check",
+  "run_timestamp": "2026-06-16T20:33:12",
+  "dataset_label": "synthetic_home_credit_like",
+  "n_rows": 50000,
+  "overall_status": "PASS",
+  "fll_gap_note": "FeatureLeakageLens does not include an entity contamination check. This script fills that gap as a PulseGuard-specific extension.",
+  "id_column": "SK_ID_CURR",
+  "id_uniqueness_check": {
+    "check": "SK_ID_CURR uniqueness",
+    "n_rows": 50000,
+    "n_unique_ids": 50000,
+    "all_unique": true,
+    "status": "PASS",
+    "detail": "All 50,000 SK_ID_CURR values are unique (one row per applicant)."
+  },
+  "clean_split_check": {
+    "split_name": "clean_split",
+    "n_train": 30000,
+    "n_val": 10000,
+    "unique_ids_train": 30000,
+    "unique_ids_val": 10000,
+    "overlapping_ids": 0,
+    "contaminated": false,
+    "status": "PASS",
+    "severity": "NONE",
+    "contamination_rate_pct": 0.0,
+    "example_contaminated_ids": [],
+    "detail": "No SK_ID_CURR overlap between train and val. Entity contamination: none.",
+    "recommendation": "No action required. Entity isolation confirmed."
+  },
+  "contaminated_split_check__INJECTED": {
+    "split_name": "contaminated_split__INJECTED",
+    "n_train": 30000,
+    "n_val": 10500,
+    "unique_ids_train": 30000,
+    "unique_ids_val": 10500,
+    "overlapping_ids": 500,
+    "contaminated": true,
+    "status": "FAIL",
+    "severity": "HIGH",
+    "contamination_rate_pct": 4.762,
+    "example_contaminated_ids": [
+      "100283",
+      "100328",
+      "100368",
+      "100424",
+      "100447",
+      "100479",
+      "100617",
+      "100661",
+      "100675",
+      "100938"
+    ],
+    "detail": "500 applicant ID(s) appear in both train and val sets (4.8% of val IDs contaminated). Model can memorize entity-level patterns \u2192 inflated validation metrics.",
+    "recommendation": "Use GroupShuffleSplit or GroupKFold with groups=SK_ID_CURR to ensure entity-level isolation across folds. Drop duplicate applicants before splitting.",
+    "injected_contamination": true,
+    "injected_contamination_n": 500,
+    "injected_contamination_note": "500 training applicants deliberately duplicated into val to demonstrate FAIL path. INJECTED for testing only \u2014 not used for any modeling purpose."
+  },
+  "summary": {
+    "clean_split_status": "PASS",
+    "contaminated_split_status": "FAIL",
+    "action_required": false,
+    "recommendation": "No action required. Use stratified split with unique SK_ID_CURR. If future data contains multiple rows per applicant, switch to GroupShuffleSplit(groups=SK_ID_CURR) to maintain entity isolation."
+  }
+}

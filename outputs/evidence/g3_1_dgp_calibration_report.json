@@ -1,0 +1,142 @@
+{
+  "pulseguard_gate": "G3.1",
+  "artifact": "g3_1_dgp_calibration_report.json",
+  "run_timestamp": "2026-06-16T20:32:39",
+  "dataset_label": "synthetic_home_credit_like",
+  "objective": "Calibrate synthetic DGP intercept to produce ~8% default rate (acceptance range 7%\u20139%)",
+  "g3_blocker": {
+    "intercept_original": -2.8,
+    "default_rate_original": 0.26,
+    "issue": "DGP intercept -2.8 produced 26% default rate; target was 8%; blocked G4 training"
+  },
+  "calibration_method": {
+    "algorithm": "Binary search on logistic intercept",
+    "calibration_n": 200000,
+    "calibration_seed": 42,
+    "target_rate": 0.08,
+    "tolerance": 0.0005,
+    "n_iterations": 8,
+    "search_range": [
+      -6.0,
+      -3.0
+    ],
+    "convergence_trace": [
+      {
+        "step": 1,
+        "intercept": -4.5,
+        "rate": 0.061015,
+        "delta": -0.018985
+      },
+      {
+        "step": 2,
+        "intercept": -3.75,
+        "rate": 0.12072,
+        "delta": 0.04072
+      },
+      {
+        "step": 3,
+        "intercept": -4.125,
+        "rate": 0.085895,
+        "delta": 0.005895
+      },
+      {
+        "step": 4,
+        "intercept": -4.3125,
+        "rate": 0.072355,
+        "delta": -0.007645
+      },
+      {
+        "step": 5,
+        "intercept": -4.21875,
+        "rate": 0.07879,
+        "delta": -0.00121
+      },
+      {
+        "step": 6,
+        "intercept": -4.17188,
+        "rate": 0.082365,
+        "delta": 0.002365
+      },
+      {
+        "step": 7,
+        "intercept": -4.19531,
+        "rate": 0.08061,
+        "delta": 0.00061
+      },
+      {
+        "step": 8,
+        "intercept": -4.20703,
+        "rate": 0.079715,
+        "delta": -0.000285
+      }
+    ],
+    "converged": true,
+    "converged_at_step": 8
+  },
+  "calibrated_intercept": -4.20703,
+  "verification": {
+    "n_samples": 50000,
+    "seeds_tested": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "results": [
+      {
+        "seed": 42,
+        "default_rate": 0.0786,
+        "in_range": true
+      },
+      {
+        "seed": 43,
+        "default_rate": 0.0813,
+        "in_range": true
+      },
+      {
+        "seed": 44,
+        "default_rate": 0.0803,
+        "in_range": true
+      },
+      {
+        "seed": 45,
+        "default_rate": 0.0819,
+        "in_range": true
+      },
+      {
+        "seed": 46,
+        "default_rate": 0.0805,
+        "in_range": true
+      }
+    ],
+    "mean_rate": 0.0805,
+    "std_rate": 0.0011,
+    "min_rate": 0.0786,
+    "max_rate": 0.0819,
+    "acceptance_range": [
+      0.07,
+      0.09
+    ],
+    "all_seeds_pass": true
+  },
+  "production_run": {
+    "n_samples": 50000,
+    "seed": 42,
+    "default_rate": 0.0817,
+    "in_range": true,
+    "dataset_file": "data/synthetic_home_credit_like.csv"
+  },
+  "patch_applied": {
+    "file": "scripts/generate_synthetic_data.py",
+    "old_intercept": -2.8,
+    "new_intercept": -4.20703,
+    "comment_added": "G3.1 CALIBRATION: intercept updated from -2.8 (26% rate) to -4.20703 (~8% rate)",
+    "docstring_updated": true
+  },
+  "status": "PASS",
+  "blocker_resolved": true,
+  "g4_unblocked": "Default rate now 8.17% \u2014 within 7%\u20139% acceptance range. G4 training may proceed after leakage re-audit confirms checks still pass.",
+  "no_model_trained": true,
+  "no_metrics_generated": true
+}

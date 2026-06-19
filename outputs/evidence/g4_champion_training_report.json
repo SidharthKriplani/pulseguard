@@ -1,0 +1,161 @@
+{
+  "pulseguard_gate": "G4",
+  "artifact": "g4_champion_training_report.json",
+  "run_timestamp": "2026-06-20T00:56:18",
+  "data_type": "synthetic_home_credit_like",
+  "dataset_label": "synthetic_home_credit_like",
+  "dgp_intercept": -4.20703,
+  "model_type": "XGBoostClassifier",
+  "calibration_method": "Platt sigmoid (CalibratedClassifierCV, cv='prefit')",
+  "xgb_hyperparameters": {
+    "n_estimators": 1000,
+    "max_depth": 5,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 3,
+    "gamma": 0.0,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "eval_metric": "aucpr",
+    "early_stopping_rounds": 50,
+    "random_state": 42,
+    "tree_method": "hist",
+    "device": "cpu",
+    "verbosity": 0
+  },
+  "feature_metadata": {
+    "n_numeric": 20,
+    "n_categorical": 8,
+    "n_total": 28,
+    "numeric_cols": [
+      "EXT_SOURCE_2",
+      "EXT_SOURCE_3",
+      "AMT_CREDIT",
+      "AMT_INCOME_TOTAL",
+      "AMT_ANNUITY",
+      "AMT_GOODS_PRICE",
+      "DAYS_BIRTH",
+      "DAYS_EMPLOYED",
+      "REGION_POPULATION_RELATIVE",
+      "DAYS_REGISTRATION",
+      "DAYS_ID_PUBLISH",
+      "CNT_CHILDREN",
+      "CNT_FAM_MEMBERS",
+      "DEF_30_CNT_SOCIAL_CIRCLE",
+      "DEF_60_CNT_SOCIAL_CIRCLE",
+      "OBS_30_CNT_SOCIAL_CIRCLE",
+      "FLAG_DOCUMENT_3",
+      "HOUR_APPR_PROCESS_START",
+      "LIVE_REGION_NOT_WORK_REGION",
+      "REGION_RATING_CLIENT"
+    ],
+    "categorical_cols": [
+      "CODE_GENDER",
+      "NAME_INCOME_TYPE",
+      "NAME_CONTRACT_TYPE",
+      "NAME_EDUCATION_TYPE",
+      "NAME_FAMILY_STATUS",
+      "FLAG_OWN_CAR",
+      "FLAG_OWN_REALTY",
+      "ORGANIZATION_TYPE"
+    ],
+    "excluded_cols": [
+      "SK_ID_CURR",
+      "TARGET",
+      "SPLIT",
+      "APPLICATION_DATE",
+      "FEATURE_TIMESTAMP_EXT_SOURCE_2",
+      "FEATURE_TIMESTAMP_INJECTED_LEAK",
+      "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED",
+      "EXISTING_OBLIGATIONS_MONTHLY__SYNTHETIC"
+    ],
+    "leakage_excluded": [
+      "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED"
+    ],
+    "synthetic_excluded": [
+      "EXISTING_OBLIGATIONS_MONTHLY__SYNTHETIC"
+    ],
+    "imputation_strategy": "median for numeric; most_frequent for categorical",
+    "encoding_strategy": "OrdinalEncoder (unknown categories \u2192 -1)",
+    "scaling": "None \u2014 XGBoost is scale-invariant",
+    "data_type": "synthetic_home_credit_like",
+    "calibrated_dgp_intercept": -4.20703
+  },
+  "data_splits": {
+    "n_train": 30000,
+    "n_val": 10000,
+    "n_test": 10000,
+    "default_rate_train": 0.0817,
+    "default_rate_val": 0.0817,
+    "default_rate_test": 0.0817
+  },
+  "metrics_raw_xgb": {
+    "roc_auc": 0.626081,
+    "pr_auc": 0.130747,
+    "brier_score": 0.076111,
+    "ece": 0.043901,
+    "note": "XGBoost raw output probabilities before Platt calibration"
+  },
+  "metrics_calibrated": {
+    "roc_auc": 0.626081,
+    "pr_auc": 0.130747,
+    "brier_score": 0.073846,
+    "ece": 0.003864,
+    "note": "Platt sigmoid calibrated probabilities \u2014 USE THESE for decision engine"
+  },
+  "top10_feature_importances_gain": [
+    {
+      "feature": "DAYS_EMPLOYED",
+      "importance_gain": 0.128067
+    },
+    {
+      "feature": "EXT_SOURCE_2",
+      "importance_gain": 0.044324
+    },
+    {
+      "feature": "REGION_RATING_CLIENT",
+      "importance_gain": 0.041244
+    },
+    {
+      "feature": "AMT_INCOME_TOTAL",
+      "importance_gain": 0.040822
+    },
+    {
+      "feature": "CODE_GENDER",
+      "importance_gain": 0.038829
+    },
+    {
+      "feature": "EXT_SOURCE_3",
+      "importance_gain": 0.037424
+    },
+    {
+      "feature": "DEF_30_CNT_SOCIAL_CIRCLE",
+      "importance_gain": 0.036347
+    },
+    {
+      "feature": "AMT_ANNUITY",
+      "importance_gain": 0.035304
+    },
+    {
+      "feature": "NAME_FAMILY_STATUS",
+      "importance_gain": 0.035039
+    },
+    {
+      "feature": "AMT_CREDIT",
+      "importance_gain": 0.034807
+    }
+  ],
+  "model_artifacts": {
+    "xgb_raw": "outputs/models/champion_xgb.json",
+    "calibrated": "outputs/models/champion_calibrated.pkl",
+    "preprocessor": "outputs/models/preprocessor.pkl"
+  },
+  "no_challenger_trained": true,
+  "no_optuna_hpo_run": true,
+  "no_fairness_audit": true,
+  "no_shap_computed": true,
+  "leakage_feature_excluded": "EXTERNAL_BUREAU_QUERY_RESULT__INJECTED",
+  "synthetic_excluded": "EXISTING_OBLIGATIONS_MONTHLY__SYNTHETIC",
+  "source_reference_note": "SR-1 (RiskFrame champion XGBoost ROC-AUC ~0.7663) and SR-2 (PR-AUC ~0.2611) are SOURCE_REFERENCE from a prior project on real Home Credit data (8% default rate). PulseGuard metrics above are computed on synthetic_home_credit_like data. No SOURCE_REFERENCE metric is upgraded to PulseGuard-built."
+}

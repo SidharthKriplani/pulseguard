@@ -1,0 +1,110 @@
+{
+  "report_id": "gold_pass3_fairness_proxy_audit",
+  "scope": "SKELETON \u2014 proxy variable analysis only; no protected-class labels available in Home Credit dataset",
+  "hard_disclaimer": "This is a fairness SKELETON, not a fairness CERTIFICATION. Home Credit dataset does not contain legally protected-class labels (race, sex, national origin). Proxy analysis on age, income, employment, and region is for governance awareness only. Do NOT claim this model is fair or disparate-impact compliant.",
+  "proxy_audit": {
+    "age_bands": {
+      "proxy_feature": "AGE_YEARS",
+      "notes": "Age is not a protected class in credit lending under ECOA; included as governance proxy only",
+      "under_30": {
+        "n": 8975,
+        "default_rate": 0.1151,
+        "mean_pd": 0.1162,
+        "approval_rate": 0.8049
+      },
+      "age_30_50": {
+        "n": 31750,
+        "default_rate": 0.0875,
+        "mean_pd": 0.0851,
+        "approval_rate": 0.8858
+      },
+      "over_50": {
+        "n": 20778,
+        "default_rate": 0.0555,
+        "mean_pd": 0.0569,
+        "approval_rate": 0.9546
+      }
+    },
+    "employment_proxy": {
+      "proxy_feature": "EMPLOYED_YEARS",
+      "notes": "HC dataset: DAYS_EMPLOYED=365243 \u2192 not employed; EMPLOYED_YEARS>=50 treated as not-employed sentinel",
+      "employed_n50pct_sentinel": 11028,
+      "employed": {
+        "n": 50475,
+        "default_rate": 0.0869,
+        "mean_pd": 0.0859,
+        "approval_rate": 0.883
+      },
+      "not_employed_proxy": {
+        "n": 11028,
+        "default_rate": 0.0524,
+        "mean_pd": 0.054,
+        "approval_rate": 0.9623
+      }
+    },
+    "income_terciles": {
+      "proxy_feature": "AMT_INCOME_TOTAL",
+      "low_income_tercile": {
+        "n": 20075,
+        "default_rate": 0.0813,
+        "mean_pd": 0.0837,
+        "approval_rate": 0.8902
+      },
+      "mid_income_tercile": {
+        "n": 18007,
+        "default_rate": 0.0881,
+        "mean_pd": 0.085,
+        "approval_rate": 0.8852
+      },
+      "high_income_tercile": {
+        "n": 23421,
+        "default_rate": 0.0745,
+        "mean_pd": 0.0733,
+        "approval_rate": 0.9126
+      }
+    },
+    "region_rating": {
+      "rating_1": {
+        "n": 6484,
+        "default_rate": 0.049,
+        "mean_pd": 0.0472,
+        "approval_rate": 0.9653
+      },
+      "notes": "1=low risk region, 3=high risk region",
+      "rating_2": {
+        "n": 45347,
+        "default_rate": 0.0785,
+        "mean_pd": 0.0785,
+        "approval_rate": 0.9047
+      },
+      "rating_3": {
+        "n": 9672,
+        "default_rate": 0.1124,
+        "mean_pd": 0.11,
+        "approval_rate": 0.8168
+      }
+    }
+  },
+  "governance_observations": [
+    "Age <30 cohort: approval rate 80.5% vs 95.5% for age 50+ \u2014 age correlates with repayment history depth, not a protected-class proxy in this jurisdiction",
+    "Not-employed proxy (EMPLOYED_YEARS sentinel): lower DR (5.2%) than employed (8.7%) \u2014 model is not penalizing non-employment through this feature",
+    "Income terciles: narrow approval rate spread (89.0% low vs 91.3% high) \u2014 model is not strongly income-stratifying approvals",
+    "Region 3 (high-risk): 81.7% approval vs 96.5% for Region 1 \u2014 regional disparity aligned with observed default rate difference (11.2% vs 4.9%)",
+    "All observed differences are directionally aligned with actual default rate differentials \u2014 no evidence of model amplifying disparities beyond base rates"
+  ],
+  "limitation_statements": [
+    "No protected-class labels \u2014 disparate impact ratio cannot be computed",
+    "No fairness-aware retraining performed in this pass",
+    "Income is a feature \u2014 its direct use may proxy for protected characteristics in some jurisdictions",
+    "Monotone constraints prevent extreme extrapolation but do not eliminate proxy risk",
+    "Full fairness audit requires demographic enrichment, legal review, and independent validator"
+  ],
+  "tags": [
+    "ASSISTIVE_ONLY",
+    "HUMAN_REVIEW_REQUIRED",
+    "NOT_FINAL_DECISION"
+  ],
+  "forbidden_claims": [
+    "Do not claim: model is fair, disparate impact compliant, ECOA compliant, or ready for fair-lending review without independent audit"
+  ]
+}

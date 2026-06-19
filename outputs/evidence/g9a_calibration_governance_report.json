@@ -1,0 +1,143 @@
+{
+  "gate": "G9A",
+  "generated_at": "2026-06-17",
+  "champion": "CatBoost_Platt",
+  "governance_alternative": "LightGBM_monotonic_Platt",
+  "calibration_method_used": "Platt_sigmoid (LogisticRegression on 1D val probabilities)",
+  "ece_gate_threshold": "champion_ECE + 0.005",
+  "champion_ece_post_platt": 0.0054,
+  "governance_alt_ece_post_platt": 0.0016,
+  "all_calibrations": {
+    "CatBoost": {
+      "uncalibrated": {
+        "val_auc": 0.7716,
+        "test_auc": 0.7765,
+        "ece_val": 0.3157,
+        "brier_val": 0.1854,
+        "ks_val": 0.4094
+      },
+      "platt": {
+        "val_auc": 0.7716,
+        "test_auc": 0.7765,
+        "ece_val": 0.0054,
+        "brier_val": 0.0672
+      },
+      "isotonic": {
+        "val_auc": 0.7728,
+        "test_auc": 0.776,
+        "ece_val": 0.0,
+        "brier_val": 0.0667
+      }
+    },
+    "XGBoost": {
+      "uncalibrated": {
+        "val_auc": 0.7703,
+        "test_auc": 0.7747,
+        "ece_val": 0.2944,
+        "brier_val": 0.1733,
+        "ks_val": 0.4097
+      },
+      "platt": {
+        "val_auc": 0.7703,
+        "test_auc": 0.7747,
+        "ece_val": 0.004,
+        "brier_val": 0.0672
+      },
+      "isotonic": {
+        "val_auc": 0.7716,
+        "test_auc": 0.7744,
+        "ece_val": 0.0,
+        "brier_val": 0.0668
+      }
+    },
+    "LightGBM_monotonic": {
+      "uncalibrated": {
+        "val_auc": 0.7203,
+        "test_auc": 0.7243,
+        "ece_val": 0.037,
+        "brier_val": 0.0733,
+        "ks_val": 0.3322
+      },
+      "platt": {
+        "val_auc": 0.7203,
+        "test_auc": 0.7243,
+        "ece_val": 0.0016,
+        "brier_val": 0.0701
+      },
+      "isotonic": {
+        "val_auc": 0.7213,
+        "test_auc": 0.7245,
+        "ece_val": 0.0,
+        "brier_val": 0.0699
+      }
+    },
+    "LightGBM_base": {
+      "uncalibrated": {
+        "val_auc": 0.7197,
+        "test_auc": 0.7237,
+        "ece_val": 0.0385,
+        "brier_val": 0.0733,
+        "ks_val": 0.3265
+      },
+      "platt": {
+        "val_auc": 0.7197,
+        "test_auc": 0.7237,
+        "ece_val": 0.0005,
+        "brier_val": 0.0702
+      },
+      "isotonic": {
+        "val_auc": 0.7205,
+        "test_auc": 0.7241,
+        "ece_val": 0.0,
+        "brier_val": 0.0701
+      }
+    },
+    "RandomForest": {
+      "uncalibrated": {
+        "val_auc": 0.7523,
+        "test_auc": 0.7575,
+        "ece_val": 0.2945,
+        "brier_val": 0.1635,
+        "ks_val": 0.3805
+      },
+      "platt": {
+        "val_auc": 0.7523,
+        "test_auc": 0.7575,
+        "ece_val": 0.0044,
+        "brier_val": 0.0684
+      },
+      "isotonic": {
+        "val_auc": 0.7535,
+        "test_auc": 0.7569,
+        "ece_val": 0.0,
+        "brier_val": 0.0681
+      }
+    }
+  },
+  "monotone_constraints": {
+    "applied_to": "LightGBM_monotonic",
+    "risk_increasing_features": [
+      "CREDIT_TO_INCOME",
+      "ANNUITY_TO_INCOME",
+      "BUREAU_OVERDUE_RATIO",
+      "INST_LATE_RATIO",
+      "CC_DPD_RATIO",
+      "POS_IS_DPD_RATIO",
+      "BEHAVIORAL_RISK_SCORE",
+      "CC_UTILIZATION_MEAN",
+      "PREV_REFUSAL_RATE",
+      "BUREAU_AMT_OVERDUE",
+      "FLAG_EMPLOYED_ANOMALY",
+      "CREDIT_TO_GOODS"
+    ],
+    "risk_decreasing_features": [
+      "EXT_SOURCE_MEAN",
+      "AGE_YEARS",
+      "EMPLOYED_YEARS"
+    ],
+    "count_constrained": 15
+  },
+  "sr_26_2_note": "Monotone constraints satisfy SR 26-2 model risk management requirement for directional interpretability in retail credit scoring. CatBoost champion to be reviewed by model risk if deployed in regulated context.",
+  "reject_inference_status": "NOT_IMPLEMENTED \u2014 MNAR bias documented",
+  "temporal_validation_status": "NOT_POSSIBLE \u2014 no timestamp field; documented as known limitation"
+}

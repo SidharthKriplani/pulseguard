@@ -1,0 +1,200 @@
+{
+  "pulseguard_gate": "G7",
+  "patch_version": "taiwan_primary_patch_v1",
+  "data_tag": "PUBLIC_REAL_TAIWAN_DEFAULT",
+  "data_lane": "PRIMARY \u2014 real data lane",
+  "model": "XGBoost (Platt calibrated) \u2014 G6 champion",
+  "dataset": "UCI Credit Card Default (Taiwan), 30,000 rows",
+  "test_n": 6000,
+  "test_default_rate": 0.221167,
+  "cost_matrix": {
+    "description": "Synthetic/illustrative \u2014 NOT observed bank economics",
+    "c_bad": 10.0,
+    "c_reject": 1.0,
+    "c_review": 0.3,
+    "ratio_bad_reject": 10,
+    "c_bad_meaning": "Cost of approving a defaulter (bad-debt charge-off); normalised to 10",
+    "c_reject_meaning": "Cost of rejecting a good applicant (lost net interest revenue); normalised to 1",
+    "c_review_meaning": "Manual review labour per application; normalised to 0.3"
+  },
+  "bayes_optimal_threshold": {
+    "formula": "\u03b8* = C_reject / (C_bad + C_reject)",
+    "derivation": "\u03b8* = 1.0 / (10.0 + 1.0) = 0.090909",
+    "value": 0.090909,
+    "interpretation": "At a 10:1 bad-debt-to-lost-revenue ratio, the Bayes-optimal single threshold is ~9%. This means: approve any applicant whose calibrated PD is below 9%. The empirical sweep confirms minimum expected loss at \u03b8=0.10 (1% step resolution). Calibration validity is confirmed: empirical optimum matches the theoretical formula."
+  },
+  "candidate_thresholds": {
+    "min_expected_loss": {
+      "threshold": 0.1,
+      "approval_rate": 0.7788,
+      "recall_tpr": 0.9111,
+      "fpr": 0.6386,
+      "expected_loss_per_app": 0.694
+    },
+    "max_youden_j": {
+      "threshold": 0.24,
+      "approval_rate": 0.7788,
+      "youden_j": 0.4445,
+      "recall_tpr": 0.63,
+      "fpr": 0.1855
+    },
+    "max_f1": {
+      "threshold": 0.25,
+      "approval_rate": 0.7788,
+      "f1": 0.5542,
+      "precision": 0.5059,
+      "recall_tpr": 0.6127
+    }
+  },
+  "three_zone_policy_comparison": {
+    "conservative_015_035": {
+      "theta_approve": 0.15,
+      "theta_reject": 0.35,
+      "n_approve": 3068,
+      "approve_rate": 0.5113,
+      "n_review": 1811,
+      "review_rate": 0.3018,
+      "n_reject": 1121,
+      "reject_rate": 0.1868,
+      "default_rate_approve_zone": 0.0903,
+      "default_rate_review_zone": 0.2187,
+      "default_rate_reject_zone": 0.5834,
+      "fn_approve": 277,
+      "fp_reject": 467,
+      "fn_review": 198,
+      "fp_review": 707,
+      "expected_loss_per_app": 1.077883
+    },
+    "primary_020_040": {
+      "theta_approve": 0.2,
+      "theta_reject": 0.4,
+      "n_approve": 3907,
+      "approve_rate": 0.6512,
+      "n_review": 1138,
+      "review_rate": 0.1897,
+      "n_reject": 955,
+      "reject_rate": 0.1592,
+      "default_rate_approve_zone": 0.1072,
+      "default_rate_review_zone": 0.2715,
+      "default_rate_reject_zone": 0.6272,
+      "fn_approve": 419,
+      "fp_reject": 356,
+      "fn_review": 154,
+      "fp_review": 414,
+      "expected_loss_per_app": 1.140233
+    },
+    "aggressive_025_050": {
+      "theta_approve": 0.25,
+      "theta_reject": 0.5,
+      "n_approve": 4393,
+      "approve_rate": 0.7322,
+      "n_review": 866,
+      "review_rate": 0.1443,
+      "n_reject": 741,
+      "reject_rate": 0.1235,
+      "default_rate_approve_zone": 0.117,
+      "default_rate_review_zone": 0.3637,
+      "default_rate_reject_zone": 0.6721,
+      "fn_approve": 514,
+      "fp_reject": 243,
+      "fn_review": 157,
+      "fp_review": 275,
+      "expected_loss_per_app": 1.247967
+    }
+  },
+  "chosen_policy": {
+    "name": "taiwan_real_data_v1.0",
+    "data_lane": "PRIMARY \u2014 Taiwan Default real-data lane",
+    "theta_approve": 0.2,
+    "theta_reject": 0.4,
+    "zones": {
+      "APPROVE": "PD < 0.2  \u2192 credit approved",
+      "REVIEW": "0.2 \u2264 PD < 0.4  \u2192 manual underwriting required",
+      "REJECT": "PD \u2265 0.4  \u2192 credit declined"
+    },
+    "zone_population": {
+      "approve_n": 3907,
+      "approve_rate": 0.6512,
+      "review_n": 1138,
+      "review_rate": 0.1897,
+      "reject_n": 955,
+      "reject_rate": 0.1592
+    },
+    "observed_default_rate_by_zone": {
+      "approve_zone": 0.1072,
+      "review_zone": 0.2715,
+      "reject_zone": 0.6272
+    },
+    "expected_loss_per_app": 1.140233,
+    "rationale": "\u03b8_approve=0.20 / \u03b8_reject=0.40 is chosen over the Bayes-optimal single threshold (0.10) for three operational reasons: (1) A single threshold at 0.10 collapses the review band \u2014 applicants at PD=0.11 and PD=0.39 would both be rejected, which provides no borderline handling. (2) The 3-zone structure allows manual underwriting to capture signal not encoded in the model (e.g. income change, relationship history). (3) The expected-loss overhead of 3-zone vs single-threshold optimum is documented in the sensitivity report \u2014 a deliberate and accountable business trade-off."
+  },
+  "calibration_aware_decisioning": {
+    "why_calibration_matters": "A threshold of PD=0.20 is only interpretable if the model's probability scale corresponds to true observed default rates. Raw XGBoost ECE=0.208 means its scores are systematically biased \u2014 'PD=0.20' from the raw model does not mean 20% expected default rate. Calibrated XGBoost ECE=0.011 means 'PD=0.20' reliably identifies cohorts with ~20% observed default rate (confirmed in policy-bands plot, decile reliability). All threshold policy statements in G7 are valid only for calibrated probabilities.",
+    "el_comparison_at_key_thresholds": {
+      "0.2": {
+        "calibrated_el": 0.895833,
+        "raw_el": 0.754833,
+        "el_saved": -0.141
+      },
+      "0.35": {
+        "calibrated_el": 1.1995,
+        "raw_el": 0.756667,
+        "el_saved": -0.442833
+      },
+      "0.4": {
+        "calibrated_el": 1.272667,
+        "raw_el": 0.814833,
+        "el_saved": -0.457833
+      },
+      "0.1": {
+        "calibrated_el": 0.694,
+        "raw_el": 0.778833,
+        "el_saved": 0.084833
+      }
+    }
+  },
+  "decision_card": {
+    "policy_name": "taiwan_real_data_v1.0",
+    "data_lane": "PRIMARY \u2014 PUBLIC_REAL_TAIWAN_DEFAULT",
+    "model": "XGBoost (Platt calibrated), G6 champion",
+    "theta_approve": 0.2,
+    "theta_reject": 0.4,
+    "cost_ratio": "10:1 (C_bad:C_reject)",
+    "business_owner": "SYNTHETIC_PORTFOLIO_OWNER",
+    "decision_cadence": "Per-application",
+    "retraining_trigger": [
+      "PSI > 0.20 on PAY_0 or PAY_2 (feature distribution drift)",
+      "Observed default rate in APPROVE cohort > 25% (calibration drift)"
+    ],
+    "fallback": "If model unavailable: APPROVE if PAY_0 \u2264 0 AND LIMIT_BAL \u2265 NT$50,000; else REVIEW",
+    "risk_threshold_too_low": "Too many defaulters approved; charge-off losses rise above expectation",
+    "risk_threshold_too_high": "Too many good applicants rejected; revenue forgone; approval rate skewed",
+    "risk_miscalibration": "Threshold label (e.g. 20%) no longer matches true default rate; PSI monitor triggers recalibration"
+  },
+  "synthetic_secondary_lane": {
+    "role": "Controlled stress-test harness ONLY",
+    "dataset": "synthetic_home_credit_like",
+    "usage": [
+      "Injected temporal leakage detection (G3)",
+      "Controlled drift injection and PSI alert verification (G4)",
+      "Proxy fairness audit (G5)"
+    ],
+    "not_used_for": [
+      "G7 primary threshold policy",
+      "Headline business performance claims",
+      "Any metric reported alongside Taiwan Default as equivalent evidence"
+    ]
+  },
+  "limitation_notes": [
+    "Cost values are illustrative; real lender economics require observed charge-off rates and net interest margins",
+    "Review-zone expected loss uses a simplified 50/50 approve/reject assumption for manual decisions",
+    "Taiwan Default is credit card revolving credit (Taiwan, 2005) \u2014 not consumer loan underwriting",
+    "No FOIR, income, or EMI fields in Taiwan Default; FOIR-based hard rules not applicable to this lane",
+    "No adverse-action notice generation \u2014 portfolio simulation only",
+    "No regulatory or compliance claim"
+  ],
+  "claim_boundary": {
+    "safe": "PulseGuard G7 converts the real-data Taiwan calibrated champion into an approve/review/reject threshold policy using explicit cost assumptions, while retaining synthetic data only as a controlled stress-test harness.",
+    "unsafe": "PulseGuard G7 proves a production lending approval policy."
+  }
+}

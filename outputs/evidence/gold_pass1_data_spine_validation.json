@@ -1,0 +1,124 @@
+{
+  "gate": "GOLD_PASS_1",
+  "pass_step": "G2_DATA_SPINE_VALIDATION",
+  "generated_at": "2026-06-17",
+  "n_pass": 21,
+  "n_fail": 0,
+  "n_warn": 0,
+  "verdict": "PASS",
+  "dataset": "Home Credit Default Risk",
+  "application_train_rows": 307511,
+  "total_split_rows": 307511,
+  "dr_train": 0.0807,
+  "dr_val": 0.0807,
+  "dr_test": 0.0807,
+  "n_features": 140,
+  "scale_pos_weight": 11.3871,
+  "checks": [
+    {
+      "check": "table_present_application_train.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_application_test.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_bureau.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_bureau_balance.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_previous_application.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_installments_payments.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_credit_card_balance.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "table_present_POS_CASH_balance.csv",
+      "result": "PASS",
+      "detail": "exists=True"
+    },
+    {
+      "check": "row_count_application_train.csv",
+      "result": "PASS",
+      "detail": "got=307511 expected=307511"
+    },
+    {
+      "check": "row_count_bureau.csv",
+      "result": "PASS",
+      "detail": "got=1716428 expected=1716428"
+    },
+    {
+      "check": "row_count_bureau_balance.csv",
+      "result": "PASS",
+      "detail": "got=27299925 expected=27299925"
+    },
+    {
+      "check": "DR_consistency_across_splits",
+      "result": "PASS",
+      "detail": "train=0.0807 val=0.0807 test=0.0807"
+    },
+    {
+      "check": "split_total_rows",
+      "result": "PASS",
+      "detail": "train=184506 val=61502 test=61503 total=307511"
+    },
+    {
+      "check": "split_ratio_60_20_20",
+      "result": "PASS",
+      "detail": "train_frac=0.600"
+    },
+    {
+      "check": "feature_count_140",
+      "result": "PASS",
+      "detail": "n_features=140"
+    },
+    {
+      "check": "target_not_in_features",
+      "result": "PASS",
+      "detail": "TARGET_in_features=False"
+    },
+    {
+      "check": "sk_id_curr_not_in_features",
+      "result": "PASS",
+      "detail": "SK_ID_CURR_in_features=False"
+    },
+    {
+      "check": "no_test_set_leakage_into_train",
+      "result": "PASS",
+      "detail": "ID_overlap_between_app_train_and_app_test=0"
+    },
+    {
+      "check": "split_reproducibility_seed42",
+      "result": "PASS",
+      "detail": "sizes_match=True train=184506 val=61502 test=61503"
+    },
+    {
+      "check": "no_duplicate_SK_ID_CURR",
+      "result": "PASS",
+      "detail": "duplicates=0"
+    },
+    {
+      "check": "no_extreme_missingness_features",
+      "result": "PASS",
+      "detail": "features_with_>80pct_missing=0"
+    }
+  ]
+}

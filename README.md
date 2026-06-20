@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/badge/LightGBM-4.3-00B050?style=flat-square" alt="LightGBM"/>
   <img src="https://img.shields.io/badge/SHAP-reason_codes-FF6B6B?style=flat-square" alt="SHAP"/>
   <img src="https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI"/>
-  <img src="https://img.shields.io/badge/Gold_Pass-4%2F4-22c55e?style=flat-square" alt="Gold Pass"/>
+  <img src="https://img.shields.io/badge/Gold_Pass-5%2F5-22c55e?style=flat-square" alt="Gold Pass"/>
   <img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" alt="License"/>
 </p>
 
@@ -120,6 +120,41 @@ PulseGuard is structured around a 9-gate development pipeline (G0–G9A) plus 4 
 | **Gold Pass 2** | Optuna HPO, LightGBM bug fix, LightGBM_monotonic crowned champion | ✅ COMPLETE |
 | **Gold Pass 3** | SHAP reason codes, RAG policy layer, LLM governance memo | ✅ COMPLETE |
 | **Gold Pass 4** | Cloud Run deployment, champion live, stress test (12/12 PASS) | ✅ COMPLETE |
+| **Gold Pass 5** | LSTM sequence encoder experiment — GP2 champion retained | ✅ COMPLETE |
+
+---
+
+## Gold Pass 5 — LSTM Sequence Encoder Experiment
+
+**Hypothesis:** Raw installment payment sequences contain temporal default signals not captured by scalar aggregations. An LSTM encoder over per-row sequences could produce 32-dim embeddings (features 141–172) that lift AUC beyond the 0.7769 baseline.
+
+**Architecture:**
+```
+installments_payments.csv (13.6M rows, 339,587 applicants)
+  → per-row: days_late, payment_ratio, log_amt_instalment
+  → last 50 installments per applicant, left-padded with zeros
+  → 1-layer LSTM (hidden=64) → Linear(32) → tanh → 32-dim embedding
+  → appended to 140-feature LightGBM input → 172-feature retrain
+```
+
+**Training:** Colab T4 GPU · 15 epochs · BCE loss with pos_weight=11.4 · AdamW · ReduceLROnPlateau
+
+**Result:**
+
+| Metric | Value |
+|--------|-------|
+| GP5 test AUC (calibrated) | 0.7264 |
+| GP2 baseline AUC | 0.7769 |
+| Delta | **−0.0505** |
+| Verdict | **GP2 champion retained** |
+
+**Why GP5 did not improve:**
+- 65,639 applicants (35% of training set) have no installment history — their sequences are zero-padded, adding noise rather than signal
+- The LSTM was trained supervised on TARGET directly, which may overfit the small positive class (8.1%) in ways that don't generalise as LightGBM features
+- Scalar installment aggregations (inst_agg.parquet) already capture the key delinquency signals; the LSTM finds redundant representations
+- A bidirectional LSTM or attention-based encoder over longer sequences (100+ timesteps) might extract incremental signal, but would require substantially more Colab compute
+
+**Governance:** This is an honest negative result. GP2 LightGBM_monotonic (AUC=0.7769) remains the deployed champion unchanged. The GP5 challenger booster is saved as `lgb_gp5_172_challenger.txt` for audit purposes.
 
 ---
 
@@ -280,7 +315,7 @@ Full design rationale, architecture decisions, and 30+ expected interview Q&A pa
 
 ## Resume-Safe Claim
 
-Built PulseGuard, a production-simulated credit risk governance platform on Home Credit Default Risk (307,511 real applicants, 140 engineered features, 7 tables). Ran a 3-model Optuna tournament (LightGBM, CatBoost, XGBoost); diagnosed and fixed a LightGBM early-stopping interaction with `scale_pos_weight` that undertrained the baseline at 9 trees; crowned LightGBM_monotonic + isotonic calibration as champion (AUC=0.7769, ECE=0.0034, KS=0.4141, PR-AUC=0.2628) with 15 directional monotone constraints. Implemented SHAP-grounded adverse action reason codes, GREEN/AMBER/RED decision banding, and a RAG + LLM governance memo layer (ASSISTIVE_ONLY). Deployed champion to GCP Cloud Run using native LightGBM booster format and numpy-interp calibration — eliminating sklearn version dependency entirely. Documented 8 real failures with root cause and fix across a 9-gate Gold Pass governance structure.
+Built PulseGuard, a production-simulated credit risk governance platform on Home Credit Default Risk (307,511 real applicants, 140 engineered features, 7 tables). Ran a 3-model Optuna tournament (LightGBM, CatBoost, XGBoost); diagnosed and fixed a LightGBM early-stopping interaction with `scale_pos_weight` that undertrained the baseline at 9 trees; crowned LightGBM_monotonic + isotonic calibration as champion (AUC=0.7769, ECE=0.0034, KS=0.4141, PR-AUC=0.2628) with 15 directional monotone constraints. Implemented SHAP-grounded adverse action reason codes, GREEN/AMBER/RED decision banding, and a RAG + LLM governance memo layer (ASSISTIVE_ONLY). Deployed champion to GCP Cloud Run using native LightGBM booster format and numpy-interp calibration — eliminating sklearn version dependency entirely. Extended the system with a deep learning component (GP5): trained a 1-layer LSTM on 13.6M raw installment payment rows to produce 32-dim sequence embeddings; challenger AUC (0.7264) did not beat the baseline (0.7769), and the negative result is documented honestly. Documented 8+ real failures with root cause and fix across a 5-checkpoint Gold Pass governance structure.
 
 ---
 

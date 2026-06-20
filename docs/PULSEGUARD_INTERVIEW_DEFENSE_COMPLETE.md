@@ -250,17 +250,20 @@ Monotone constraints guarantee directional interpretability auditable without pe
 
 ## Section 8 — Calibration `[IMPLEMENTED]`
 
-**Platt sigmoid calibration on validation-set probabilities.**
+**Isotonic regression calibration on validation-set probabilities.**
 
 | Step | Detail |
 |---|---|
-| Calibrator | LogisticRegression(C=1e6) — 2-parameter sigmoid; avoids overfitting |
+| Calibrator | IsotonicRegression(out_of_bounds='clip') — piecewise-monotone interpolation |
 | Fit data | Validation set only |
-| Isotonic | Excluded — ECE=0.0 on val is overfitting artifact (perfect fit on val, poor generalisation) |
+| Platt | Evaluated but not selected — sigmoid slope/intercept optimised for ECE but produced higher test ECE than isotonic |
 | Test ECE | **0.0034** — near-production-quality calibration |
+| Serving | Extracted as two numpy arrays (`iso_x.npy`, `iso_y.npy`) — `np.interp(raw_prob, iso_x, iso_y)` exactly replicates `IsotonicRegression.predict()` with zero sklearn dependency |
+
+**Discovery note:** The GP2 training report originally stated "Platt selected". Forensic inspection of `champion_calibrated.pkl` (`cal['selected']`) confirmed isotonic was actually selected. The isotonic calibrator was extracted to numpy arrays for the Cloud Run deployment — eliminating sklearn version lock at serve time entirely.
 
 **Why calibrated PD matters more than raw score:**
-A raw GBM score is not a probability — it's an uncalibrated log-odds output. After Platt calibration, PD=0.20 means the model genuinely estimates a 20% default probability. This enables: (1) semantically defensible score-band thresholds, (2) cost-sensitive threshold formula (θ* = C_reject / (C_bad + C_reject)), (3) probabilistic adverse-action language, (4) ECE as a measurable governance metric.
+A raw GBM score is not a probability — it's an uncalibrated log-odds output. After isotonic calibration, PD=0.20 means the model genuinely estimates a 20% default probability. This enables: (1) semantically defensible score-band thresholds, (2) cost-sensitive threshold formula (θ* = C_reject / (C_bad + C_reject)), (3) probabilistic adverse-action language, (4) ECE as a measurable governance metric.
 
 ---
 
@@ -620,11 +623,11 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q12 — "How did you use calibration?"**
 
-> "Platt sigmoid calibration — a logistic regression fit on the validation-set raw scores. Two parameters: slope and intercept. This is the appropriate calibrator when you have a moderate-size validation set and want to avoid overfitting calibration.
+> "Isotonic regression calibration — a piecewise-monotone interpolation fit on the validation-set raw scores. I evaluated both Platt (logistic regression) and isotonic; isotonic achieved lower test ECE (0.0034) and was selected.
 >
-> I also evaluated isotonic regression. Isotonic produced ECE=0.0 on validation — which is an overfitting artifact. Isotonic is a piecewise-constant interpolation that fits every training calibration point exactly. The correct comparison is test ECE, not val ECE. Platt test ECE is 0.0034; isotonic val ECE=0.0 tells you nothing about generalisation.
+> One thing worth noting: the GP2 training report initially said 'Platt selected', but forensic inspection of the saved pkl (`cal['selected']`) confirmed isotonic was actually used. The calibrated probabilities matched isotonic interp exactly and diverged from the Platt sigmoid. This kind of ground-truth verification — reading the artifact rather than the report — is important when you're debugging a serving discrepancy.
 >
-> The Platt calibrator was fit on validation set only and evaluated on the held-out test set. That's the only honest comparison."
+> For deployment, I extracted the isotonic calibration as two numpy arrays (the X and Y threshold lookups) and replicated it with `np.interp(raw_prob, iso_x, iso_y)`. This means zero sklearn dependency at serve time — no version lock, no import overhead. The calibrator runs as a two-array numpy operation."
 
 ---
 
@@ -1377,7 +1380,117 @@ The portfolio-level discipline: **none of these were hidden**. Each one is docum
 
 ---
 
-*PulseGuard — Interview Defense Document | V3 Role Expansion | 2026-06-18 | GOLD 89.3%*
+---
+
+## Section 29 — Gold Pass 5: LSTM Sequence Encoder Experiment
+
+### 29.1 — What Was Built
+
+**Architecture:**
+```
+installments_payments.csv (13.6M rows, 339,587 applicants)
+  → per-row features: days_late, payment_ratio, log_amt_instalment
+  → last 50 installments per applicant, left-padded with zeros
+  → 1-layer LSTM (input=3, hidden=64)
+  → Linear(64→32) + tanh activation → 32-dim embedding
+  → embeddings appended to 140-feature LightGBM input → 172 features
+  → LightGBM retrained (same GP2 Optuna hyperparameters, monotone constraints extended with 32 zeros)
+```
+
+**Training:** PyTorch · Colab T4 GPU · 15 epochs · BCEWithLogitsLoss (pos_weight=11.4 for 8% imbalance) · AdamW(lr=3e-3) · ReduceLROnPlateau · gradient clipping (max_norm=1.0) · batch size 2048
+
+**Result:**
+
+| Metric | Value |
+|--------|-------|
+| GP5 test AUC (calibrated) | 0.7264 |
+| GP2 baseline | 0.7769 |
+| Delta | **−0.0505** |
+| Verdict | **GP2 champion retained** |
+
+### 29.2 — Why GP5 Did Not Win
+
+- **35% of applicants have zero installment history** — no installment record in the CSV → zero-padded sequences → the LSTM encodes noise, not signal, for 65,639 of 184,506 training applicants
+- **Scalar aggregates already capture delinquency signal** — `inst_agg.parquet` features (INST_LATE_RATIO, INST_PAY_RATIO) are among the top-7 SHAP features in GP2; the LSTM learned a redundant representation
+- **Supervised LSTM on imbalanced labels** — training directly on TARGET (8.1% positive) with only 50-timestep sequences may not converge to embeddings that are more informative than handcrafted aggregates
+
+### 29.3 — Interview Q&A: Deep Learning Component
+
+**Q — "Walk me through a neural component you built in this project."**
+
+> "In Gold Pass 5, I added an LSTM sequence encoder on top of the existing LightGBM pipeline. The raw data is 13.6 million installment payment rows — one row per payment event per applicant. Rather than relying only on scalar aggregations of these events, I wanted to capture temporal payment behaviour directly.
+>
+> I built a preprocessing script that groups rows by applicant, computes three per-row features — days late, payment ratio, and log instalment amount — takes the last 50 instalments, and left-pads with zeros for shorter histories. This produces an (N × 50 × 3) numpy array for 339,000 applicants.
+>
+> The model is a 1-layer LSTM with hidden size 64, followed by a Linear(64→32) projection and tanh activation. I trained it supervised on the default TARGET label using BCEWithLogitsLoss with pos_weight=11.4 to handle the 8% class imbalance. Training ran on Colab T4 GPU in about 10 minutes. The 32-dim output of the projection layer becomes features 141–172 in LightGBM.
+>
+> The result: challenger AUC 0.7264 vs baseline 0.7769 — a −0.0505 drop. The root cause is that 35% of applicants have zero installment history, so their sequences are all zeros; those embeddings inject noise into LightGBM rather than signal. The scalar aggregation features in the existing 140-feature set already captured the key delinquency patterns. The negative result is documented honestly — the GP2 champion is unchanged."
+
+**Q — "What would you do differently to make the LSTM work?"**
+
+> "Three things. First, restrict LSTM features to only the 65% of applicants who have installment history — use the embedding for those applicants and a separate 'no history' indicator feature for the others, rather than zero-padding everyone. Second, try a longer sequence window (100+ payments) and a bidirectional LSTM or self-attention over the sequence — the key default-risk signal may be in early payment patterns, not just the last 50. Third, pre-train the encoder on a reconstruction task (autoencoder on payment sequences) and fine-tune — supervised training on an 8% imbalanced target with a small LSTM may converge to a less informative latent space than unsupervised pre-training."
+
+**Q — "Is this the right architecture for tabular + sequence data?"**
+
+> "For this dataset, probably not. Tree models (LightGBM, XGBoost) consistently outperform neural nets on tabular data when features are engineered well, and the installment aggregates in the feature set are already quite good. A TabNet or a feature tokenizer transformer might extract more from the raw sequences. But the LSTM is architecturally honest — it's a real sequence model, it was trained on real payment histories, and the negative result tells a clear story: handcrafted domain features beat learned embeddings when the domain expert already knows what to aggregate."
+
+### 29.4 — What GP5 Adds to the Portfolio Story
+
+Even as a negative result, GP5 demonstrates:
+- Ability to write PyTorch training loops with proper imbalance handling, early stopping, and gradient clipping
+- Understanding of sequence preprocessing (padding, feature engineering at the row level)
+- Integration of a neural component with a tree ensemble pipeline
+- Honest evaluation: the negative result is documented, not buried
+- A concrete answer to "walk me through a neural component you built"
+
+---
+
+## Section 30 — Calibration Forensics: Isotonic Discovery
+
+### 30.1 — What Happened
+
+The GP2 training pipeline evaluated both Platt (logistic regression) and isotonic regression calibration. The training report stated "Platt selected." The serving code was initially written using the Platt sigmoid formula.
+
+During Cloud Run deployment debugging, the serving probabilities diverged from the training calibrated probabilities by up to 0.53 at some score values — a massive serving gap.
+
+### 30.2 — Root Cause
+
+Forensic inspection of `champion_calibrated.pkl`:
+```python
+cal['selected']  # → 'isotonic'   (NOT 'platt')
+```
+
+The isotonic calibrator was actually selected at training time. The training report was wrong. The `cal_probs` in the pkl matched `IsotonicRegression.predict()` exactly (max diff = 0.0), and diverged from the Platt sigmoid (max diff = 0.53).
+
+### 30.3 — The Fix
+
+Rather than re-serialise the sklearn isotonic object (which would reintroduce the version lock), the isotonic calibration was extracted as two numpy arrays:
+
+```python
+iso_x = iso.X_thresholds_   # shape (134,) — raw probability thresholds
+iso_y = iso.y_thresholds_   # shape (134,) — calibrated probability values
+np.save('iso_x.npy', iso_x)
+np.save('iso_y.npy', iso_y)
+
+# At serve time — exact replication, zero sklearn:
+calibrated_prob = float(np.interp(raw_prob, iso_x, iso_y))
+```
+
+`np.interp` implements the same piecewise-linear interpolation that `IsotonicRegression.predict()` uses. Max difference between the two: 0.0 across all test values.
+
+### 30.4 — Interview Answer
+
+**Q — "You said Platt calibration in your writeup, but your code uses isotonic?"**
+
+> "Yes — this is one of the honest failures I'm glad I found. The training report said Platt was selected, but the pkl had `cal['selected'] = 'isotonic'`. When I deployed the initial serving code using the Platt formula, the calibrated probabilities diverged from training by up to 0.53 — a clear red flag.
+>
+> The forensic fix was simple: read the actual artifact, not the report. Once I confirmed isotonic was the true calibrator, I extracted it as numpy threshold arrays and replicated it with `np.interp`. This eliminated the sklearn version dependency entirely — the calibration now runs as a two-array numpy operation with zero imports from sklearn. ECE on test is 0.0034."
+
+---
+
+*PulseGuard — Interview Defense Document | V4 GP5 + Calibration Forensics | 2026-06-21*
 *Section 27D deployment caveat appended: 2026-06-20*
 *Section 28 "Failures I'm Proud Of" appended: 2026-06-20*
-*Sections 1–21: project-specific defense. Sections 22–26: adversarial follow-ups, ML concepts, implementation probes, behavioral. Section 27: fraud / MLOps / risk scoring role expansion + deployment caveat. Section 28: failure archaeology.*
+*Section 29 GP5 LSTM experiment appended: 2026-06-21*
+*Section 30 Calibration forensics appended: 2026-06-21*
+*Sections 1–21: project-specific defense. Sections 22–26: adversarial follow-ups, ML concepts, implementation probes, behavioral. Section 27: fraud / MLOps / risk scoring role expansion + deployment caveat. Section 28: failure archaeology. Section 29: GP5 deep learning component. Section 30: isotonic calibration discovery.*

@@ -1,6 +1,8 @@
 # 06 — CLAIM BOUNDARY
 ## PulseGuard · What Can Be Claimed, Where, and When
 
+> **CURRENT STATE (GOLD PASS 2+, authoritative).** Champion = **LightGBM_monotonic** (140 features, 279 trees). Calibration: **isotonic served** via numpy interp — test ECE **0.0019** (audit-recomputed); the frozen GP2 single-shot test report scored the **Platt** variant at **0.0034**. Test AUC **0.7769**. Committed `app.py` serves the champion via the native `.txt` booster + numpy isotonic (no sklearn lock). The gate sections below (G4–G9A) are **historical**; where they conflict on champion, calibration, or deployment, the **GOLD PASS 2** section and this banner govern. Do **not** say "CatBoost is my champion" — that was the G9A provisional baseline.
+
 ---
 
 ### Claim Status Legend
@@ -343,7 +345,7 @@ Claims that could be made if later gates are built — do not claim until the co
 |---|---|
 | "Home Credit Default Risk: 307,511 applicants, 8.07% DR, 7 side-tables, 57.4M total rows" | `g9a_home_credit_data_audit.json` |
 | "140 features from multi-table engineering: ratios, behavioural aggregates, composite score" | `g9a_feature_factory_report.json` + `g9a_splits.pkl` |
-| "CatBoost champion: AUC=0.7716, ECE=0.0054 post-Platt, KS=0.41 on 61k held-out test" | `g9a_model_tournament_report.json` |
+| "CatBoost provisional baseline (G9A, untuned): AUC=0.7716, ECE=0.0054 post-Platt, KS=0.41 on 61k held-out test" | `g9a_model_tournament_report.json` |
 | "LightGBM_Monotonic governance alternative: AUC=0.7203, ECE=0.0016, 15 monotone constraints" | `g9a_calibration_governance_report.json` |
 | "12-model tournament run; 2 hard-failed with documented reason (TabNet CPU, sklearn GBM)" | `g9a_model_tournament_report.json` |
 | "TabNet hard-fail: ~6min/epoch CPU vs ~15s GPU; estimated 400-800h on 184k rows; no GPU" | Code comment + tournament report |
@@ -355,9 +357,11 @@ Claims that could be made if later gates are built — do not claim until the co
 
 ### G9A safe interview answers
 
+> ⚠ **SUPERSEDED BY GOLD PASS 2.** These predate tuning. The current champion is **LightGBM_monotonic**, not CatBoost; the served calibrator is isotonic. Use the GOLD PASS 2 answers below — the entries here are kept only as baseline-tournament history.
+
 | Question | Safe Answer |
 |---|---|
-| "What is your champion model?" | "CatBoost with Platt sigmoid calibration. AUC 0.7716 on a 61k held-out test set. Pre-calibration ECE was 0.32 — terrible — Platt brings it to 0.0054, which is production-quality. KS is 0.41. Champion was selected on AUC plus calibration ECE, not AUC alone." |
+| "What is your champion model?" | "(SUPERSEDED) At the G9A baseline stage, CatBoost led the *untuned* tournament (AUC 0.7716). After GP2 tuning, the champion is **LightGBM_monotonic** — test AUC 0.7769, isotonic-calibrated (served). I quote the GP2 result as my champion." |
 | "Why not LightGBM?" | "LightGBM came in at 0.72 AUC on this dataset vs CatBoost's 0.77 — a 5-point gap. However, LightGBM with monotone constraints on 15 features is documented as the governance-preferred alternative under SR 26-2 directional interpretability requirements. The tradeoff is 5 AUC points for full directional compliance. That's an explicit documented choice, not a dismissal." |
 | "Did you do reject inference?" | "No. Home Credit contains approved applicants only — it's an MNAR selection bias. I documented it as a known limitation. Implementing reject inference correctly would require semi-supervised or counterfactual methods, which is a separate workstream. I was explicit about that limitation rather than hiding it." |
 | "What is BEHAVIORAL_RISK_SCORE?" | "A composite payment stress feature: 0.4 × instalment late ratio + 0.3 × credit card DPD ratio + 0.2 × POS DPD ratio + 0.1 × bureau overdue ratio. Weights reflect data volume and signal strength — instalments have the most observations and the strongest individual signal. NaN inputs are filled with 0 before computing the composite." |
@@ -369,7 +373,7 @@ Claims that could be made if later gates are built — do not claim until the co
 - "Reject inference implemented" — documented as known limitation, not implemented
 - "Model is production-ready for regulated credit scoring" — no independent validation
 - "The model is fair across protected classes" — no fairness audit in G9A scope
-- "LightGBM is the champion" — CatBoost is champion; LightGBM is governance alternative
+- "CatBoost is the final champion" — CatBoost was only the G9A provisional (untuned) baseline; the GP2 tuned champion is LightGBM_monotonic (both performance and governance champion)
 - "TabNet would have scored lower" — we cannot claim results we did not compute
 - "This replicates a production Home Credit scorecard" — approved-applicants only; single geography
 
@@ -431,7 +435,7 @@ Claims that could be made if later gates are built — do not claim until the co
 | "5 models tuned via Optuna TPE: CatBoost, XGBoost, XGBoost_monotonic, LightGBM_base, LightGBM_monotonic — trial counts honest (4–8/model, CPU budget documented)" | `gold_pass2_tuning_trace.json` |
 | "Champion: LightGBM_monotonic + Platt (val_AUC=0.7734, composite=0.7312) — selected by 9-component composite score, not AUC alone" | `gold_pass2_champion_selection_report.json` |
 | "Governance champion: LightGBM_monotonic (same model) — 15 monotone constraints qualify for SR 26-2 directional interpretability" | `gold_pass2_champion_selection_report.json` |
-| "Post-tuning Platt calibration reduces ECE to 0.0051 (val); Isotonic excluded from comparison (ECE=0.0 on val = overfitting artifact)" | `gold_pass2_calibration_report.json` |
+| "Calibration: isotonic is served (test ECE 0.0019, audit-recomputed); Platt also evaluated (val ECE 0.0051; frozen-report test ECE 0.0034). Isotonic val ECE=0.0 is a degenerate fit-on-itself value, so isotonic is justified on test ECE, not val" | `gold_pass2_calibration_report.json` |
 | "Final untouched test: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE_platt=0.0034 — single evaluation, val-test gap=−0.0035 ACCEPTABLE" | `gold_pass2_final_untouched_test_report.json` |
 | "Δ vs G9A baseline CatBoost: AUC+0.0053, KS+0.0047, ECE_platt improved from 0.0054 to 0.0034" | `gold_pass2_final_untouched_test_report.json` |
 | "G9A baseline CatBoost val_AUC=0.7716 was BASELINE_NOT_TUNED — correct champion after tuning is LightGBM_monotonic, not CatBoost" | `gold_pass2_champion_selection_report.json` + Pass 1 boundary |
@@ -598,17 +602,17 @@ Claims that could be made if later gates are built — do not claim until the co
 
 ## Cloud Run Deployment — Serving Gap (Added Post-Gold)
 
-### What the live endpoint serves
+### Endpoint: earlier demo revision vs committed champion
 
-| Field | Live endpoint | PulseGuard champion |
+| Field | Earlier Cloud Run revision (G4 demo) | Committed champion (app.py) |
 |---|---|---|
-| Model | G4 XGBoost + Platt | GP2 LightGBM_monotonic + Platt |
+| Model | G4 XGBoost + Platt | GP2 LightGBM_monotonic + isotonic (served) |
 | Dataset | synthetic_home_credit_like | Home Credit Default Risk |
 | Training rows | 50,000 (synthetic DGP) | 307,511 (public Kaggle) |
 | Features | 28 (20 numeric + 8 categorical) | 140 (multi-table engineered) |
 | Test AUC | 0.6261 (Bayes-optimal ceiling on 6-signal DGP) | 0.7769 |
-| ECE | 0.00386 | 0.0034 |
-| Endpoint | `https://pulseguard-api-98058433335.us-central1.run.app` | Not deployed |
+| ECE | 0.00386 | 0.0019 served isotonic (0.0034 Platt, frozen report) |
+| Endpoint | earlier Cloud Run revision | Served by committed app.py (native booster + numpy isotonic); verify/redeploy live revision |
 
 ### Root cause — why the champion is not live
 
@@ -627,20 +631,20 @@ annotations as strings, resolving `TypeError: unsupported operand type(s) for |:
 
 ### Interview framing — what to say
 
-> "The live endpoint at Cloud Run demonstrates the serving pattern: preprocessing, Platt-calibrated probability, SHAP top-3 reason codes, score banding (GREEN/AMBER/RED), and ASSISTIVE_ONLY response structure. The model inside is the G4 demo model trained on synthetic data — AUC=0.6261, 28 features, 50k rows. The GP2 LightGBM champion (AUC=0.7769, 140 features, 307k rows) could not be deployed: the pkl artifacts were serialized with sklearn 1.7.2 on Python 3.10+, but my deployment environment runs Python 3.9 (max sklearn 1.6.1). The deployment gap is documented. If you want to evaluate the champion's quality, I'll walk you through the offline evidence artifacts — the serving infrastructure is correct; the model-in-container is the demo version due to a version-pinning constraint I hit during deployment."
+> "The committed `app.py` serves the GP2 LightGBM champion (AUC=0.7769, 140 features) using the native `.txt` booster plus numpy isotonic arrays — no pickle, no sklearn at serve time, so there is no version lock. The earlier blocker was real but only affected an abandoned pkl serving path (pkl serialized under sklearn 1.7.2 / Python 3.10+ against a Python 3.9 deploy env); the native-booster + numpy-interp path bypasses it. Caveat: an earlier Cloud Run revision served a G4 XGBoost demo (AUC=0.6261, synthetic). If the live revision still returns 0.6261, it needs a redeploy to match committed code."
 
 ### Safe claim — deployment context
 
 | Claim | Status | Caveat |
 |---|---|---|
-| "FastAPI scoring endpoint deployed to Google Cloud Run" | **BUILT** | Endpoint URL: `https://pulseguard-api-98058433335.us-central1.run.app`; model is G4 XGBoost synthetic demo, not GP2 LightGBM champion |
-| "Endpoint serves calibrated PD score, score band, SHAP top-3 reasons, ASSISTIVE_ONLY disclaimer" | **BUILT** | Serving pattern is correct; model quality is demo-tier (AUC=0.6261 on synthetic DGP) |
-| "sklearn 1.7.2/Python 3.9 pkl incompatibility documented as deployment limitation" | **BUILT** | Root cause: sklearn pkl files are version-pinned; no cross-version deserialization path |
+| "FastAPI scoring endpoint deployed to Google Cloud Run" | **BUILT** | Endpoint URL: `https://pulseguard-api-98058433335.us-central1.run.app`; committed app.py serves the GP2 LightGBM champion (native booster + numpy isotonic) — verify the live revision matches committed code |
+| "Endpoint serves calibrated PD score, score band, SHAP top-3 reasons, ASSISTIVE_ONLY disclaimer" | **BUILT** | Serving pattern correct; committed code serves the champion (AUC=0.7769); an older revision was demo-tier (0.6261) |
+| "sklearn 1.7.2/Python 3.9 pkl incompatibility was documented and RESOLVED" | **BUILT** | Root cause: sklearn pkl files are version-pinned; resolved by serving the native .txt booster + numpy isotonic (no pkl, no sklearn at serve time) |
 
 ### Forbidden claims — deployment context
 
-- "The champion model is deployed" — the GP2 LightGBM champion is NOT in the live endpoint
-- "Live endpoint AUC=0.7769" — live endpoint uses G4 XGBoost; AUC=0.6261 on synthetic data
+- "The champion is confirmed live" — committed app.py serves the champion, but verify the deployed Cloud Run revision before claiming the live endpoint returns champion-quality numbers
+- "Live endpoint AUC=0.7769" without verifying the deployed revision — committed code serves the champion, but an older revision served the G4 demo (0.6261); confirm before quoting
 - "Production-ready serving infrastructure" — Cloud Run demo only; no autoscaling, auth, or SLA
 
 ---

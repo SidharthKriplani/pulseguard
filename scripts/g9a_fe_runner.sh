@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
-OUT="/sessions/modest-magical-johnson/mnt/pulseguard/outputs/data"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export PG_ROOT="$ROOT"
+OUT="$ROOT/outputs/data"
 mkdir -p "$OUT"
 LOG="$OUT/fe_runner.log"
 exec > "$LOG" 2>&1
@@ -9,9 +11,9 @@ python3 << 'PY'
 import pandas as pd, numpy as np, pickle, time, os, json, warnings
 warnings.filterwarnings("ignore")
 
-HC  = "/sessions/modest-magical-johnson/mnt/pulseguard/data/home-credit-default-risk"
-OUT = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/data"
-OUT_EV = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence"
+HC  = os.path.join(os.environ["PG_ROOT"], "data", "home-credit-default-risk")
+OUT = os.path.join(os.environ["PG_ROOT"], "outputs", "data")
+OUT_EV = os.path.join(os.environ["PG_ROOT"], "outputs", "evidence")
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(OUT_EV, exist_ok=True)
 t_global = time.time()

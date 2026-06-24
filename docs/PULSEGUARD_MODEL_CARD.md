@@ -1,6 +1,6 @@
 # PulseGuard — Model Card
 
-**Model:** LightGBM_monotonic + Platt calibration  
+**Model:** LightGBM_monotonic + isotonic calibration (served; Platt also evaluated)  
 **Version:** Gold Pass 3 | **Date:** 2026-06-17  
 **Status:** PORTFOLIO PROJECT — NOT PRODUCTION DEPLOYMENT  
 
@@ -12,7 +12,7 @@
 |---|---|
 | Model family | LightGBM Gradient Boosted Trees |
 | Governance variant | Monotonic constraints on 15 features (SR 26-2 aligned directional interpretability) |
-| Calibration | Platt sigmoid (LogisticRegression C=1e6, fit on validation set only) |
+| Calibration | Isotonic (served via numpy interp); Platt sigmoid also evaluated — both fit on validation set only |
 | Champion selection | 9-component composite score (AUC 25%, PR-AUC 15%, KS 15%, Brier 10%, ECE 10%, slope 5%, latency 5%, explainability 10%, adverse-ready 5%) |
 | Training objective | Binary cross-entropy with scale_pos_weight=11.39 |
 | Hyperparameter search | Optuna TPE, 5 trials, validation-only budget (CPU constraint) |
@@ -63,7 +63,7 @@
 | PR-AUC | 0.2628 |
 | KS statistic | **0.4141** |
 | Brier score | 0.0668 |
-| ECE (Platt calibrated) | **0.0034** |
+| ECE (test) | **0.0019** served isotonic (audit-recomputed) / **0.0034** Platt (frozen GP2 report) |
 | Latency | 327 ms / 61k rows |
 
 ### Score Band Policy (Balanced, PD-semantic)
@@ -78,9 +78,9 @@
 
 | Split | AUC | KS | ECE |
 |---|---|---|---|
-| Train | 0.8526 | 0.5425 | 0.399 (Platt artefact — not re-fit on train) |
+| Train | 0.8526 | 0.5425 | 0.399 (calibration artefact — calibrator not re-fit on train) |
 | Validation | 0.7734 | 0.4121 | 0.0051 |
-| Test | 0.7769 | 0.4141 | 0.0034 |
+| Test | 0.7769 | 0.4141 | 0.0019 served isotonic / 0.0034 Platt (frozen report) |
 
 ---
 
@@ -143,8 +143,9 @@ Observed approval rate differences are directionally aligned with actual default
 | No temporal holdout | No timestamps in Home Credit. Out-of-time validation not possible. |
 | Single geography | Eastern European portfolio. Generalization to other markets is untested. |
 | Trial count | 5 Optuna trials (CPU budget). A 100-trial GPU search would likely improve AUC. |
-| Calibrator scope | Platt fit on val only. Train-set ECE is high (0.40) — expected artefact, not a deployment concern. |
+| Calibrator scope | Isotonic (served) and Platt both fit on val only. Train-set ECE is high (0.40) — expected artefact (calibrator not re-fit on train), not a deployment concern. |
 | Fairness | No protected-class labels. Disparate impact ratio cannot be computed. |
+| Imputation provenance | Median imputation for missing side-table features is computed on the full dataset before the split (`g9a_feature_engineering.py`), so the imputation statistic sees val+test rows — a minor train/test leak. Metric impact is negligible (medians over 307k rows); documented rather than refit because the champion is frozen. |
 
 ---
 
@@ -162,7 +163,7 @@ Observed approval rate differences are directionally aligned with actual default
 ```
 PulseGuard — Credit Risk ML Portfolio Project
 Dataset: Home Credit Default Risk (Kaggle)
-Model: LightGBM_monotonic + Platt calibration
+Model: LightGBM_monotonic + isotonic calibration (served)
 Champion selection: Gold Pass 2/4 composite score
 Evidence: outputs/evidence/
 ```

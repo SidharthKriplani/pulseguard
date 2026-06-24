@@ -7,9 +7,10 @@ Produces: model_tournament_report.json, calibration_governance_report.json, 3 pl
 import numpy as np, pandas as pd, json, time, pickle, warnings, os
 warnings.filterwarnings("ignore")
 
-OUT    = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/data"
-OUT_EV = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence"
-OUT_PL = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/plots"
+_ROOT  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT    = os.path.join(_ROOT, "outputs", "data")
+OUT_EV = os.path.join(_ROOT, "outputs", "evidence")
+OUT_PL = os.path.join(_ROOT, "outputs", "plots")
 os.makedirs(OUT_EV, exist_ok=True)
 os.makedirs(OUT_PL, exist_ok=True)
 
@@ -95,7 +96,6 @@ t0 = time.time()
 # We document this with exact timing constraint and show the methodology
 from optbinning import BinningProcess
 # Select numeric features for WOE (top 20 by LR coefficient magnitude)
-import pandas as pd as pd_tmp
 fn_arr = np.array(feature_names)
 coef_idx = np.argsort(np.abs(lr.coef_[0]))[-20:]
 woe_feature_names = list(fn_arr[coef_idx])

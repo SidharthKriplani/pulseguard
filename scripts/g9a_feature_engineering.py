@@ -19,9 +19,10 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 
-HC  = "/sessions/modest-magical-johnson/mnt/pulseguard/data/home-credit-default-risk"
-OUT_DATA = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/data"
-OUT_EV   = "/sessions/modest-magical-johnson/mnt/pulseguard/outputs/evidence"
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HC  = os.path.join(_ROOT, "data", "home-credit-default-risk")
+OUT_DATA = os.path.join(_ROOT, "outputs", "data")
+OUT_EV   = os.path.join(_ROOT, "outputs", "evidence")
 os.makedirs(OUT_DATA, exist_ok=True)
 os.makedirs(OUT_EV, exist_ok=True)
 

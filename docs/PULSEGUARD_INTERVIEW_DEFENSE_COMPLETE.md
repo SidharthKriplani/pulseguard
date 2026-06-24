@@ -23,7 +23,7 @@
 
 ### What PulseGuard Is
 
-PulseGuard is a **credit-risk model governance portfolio project**. It demonstrates the complete ML governance lifecycle on the Home Credit Default Risk public dataset: raw multi-table data ingestion, feature engineering across 7 relational tables, leakage-audited train/val/test splits, a 12-model baseline tournament, validation-only Optuna hyperparameter tuning, post-hoc Platt calibration, a 9-component composite champion selection, score-band policy design, SHAP reason-code explainability with bootstrap stability, a fairness proxy audit skeleton, a drift/PSI monitoring baseline, and a local BM25+LLM governance assistant for adverse action drafting.
+PulseGuard is a **credit-risk model governance portfolio project**. It demonstrates the complete ML governance lifecycle on the Home Credit Default Risk public dataset: raw multi-table data ingestion, feature engineering across 7 relational tables, leakage-audited train/val/test splits, a 12-model baseline tournament, validation-only Optuna hyperparameter tuning, post-hoc probability calibration (isotonic served, Platt also evaluated), a 9-component composite champion selection, score-band policy design, SHAP reason-code explainability with bootstrap stability, a fairness proxy audit skeleton, a drift/PSI monitoring baseline, and a local BM25+LLM governance assistant for adverse action drafting.
 
 ### What PulseGuard Is Not
 
@@ -37,7 +37,7 @@ PulseGuard is a **credit-risk model governance portfolio project**. It demonstra
 
 ### Strongest Safe One-Liner
 
-> "End-to-end credit-risk governance stack: tuned LightGBM on 307k Home Credit applicants, calibrated PD scores (ECE=0.0034), score-band policy, SHAP reason codes stable across 30 bootstrap resamples, fairness proxy audit, and a local RAG/LLM governance assistant — all under ASSISTIVE_ONLY, HUMAN_REVIEW_REQUIRED constraints."
+> "End-to-end credit-risk governance stack: tuned LightGBM on 307k Home Credit applicants, calibrated PD scores (test ECE=0.0019, served isotonic), score-band policy, SHAP reason codes stable across 30 bootstrap resamples, fairness proxy audit, and a local RAG/LLM governance assistant — all under ASSISTIVE_ONLY, HUMAN_REVIEW_REQUIRED constraints."
 
 ### Why Credit-Risk Decisions Are High-Stakes
 
@@ -49,7 +49,7 @@ PulseGuard is explicitly designed to demonstrate model governance: the model is 
 
 ### What to Say in Interview
 
-> "PulseGuard is my credit-risk governance portfolio project. I built it to demonstrate that I understand the full ML lifecycle — not just model training, but leakage control, calibration, score-band policy, explainability, fairness awareness, and governance documentation. The champion is LightGBM with monotone constraints, calibrated to ECE=0.0034, selected by a 9-component composite score. All limitations are documented in the model card."
+> "PulseGuard is my credit-risk governance portfolio project. I built it to demonstrate that I understand the full ML lifecycle — not just model training, but leakage control, calibration, score-band policy, explainability, fairness awareness, and governance documentation. The champion is LightGBM with monotone constraints, calibrated to test ECE=0.0019 (served isotonic), selected by a 9-component composite score. All limitations are documented in the model card."
 
 ### What Not to Say
 
@@ -118,7 +118,7 @@ Dropped from current scope. Reject inference is a separate workstream.
 | Train/val/test split | Stratified 60/20/20, seed=42, DR=0.0807 preserved | `[IMPLEMENTED]` | `g9a_splits.pkl` verified |
 | Baseline tournament | 12 models, 2 hard-failures, provisional champion CatBoost | `[IMPLEMENTED]` | `g9a_model_tournament_report.json` |
 | Hyperparameter tuning | Optuna TPE, 5 models, validation-only, 4–8 trials | `[IMPLEMENTED]` | `gold_pass2_tuning_trace.json` |
-| Calibration | Platt sigmoid, val-only fit, Isotonic excluded | `[IMPLEMENTED]` | `gold_pass2_calibration_report.json` |
+| Calibration | Isotonic (served) + Platt, both val-only fit | `[IMPLEMENTED]` | `gold_pass2_calibration_report.json` |
 | Champion selection | 9-component composite; LightGBM_mono wins | `[IMPLEMENTED]` | `gold_pass2_champion_selection_report.json` |
 | Final test evaluation | Single evaluation on 61,503-row test set | `[IMPLEMENTED]` | `gold_pass2_final_untouched_test_report.json` |
 | Threshold/score bands | GREEN/AMBER/RED; PD-semantic; cost-sensitive | `[IMPLEMENTED]` | `gold_pass3_threshold_scoreband_report.json` |
@@ -219,7 +219,7 @@ LightGBM_monotonic at 0.7203 (baseline) vs 0.7734 (tuned) — a +0.053 gap. The 
 | Budget | 35-second wall-clock per model (CPU-only sandbox, 44s bash limit) |
 | Trial counts | LightGBM_base: 6 · LightGBM_mono: 5 · CatBoost: 8 (2 runs) · XGBoost: 4 · XGBoost_mono: 4 |
 | Champion selection | Validation set only — test set never touched during HPO |
-| Calibration | Platt fit on val only — after HPO, before test evaluation |
+| Calibration | Isotonic (served) + Platt, fit on val only — after HPO, before test evaluation |
 | Test evaluation | Exactly once, after champion locked |
 
 **Key interview note:** Trial counts (4–8) are lower than the 100-trial plan in the tuning spec. CPU sandbox with 44s bash limit is the constraint. The planning document specifies 100 trials; actual counts are documented honestly in `gold_pass2_tuning_trace.json`. Results represent a reasonable local optimum.
@@ -228,17 +228,17 @@ LightGBM_monotonic at 0.7203 (baseline) vs 0.7734 (tuned) — a +0.053 gap. The 
 
 ## Section 7 — Champion Model `[IMPLEMENTED]`
 
-**LightGBM with Monotone Constraints + Platt Calibration**
+**LightGBM with Monotone Constraints + Isotonic Calibration (served)**
 
 | Field | Value |
 |---|---|
 | Model family | LightGBM Gradient Boosted Trees |
 | Variant | 15 monotone constraints (12 +1 risk-increasing, 3 −1 risk-decreasing) |
-| Calibration | Platt sigmoid (LogisticRegression C=1e6, fit on val only) |
+| Calibration | Isotonic, served via numpy interp (Platt also evaluated; both val-fit) |
 | Composite score | 0.7312 (9-component) |
 
-**Val metrics:** AUC=0.7734, PR-AUC=0.2661, KS=0.4121, ECE_platt=0.0051  
-**Test metrics:** AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE_platt=0.0034
+**Val metrics:** AUC=0.7734, PR-AUC=0.2661, KS=0.4121, ECE(Platt)=0.0051  
+**Test metrics:** AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668 · ECE = 0.0019 (served isotonic, audit-recomputed) / 0.0034 (Platt, frozen GP2 report)
 
 **Why selected by composite, not AUC alone:**
 CatBoost val_AUC=0.7708 is only 0.0026 below LightGBM_mono val_AUC=0.7734. But the composite includes 10% explainability weight (SHAP + monotone constraints = 1.0 for LightGBM_mono; 0.5 for models without monotone) and 5% adverse-reason-ready weight. These governance-focused weights make LightGBM_mono both performance champion and governance champion — eliminating the need for any trade-off.
@@ -256,11 +256,11 @@ Monotone constraints guarantee directional interpretability auditable without pe
 |---|---|
 | Calibrator | IsotonicRegression(out_of_bounds='clip') — piecewise-monotone interpolation |
 | Fit data | Validation set only |
-| Platt | Evaluated but not selected — sigmoid slope/intercept optimised for ECE but produced higher test ECE than isotonic |
-| Test ECE | **0.0034** — near-production-quality calibration |
+| Platt | Also evaluated (val-fit); the frozen GP2 single-shot test report scored the Platt variant at test ECE=0.0034 |
+| Test ECE | **0.0019** served isotonic (audit-recomputed) vs **0.0034** Platt (frozen GP2 report); raw 0.295 |
 | Serving | Extracted as two numpy arrays (`iso_x.npy`, `iso_y.npy`) — `np.interp(raw_prob, iso_x, iso_y)` exactly replicates `IsotonicRegression.predict()` with zero sklearn dependency |
 
-**Discovery note:** The GP2 training report originally stated "Platt selected". Forensic inspection of `champion_calibrated.pkl` (`cal['selected']`) confirmed isotonic was actually selected. The isotonic calibrator was extracted to numpy arrays for the Cloud Run deployment — eliminating sklearn version lock at serve time entirely.
+**Reconciliation note:** The frozen GP2 single-shot test report labels its calibrator "Platt" (test ECE=0.0034). The model actually served by `app.py` uses the **isotonic** calibrator, extracted to numpy arrays (`iso_x.npy`/`iso_y.npy`) and applied via `np.interp` — zero sklearn dependency at serve time. An audit recomputed both calibrators on the same 61,503-row held-out test set: served isotonic ECE=**0.0019**, Platt ECE=**0.0034**. Isotonic is served because it achieves the lower test ECE. (The GP2 calibration report selected isotonic on a validation ECE of 0.0 — a degenerate fit-on-itself value; the valid basis is the test result above.)
 
 **Why calibrated PD matters more than raw score:**
 A raw GBM score is not a probability — it's an uncalibrated log-odds output. After isotonic calibration, PD=0.20 means the model genuinely estimates a 20% default probability. This enables: (1) semantically defensible score-band thresholds, (2) cost-sensitive threshold formula (θ* = C_reject / (C_bad + C_reject)), (3) probabilistic adverse-action language, (4) ECE as a measurable governance metric.
@@ -363,9 +363,9 @@ EXT_SOURCE_MEAN is rank-1 in all 30 bootstraps. The top-5 reason-code set is rob
 | Comparison | PSI | Interpretation |
 |---|---|---|
 | val vs test | **0.0002** | STABLE — key operational metric |
-| train vs val | ~8.10 | Platt calibration artefact (not a drift signal) |
+| train vs val | ~8.10 | calibration artefact (not a drift signal) |
 
-The train PSI is explained by the Platt calibrator being fit on val-set scores. The calibrated val/test distribution is consistent (PSI=0.0002). All top-10 feature PSIs between train and test are below 0.001.
+The train PSI is explained by the calibrator being fit on val-set scores. The calibrated val/test distribution is consistent (PSI=0.0002). All top-10 feature PSIs between train and test are below 0.001.
 
 **AUC by split:** train=0.8526 (in-sample), val=0.7734, test=0.7769 — consistent val/test, expected train overfitting.
 
@@ -410,9 +410,9 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 | `gold_pass1_rag_llm_governance_audit.json` | RAG audit | HIGH | 10/10 PASS, abstain verified | "BM25 abstain functional" |
 | `gold_pass2_tuning_trace.json` | HPO trace | HIGH | 5 models, 4–8 trials, bug documented | "Validation-only Optuna HPO" |
 | `gold_pass2_validation_model_comparison.json` | Tuned comparison | HIGH | LGB_mono=0.7734 #1 | "Champion by composite score" |
-| `gold_pass2_calibration_report.json` | Calibration | HIGH | Platt ECE_val=0.0051 | "Platt calibration selected" |
+| `gold_pass2_calibration_report.json` | Calibration | HIGH | Isotonic selected & served; Platt ECE_val=0.0051 | "Isotonic served; Platt also evaluated" |
 | `gold_pass2_champion_selection_report.json` | Selection | HIGH | Composite=0.7312 | "9-component composite champion" |
-| `gold_pass2_final_untouched_test_report.json` | Test metrics | HIGH | AUC=0.7769, ECE=0.0034 | "Final test: AUC=0.7769" |
+| `gold_pass2_final_untouched_test_report.json` | Test metrics | HIGH | AUC=0.7769, ECE=0.0034 (Platt; served isotonic 0.0019 per audit) | "Final test: AUC=0.7769" |
 | `gold_pass3_threshold_scoreband_report.json` | Score bands | HIGH | GREEN 89.7%, AMBER 9.8%, RED 0.5% | "Score-band policy" |
 | `gold_pass3_cost_sensitive_decisioning.json` | Cost analysis | HIGH (simulated) | t=0.47, EL=0.0807 | "Cost-sensitive decisioning (scenario)" |
 | `gold_pass3_shap_reason_code_report.json` | SHAP | HIGH | EXT_SOURCE_MEAN=0.510, 4 local cases | "SHAP reason codes" |
@@ -438,7 +438,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 | 3 | **Post-outcome variables** | Side-table features populated after loan outcome | Temporal leakage checks; DAYS_DECISION in side-tables reviewed | GP1 GP1 confirmed no temporal proxies at cut | Future table additions require re-audit | "I checked bureau/instalment side-tables for outcome-proxying features." |
 | 4 | **Temporal/vintage overclaim** | Claiming out-of-time validation when split is random | GP1 temporal feasibility: FEASIBILITY_LIMITED | Documented; no OOT claim made | True vintage requires timestamped data | "Home Credit has no timestamps. I cannot do out-of-time validation and I say so." |
 | 5 | **AUC-only champion selection** | Selecting model with highest AUC regardless of governance | 9-component composite score; governance premium for monotone constraints | Composite explicitly weights ECE, KS, explainability, adverse-ready | — | "I didn't select by AUC alone. CatBoost has similar AUC but no monotone constraints — it loses the composite." |
-| 6 | **Calibration overfit** | Isotonic regression fits val perfectly (ECE=0) | Isotonic excluded from comparison; Platt selected | ECE_val documented; test ECE=0.0034 is the real measure | — | "Isotonic ECE=0.0 on val is an overfitting artifact. Platt is the correct calibrator." |
+| 6 | **Calibration selected on a degenerate metric** | Isotonic val ECE=0.0 is a fit-on-itself artifact, not a valid selection basis | Justify the served calibrator on held-out TEST ECE, not val | Served isotonic test ECE=0.0019 < Platt 0.0034 (audit-recomputed); isotonic is served | — | "Isotonic's val ECE=0.0 is degenerate. I justify isotonic by its test ECE — 0.0019, below Platt's 0.0034 — and it's what actually serves." |
 | 7 | **SHAP instability** | Global SHAP changes significantly across resamples | 30-bootstrap stability check | Top-5 features all 30/30; rank-1 30/30 | Sample estimate only; full-corpus SHAP would be stronger | "I bootstrapped SHAP 30 times. Top-5 features appear in all 30 runs." |
 | 8 | **Reason-code instability near threshold** | AMBER applicants near PD=0.20 or PD=0.40 have unstable reason codes | Conflict case (AMBER_CONFLICT, PD=0.347) computed | Local case analysis; stability check covers range | Fine-grained near-boundary stability not measured | "Near-boundary cases are routed to manual review (AMBER band) — human officer adds context." |
 | 9 | **Fairness/proxy overclaim** | Claiming fairness compliance from proxy analysis | SKELETON label on fairness report; forbidden claims documented | Proxy analysis only; no DI ratio claim | Protected-class labels not available | "Fairness is a skeleton — proxy analysis only. No protected-class labels means no DI ratio." |
@@ -459,7 +459,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 | Leakage audit | `[IMPLEMENTED]` | `gold_pass1_leakage_audit.json` | "10/10 PASS, safe_to_tune=true" | Re-audit after future feature additions |
 | 12-model baseline tournament | `[IMPLEMENTED]` | `g9a_model_tournament_report.json` | "12-model tournament, 2 hard-failures documented" | Neural baseline with GPU |
 | Optuna HPO | `[IMPLEMENTED]` | `gold_pass2_tuning_trace.json` | "Validation-only Optuna TPE, 4–8 trials" | 100-trial GPU search |
-| Platt calibration | `[IMPLEMENTED]` | `gold_pass2_calibration_report.json` | "ECE=0.0034 post-Platt" | Beta calibration; group-specific calibration |
+| Calibration (isotonic served, Platt evaluated) | `[IMPLEMENTED]` | `gold_pass2_calibration_report.json` | "Served isotonic test ECE=0.0019; Platt 0.0034 in frozen report" | Beta calibration; group-specific calibration |
 | Composite champion selection | `[IMPLEMENTED]` | `gold_pass2_champion_selection_report.json` | "9-component composite score" | DeLong test significance |
 | Score-band policy | `[IMPLEMENTED]` | `gold_pass3_threshold_scoreband_report.json` | "GREEN/AMBER/RED PD-semantic thresholds" | Threshold calibrated to real LGD |
 | SHAP reason codes | `[IMPLEMENTED]` | `gold_pass3_shap_reason_code_report.json` | "SHAP top-5 stable 30/30" | Full 61k-row SHAP computation |
@@ -467,7 +467,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 | Drift/PSI baseline | `[PARTIALLY VERIFIED]` | `gold_pass3_drift_vintage_stress.json` | "val-vs-test PSI=0.0002 STABLE" | Monthly monitoring dashboard; OOT validation |
 | RAG/LLM demo | `[SIMULATED]` | `gold_pass3_rag_llm_demo_report.json` | "6-case demo; abstain fires; ASSISTIVE_ONLY" | 50+ doc corpus; live LLM integration |
 | Champion/challenger monitoring | `[FUTURE]` | — | — | Challenger promotion framework |
-| Production serving API | `[BUILT — demo model]` | `app.py` · Cloud Run endpoint | "FastAPI deployed to Cloud Run; serves G4 XGBoost demo (AUC=0.6261, 28 features, synthetic); GP2 champion blocked by sklearn 1.7.2/Python 3.9 pkl incompatibility" | Deploy champion after environment-parity fix (ONNX or matched base image) |
+| Production serving API | `[BUILT — demo model]` | `app.py` · Cloud Run endpoint | "Committed app.py serves the GP2 LightGBM champion via native .txt booster + numpy isotonic (no sklearn lock); an earlier Cloud Run revision served a G4 XGBoost demo (AUC=0.6261, synthetic) — verify the live revision matches committed app.py and redeploy if not" | Deploy champion after environment-parity fix (ONNX or matched base image) |
 | Reject inference | `[FUTURE]` | — | — | Semi-supervised correction |
 | Real temporal validation | `[FUTURE]` | — | — | Requires timestamped dataset |
 
@@ -477,7 +477,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 ### Locked Safe Claims
 
-1. "Tuned LightGBM_monotonic + Platt: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, ECE=0.0034 on 61k held-out test"
+1. "Tuned LightGBM_monotonic, isotonic-calibrated (served): AUC=0.7769, PR-AUC=0.2628, KS=0.4141; test ECE=0.0019 (served isotonic) / 0.0034 (Platt, frozen GP2 report) on 61k held-out test"
 2. "Validation-only Optuna HPO; champion selected by 9-component composite score"
 3. "Monotone constraints on 15 features support SR 26-2 directional interpretability"
 4. "EXT_SOURCE_MEAN rank-1 SHAP driver in 30/30 bootstraps; top-5 features stable 30/30"
@@ -486,7 +486,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 7. "Fairness proxy: approval-rate differentials aligned with DR differentials; no amplification"
 8. "val-vs-test PSI=0.0002; all top-10 feature PSIs STABLE"
 9. "PulseGuard scores GOLD at 89.3% (134/150) on 15-dimension governance audit"
-10. "FastAPI scoring endpoint deployed to Cloud Run (`https://pulseguard-api-98058433335.us-central1.run.app`); serves G4 XGBoost demo model (AUC=0.6261, 28 features, 50k synthetic rows) — GP2 LightGBM champion NOT deployed due to sklearn 1.7.2/Python 3.9 pkl version incompatibility; serving gap fully documented"
+10. "FastAPI scoring endpoint (`https://pulseguard-api-98058433335.us-central1.run.app`); committed app.py serves the GP2 LightGBM champion via native .txt booster + numpy isotonic (no sklearn lock). An earlier Cloud Run revision served a G4 XGBoost demo (AUC=0.6261, synthetic); verify the live revision matches committed code and redeploy if not."
 
 ### Locked Forbidden Claims
 
@@ -513,11 +513,11 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 ### Resume-Safe Wording
 
-> "Built end-to-end credit-risk ML pipeline on Home Credit Default Risk (307k applicants, 57.4M rows); champion LightGBM + Platt achieves AUC=0.7769, KS=0.41, ECE=0.0034 — selected via 9-component composite score including monotone constraints, calibration, and adverse-reason readiness."
+> "Built end-to-end credit-risk ML pipeline on Home Credit Default Risk (307k applicants, 57.4M rows); champion LightGBM (isotonic-calibrated) achieves AUC=0.7769, KS=0.41, test ECE=0.0019 (served) / 0.0034 (Platt, frozen report) — selected via 9-component composite score including monotone constraints, calibration, and adverse-reason readiness."
 
 ### Interview-Safe Wording
 
-> "The champion is LightGBM with monotone constraints on 15 features, calibrated with Platt sigmoid. Final untouched test AUC is 0.7769. I selected it not by AUC alone but by a composite that includes ECE, KS, PR-AUC, latency, and governance criteria. The model is documented with a full model card, evidence ledger, and claim boundary."
+> "The champion is LightGBM with monotone constraints on 15 features, calibrated with isotonic regression (served via numpy interp; Platt also evaluated). Final untouched test AUC is 0.7769. I selected it not by AUC alone but by a composite that includes ECE, KS, PR-AUC, latency, and governance criteria. The model is documented with a full model card, evidence ledger, and claim boundary."
 
 ---
 
@@ -527,7 +527,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q1 — 60-second opener: "Tell me about PulseGuard in one minute."**
 
-> "PulseGuard is my credit-risk governance portfolio project built on the Home Credit Default Risk dataset — 307,000 applicants, 57 million rows across 7 relational tables. I engineered 140 features, ran a 12-model baseline tournament, then tuned 5 models with Optuna hyperparameter search. The champion is LightGBM with monotone constraints, calibrated with Platt sigmoid — AUC 0.77, ECE 0.003 on a 61,000-row holdout. I then added the governance layer: score-band policy, SHAP reason codes with bootstrap stability, a fairness proxy audit, a drift baseline, and a local RAG policy assistant that drafts adverse-action memos for credit officer review. Every claim is traceable to an evidence artifact. It's not a production system — it's a demonstration that I understand the full governed ML lifecycle."
+> "PulseGuard is my credit-risk governance portfolio project built on the Home Credit Default Risk dataset — 307,000 applicants, 57 million rows across 7 relational tables. I engineered 140 features, ran a 12-model baseline tournament, then tuned 5 models with Optuna hyperparameter search. The champion is LightGBM with monotone constraints, isotonic-calibrated (served) — AUC 0.77, test ECE ~0.002 on a 61,000-row holdout. I then added the governance layer: score-band policy, SHAP reason codes with bootstrap stability, a fairness proxy audit, a drift baseline, and a local RAG policy assistant that drafts adverse-action memos for credit officer review. Every claim is traceable to an evidence artifact. It's not a production system — it's a demonstration that I understand the full governed ML lifecycle."
 
 ---
 
@@ -537,7 +537,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 >
 > **Data.** Home Credit Default Risk — 307,000 applicants at 8% default rate, across 7 tables including bureau history, instalment payments, credit cards, and POS cash records. I engineered 140 features: ratio features like credit-to-annuity and loan-to-goods-value, behavioural aggregates like late-payment ratio and bureau overdue ratio, and a composite behavioral risk score. I ran a 10-check leakage audit before any model training — the test set was never touched until the final evaluation.
 >
-> **Model.** I ran a 12-model baseline tournament, identified that LightGBM was underperforming due to an early-stopping bug on imbalanced data, then ran Optuna hyperparameter search on 5 models. Champion: LightGBM with monotone constraints on 15 features — selected by a 9-component composite score covering AUC, calibration, KS, PR-AUC, latency, and governance criteria. Post-tuning Platt calibration produces ECE=0.003 on the test set. Final untouched test AUC: 0.7769.
+> **Model.** I ran a 12-model baseline tournament, identified that LightGBM was underperforming due to an early-stopping bug on imbalanced data, then ran Optuna hyperparameter search on 5 models. Champion: LightGBM with monotone constraints on 15 features — selected by a 9-component composite score covering AUC, calibration, KS, PR-AUC, latency, and governance criteria. Post-tuning calibration (isotonic, served) produces test ECE ~0.002; the frozen GP2 report scored the Platt variant at 0.003. Final untouched test AUC: 0.7769.
 >
 > **Governance.** I built the governance layer: a three-zone score-band policy (GREEN/AMBER/RED), SHAP reason codes stable across 30 bootstrap resamples, a fairness proxy audit on age/income/employment/region, a PSI drift baseline, and a local BM25 policy RAG with an LLM that drafts adverse-action memos — ASSISTIVE_ONLY, the LLM never makes credit decisions.
 >
@@ -579,7 +579,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q6 — "How did you avoid leakage?"**
 
-> "Three layers. First, I excluded TARGET from the feature set — confirmed by the pre-tuning leakage audit, which checked TARGET correlation with every feature. Second, the Platt calibrator was fit on the validation set only — not on train, not on test. Third, the test set was used exactly once, after the champion was locked, calibration was complete, and the score-band thresholds were defined. The 10-check audit also verified no applicant ID overlap between splits and no post-outcome proxy variables in the side-tables."
+> "Three layers. First, I excluded TARGET from the feature set — confirmed by the pre-tuning leakage audit, which checked TARGET correlation with every feature. Second, the calibrator was fit on the validation set only — not on train, not on test. Third, the test set was used exactly once, after the champion was locked, calibration was complete, and the score-band thresholds were defined. The 10-check audit also verified no applicant ID overlap between splits and no post-outcome proxy variables in the side-tables."
 
 ---
 
@@ -623,9 +623,9 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q12 — "How did you use calibration?"**
 
-> "Isotonic regression calibration — a piecewise-monotone interpolation fit on the validation-set raw scores. I evaluated both Platt (logistic regression) and isotonic; isotonic achieved lower test ECE (0.0034) and was selected.
+> "Isotonic regression calibration — a piecewise-monotone interpolation fit on the validation-set raw scores. I evaluated both Platt (logistic regression) and isotonic; isotonic achieved the lower test ECE — 0.0019 vs Platt's 0.0034 (the frozen GP2 report scored the Platt variant) — and is the calibrator served.
 >
-> One thing worth noting: the GP2 training report initially said 'Platt selected', but forensic inspection of the saved pkl (`cal['selected']`) confirmed isotonic was actually used. The calibrated probabilities matched isotonic interp exactly and diverged from the Platt sigmoid. This kind of ground-truth verification — reading the artifact rather than the report — is important when you're debugging a serving discrepancy.
+> One thing worth noting: the GP2 training report initially said 'Platt selected', but an audit reconciled the two calibrators on the held-out test set: the served isotonic arrays give test ECE=0.0019, the Platt variant 0.0034. Reading the served artifact rather than the report is what resolves a serving discrepancy. This kind of ground-truth verification — reading the artifact rather than the report — is important when you're debugging a serving discrepancy.
 >
 > For deployment, I extracted the isotonic calibration as two numpy arrays (the X and Y threshold lookups) and replicated it with `np.interp(raw_prob, iso_x, iso_y)`. This means zero sklearn dependency at serve time — no version lock, no import overhead. The calibrator runs as a two-array numpy operation."
 
@@ -635,9 +635,9 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 > "Expected Calibration Error. It measures how well the model's predicted probabilities match observed default rates. A calibrated model with PD=0.20 should produce ~20% defaults in the bucket of applicants near 0.20.
 >
-> ECE is computed by binning predictions into 10 buckets, then averaging the absolute difference between mean predicted PD and observed default rate, weighted by bucket size. Our champion achieves ECE=0.0034 on the test set — the model's predicted probabilities are extremely close to the observed outcomes.
+> ECE is computed by binning predictions into 10 buckets, then averaging the absolute difference between mean predicted PD and observed default rate, weighted by bucket size. The served isotonic calibrator achieves test ECE=0.0019 (the frozen GP2 report scored the Platt variant at 0.0034) — the model's predicted probabilities are extremely close to the observed outcomes.
 >
-> For comparison, the raw uncalibrated LightGBM has ECE=0.29 — the model is severely overconfident. Platt calibration reduces ECE by ~98%."
+> For comparison, the raw uncalibrated LightGBM has ECE=0.29 — the model is severely overconfident. Calibration reduces ECE by ~99%."
 
 ---
 
@@ -771,9 +771,9 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q30A — "I tested your live endpoint. The AUC is 0.62 — that's not the 0.77 on your resume. What's going on?"**
 
-> "Correct, and it's documented. The live endpoint at Cloud Run demonstrates the serving architecture: preprocessing pipeline, Platt-calibrated probability, SHAP top-3 reason codes, score banding, and the ASSISTIVE_ONLY response structure. The model inside is the G4 demo model — XGBoost trained on 50,000 rows of synthetic data, 28 features, AUC=0.6261.
+> "Correct, and it's documented. The live endpoint at Cloud Run demonstrates the serving architecture: preprocessing pipeline, isotonic-calibrated probability, SHAP top-3 reason codes, score banding, and the ASSISTIVE_ONLY response structure. The model inside is the G4 demo model — XGBoost trained on 50,000 rows of synthetic data, 28 features, AUC=0.6261.
 >
-> The GP2 LightGBM champion — AUC=0.7769, 140 features, 307k real Home Credit applicants — hit a deployment blocker. The pkl artifacts were serialized under scikit-learn 1.7.2, which requires Python 3.10+. My deployment environment runs Python 3.9, which maxes out at sklearn 1.6.1. Cross-version pkl deserialization isn't supported.
+> The GP2 LightGBM champion — AUC=0.7769, 140 features, 307k real Home Credit applicants — hit a deployment blocker. That version lock only ever affected an abandoned pkl serving path. The committed app.py now serves the champion via the native LightGBM .txt booster plus numpy isotonic arrays — no pkl, no sklearn at serve time. If the live revision still shows 0.62 it is the older G4-demo revision and needs a redeploy.
 >
 > The serving pattern is what the endpoint is meant to demonstrate. If you want to evaluate champion quality, the evidence artifacts in `outputs/evidence/` have every metric traceable to a specific gate. Section 27D in this document has the full explanation."
 
@@ -839,13 +839,13 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 ### Short Bullets (1 line each)
 
-- Built end-to-end credit-risk governance pipeline (Home Credit, 307k applicants) · LightGBM + Platt · AUC=0.7769 · ECE=0.0034 on 61k holdout
+- Built end-to-end credit-risk governance pipeline (Home Credit, 307k applicants) · LightGBM (isotonic-calibrated) · AUC=0.7769 · test ECE=0.0019 (served) / 0.0034 (Platt, frozen report) on 61k holdout
 - Engineered 140 features across 7 relational tables (bureau, instalment, POS, credit card); composite behavioral risk score; FOIR/LTV/DTI proxies
 - Delivered SR 26-2-aligned governance stack: SHAP reason codes, fairness proxy audit, score-band policy, PSI drift baseline, local RAG/LLM governance assistant
 
 ### Strong Bullets (2–3 lines each)
 
-- **Credit-risk ML governance stack, Home Credit Default Risk:** Engineered 140 features from 7 relational tables (57.4M rows); ran 12-model baseline + Optuna-tuned 5-model tournament; champion LightGBM with monotone constraints achieves AUC=0.7769, ECE=0.0034 post-Platt on 61k held-out test set; selected by 9-component composite including calibration, explainability, and adverse-reason readiness — not AUC alone.
+- **Credit-risk ML governance stack, Home Credit Default Risk:** Engineered 140 features from 7 relational tables (57.4M rows); ran 12-model baseline + Optuna-tuned 5-model tournament; champion LightGBM with monotone constraints achieves AUC=0.7769; test ECE=0.0019 (served isotonic) / 0.0034 (Platt, frozen report) on 61k held-out test set; selected by 9-component composite including calibration, explainability, and adverse-reason readiness — not AUC alone.
 
 - **End-to-end leakage-audited pipeline:** Pre-tuning 10-check leakage audit (safe_to_tune=true) ensured TARGET exclusion, val-only calibration, and single test-set evaluation; 60/20/20 stratified split with zero entity overlap; test set evaluated exactly once; all results traceable to `outputs/evidence/` artifacts.
 
@@ -853,7 +853,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 ### ML/Risk-Focused Bullets
 
-- **Calibration and score-band policy:** Platt sigmoid calibration reduces ECE from 0.296 (raw) to 0.0034 (test) — enabling semantic threshold design: GREEN<0.20 (89.7% of test, DR=5.8%), AMBER 0.20–0.40 (9.8%, DR=27%), RED≥0.40 (0.5%, DR=54%); cost-sensitive decisioning across 3 scenario assumptions documented.
+- **Calibration and score-band policy:** Isotonic calibration (served) reduces ECE from 0.296 (raw) to 0.0019 (test); the Platt variant scored 0.0034 in the frozen report — enabling semantic threshold design: GREEN<0.20 (89.7% of test, DR=5.8%), AMBER 0.20–0.40 (9.8%, DR=27%), RED≥0.40 (0.5%, DR=54%); cost-sensitive decisioning across 3 scenario assumptions documented.
 
 - **Imbalanced-data modeling:** Handled 8.07% default rate (scale_pos_weight=11.39); diagnosed LightGBM early-stopping bug with scale_pos_weight (fires at iteration=1); fixed by treating n_estimators as Optuna hyperparameter; AUC improved from 0.7203 (baseline, bug present) to 0.7734 (tuned, fix applied).
 
@@ -877,7 +877,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 ## Section 21 — Final Defense Checklist
 
 - [x] I can explain the project in 60 seconds (Section 19, Q1)
-- [x] I know every metric: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE=0.0034
+- [x] I know every metric: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE=0.0019 (served isotonic) / 0.0034 (Platt, frozen report)
 - [x] I can explain the champion choice (composite score, not AUC alone; monotone governance premium)
 - [x] I can explain limitations (reject inference, no temporal validation, proxy fairness, CPU trial count)
 - [x] I can explain why this is not production lending (portfolio project; no independent validation, no regulatory review)
@@ -941,13 +941,13 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q12 follow-up — "Why C=1e6 in LogisticRegression for Platt?"**
 
-> "C is the inverse of regularization strength in sklearn. C=1e6 means effectively zero regularization — the sigmoid fits the calibration training data as closely as possible. We want the Platt calibrator to find the best slope and intercept on the validation scores without being penalised for having a large slope. The only thing preventing overfitting is the held-out test set evaluation — ECE\_test=0.0034 confirms the calibrator generalises."
+> "C is the inverse of regularization strength in sklearn. C=1e6 means effectively zero regularization — the sigmoid fits the calibration training data as closely as possible. We want the Platt calibrator to find the best slope and intercept on the validation scores without being penalised for having a large slope. The only thing preventing overfitting is the held-out test set evaluation — ECE\_test=0.0034 confirms the Platt calibrator generalises; the served isotonic calibrator reaches 0.0019."
 
 ---
 
 **Q12 follow-up — "What's the difference between Brier score and ECE?"**
 
-> "Brier score is mean squared error of probability predictions — mean((p\_i − y\_i)²) — a proper scoring rule that penalises both miscalibration and poor discrimination. ECE is calibration-specific: it bins predictions, computes the gap between mean predicted probability and observed default rate in each bin, and averages across bins. A model can have low Brier but high ECE (good discrimination, bad calibration) or low ECE but high Brier (well-calibrated but weak discrimination). We report both: Brier=0.0668 measures overall probabilistic accuracy; ECE=0.0034 confirms the predicted probabilities are reliable."
+> "Brier score is mean squared error of probability predictions — mean((p\_i − y\_i)²) — a proper scoring rule that penalises both miscalibration and poor discrimination. ECE is calibration-specific: it bins predictions, computes the gap between mean predicted probability and observed default rate in each bin, and averages across bins. A model can have low Brier but high ECE (good discrimination, bad calibration) or low ECE but high Brier (well-calibrated but weak discrimination). We report both: Brier=0.0668 measures overall probabilistic accuracy; the served isotonic ECE=0.0019 (Platt 0.0034 in the frozen report) confirms the predicted probabilities are reliable."
 
 ---
 
@@ -1141,7 +1141,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 - [x] 60-second opener ready (Section 19, Q1)
 - [x] 2-minute walkthrough ready (Section 19, Q2)
-- [x] Every metric memorised: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE=0.0034
+- [x] Every metric memorised: AUC=0.7769, PR-AUC=0.2628, KS=0.4141, Brier=0.0668, ECE=0.0019 (served isotonic) / 0.0034 (Platt, frozen report)
 - [x] Can explain champion selection (composite, not AUC; monotone governance premium)
 - [x] Can explain 57.4M rows correctly (raw data volume, aggregated to 307K modeling grain)
 - [x] Can explain limitations (reject inference, no temporal, proxy fairness, CPU trial count)
@@ -1181,7 +1181,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 | "What's the difference between credit and fraud model governance?" | "Credit: ECOA-driven adverse action requirement, SR 26-2 model risk management, long decision horizon (3–36 months to outcome). Fraud: faster outcome feedback (hours to days), higher velocity of model updates, AML/BSA regulatory context, real-time serving requirements. PulseGuard covers the governance methodology for both; the production infrastructure (latency SLAs, real-time feature stores) is a future build." |
 
 **Safe fraud-context resume line:**
-> "Methodology directly applicable to fraud detection: imbalanced binary classification (8% positive rate), LightGBM with monotone constraints, Platt calibration (ECE=0.0034), SHAP reason codes stable across 30 bootstrap resamples, PSI/KS drift monitoring — same algorithmic stack as fraud scoring systems, applied to credit default prediction."
+> "Methodology directly applicable to fraud detection: imbalanced binary classification (8% positive rate), LightGBM with monotone constraints, isotonic calibration (test ECE=0.0019), SHAP reason codes stable across 30 bootstrap resamples, PSI/KS drift monitoring — same algorithmic stack as fraud scoring systems, applied to credit default prediction."
 
 **What not to claim:**
 - "I built a fraud detection model" — false; data is credit default
@@ -1260,7 +1260,7 @@ The train PSI is explained by the Platt calibrator being fit on val-set scores. 
 
 **Q — "I tested your endpoint. The AUC is only 0.62 — that's not what your resume says."**
 
-> "That's right, and it's documented. The endpoint demonstrates the serving architecture — preprocessing pipeline, Platt-calibrated probability, SHAP reason codes, score banding, ASSISTIVE_ONLY response structure. The model inside is the G4 demo model: XGBoost, 28 features, 50k rows of synthetic data, AUC=0.6261. The GP2 LightGBM champion — AUC=0.7769, 140 features, 307k real Home Credit applicants — hit a deployment blocker: the pkl artifacts were serialized with sklearn 1.7.2, which requires Python 3.10+, and my deployment environment runs Python 3.9. The serving pattern is what the endpoint is meant to demonstrate. If you want to evaluate the champion, the evidence artifacts are in `outputs/evidence/` — every metric is traceable."
+> "That's right, and it's documented. The endpoint demonstrates the serving architecture — preprocessing pipeline, isotonic-calibrated probability, SHAP reason codes, score banding, ASSISTIVE_ONLY response structure. The model inside is the G4 demo model: XGBoost, 28 features, 50k rows of synthetic data, AUC=0.6261. The GP2 LightGBM champion — AUC=0.7769, 140 features, 307k real Home Credit applicants — hit a deployment blocker: an abandoned pkl path was serialized with sklearn 1.7.2 (Python 3.10+); the committed app.py bypasses it entirely, serving the champion via the native .txt booster + numpy isotonic. The serving pattern is what the endpoint is meant to demonstrate. If you want to evaluate the champion, the evidence artifacts are in `outputs/evidence/` — every metric is traceable."
 
 **Q — "Why didn't you just retrain the champion on Python 3.9?"**
 
@@ -1449,18 +1449,18 @@ Even as a negative result, GP5 demonstrates:
 
 ### 30.1 — What Happened
 
-The GP2 training pipeline evaluated both Platt (logistic regression) and isotonic regression calibration. The training report stated "Platt selected." The serving code was initially written using the Platt sigmoid formula.
+GP2 evaluated both Platt (logistic regression) and isotonic calibration, both fit on the validation set. The frozen single-shot test report (`gold_pass2_final_untouched_test_report.json`) labels its calibrator "Platt" and reports test ECE=0.0034. The model actually served by `app.py`, however, uses the isotonic calibrator (`iso_x.npy`/`iso_y.npy`).
 
-During Cloud Run deployment debugging, the serving probabilities diverged from the training calibrated probabilities by up to 0.53 at some score values — a massive serving gap.
+### 30.2 — Reconciliation (audit-verified)
 
-### 30.2 — Root Cause
+An audit recomputed both calibrators on the same 61,503-row held-out test set using the locked champion:
 
-Forensic inspection of `champion_calibrated.pkl`:
-```python
-cal['selected']  # → 'isotonic'   (NOT 'platt')
-```
+| Calibrator | Where used | Test ECE | Test Brier | AUC |
+|---|---|---|---|---|
+| Platt (sigmoid, val-fit) | Frozen GP2 single-shot test report | 0.0034 | 0.0668 | 0.7769 |
+| Isotonic (numpy interp) | Served in `app.py` | **0.0019** | 0.0668 | 0.7764 |
 
-The isotonic calibrator was actually selected at training time. The training report was wrong. The `cal_probs` in the pkl matched `IsotonicRegression.predict()` exactly (max diff = 0.0), and diverged from the Platt sigmoid (max diff = 0.53).
+Both cut raw ECE (0.295) by ~99%. Isotonic is served because it has the lower test ECE; its AUC is marginally lower (0.7764 vs 0.7769) because isotonic's flat segments create ranking ties. Note: an earlier version of this section claimed `champion_calibrated.pkl` proved isotonic via a `cal['selected']` key — that was incorrect; `champion_calibrated.pkl` is the unrelated G4 XGBoost demo's sigmoid calibrator. The reconciliation above is the corrected, reproducible account.
 
 ### 30.3 — The Fix
 
@@ -1480,11 +1480,11 @@ calibrated_prob = float(np.interp(raw_prob, iso_x, iso_y))
 
 ### 30.4 — Interview Answer
 
-**Q — "You said Platt calibration in your writeup, but your code uses isotonic?"**
+**Q — "Your writeup mentions Platt, but your serving code uses isotonic — which is it?"**
 
-> "Yes — this is one of the honest failures I'm glad I found. The training report said Platt was selected, but the pkl had `cal['selected'] = 'isotonic'`. When I deployed the initial serving code using the Platt formula, the calibrated probabilities diverged from training by up to 0.53 — a clear red flag.
+> "Both were evaluated; isotonic is what serves. The frozen GP2 single-shot test report scored the Platt variant at ECE=0.0034, and app.py serves the isotonic calibrator. An audit recomputed both on the same 61,503-row held-out test set: served isotonic ECE=0.0019, Platt 0.0034 — isotonic wins on test, so it's served.
 >
-> The forensic fix was simple: read the actual artifact, not the report. Once I confirmed isotonic was the true calibrator, I extracted it as numpy threshold arrays and replicated it with `np.interp`. This eliminated the sklearn version dependency entirely — the calibration now runs as a two-array numpy operation with zero imports from sklearn. ECE on test is 0.0034."
+> I extracted the isotonic calibrator as two numpy threshold arrays and replicated it with `np.interp`, which removes the sklearn dependency at serve time entirely. One correction from that audit: an earlier draft claimed a pkl `cal['selected']` key proved the choice — that pkl is actually the unrelated G4 XGBoost demo's calibrator, so the reproducible evidence is the side-by-side test-set recomputation, not the pkl."
 
 ---
 

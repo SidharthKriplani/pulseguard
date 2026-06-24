@@ -13,21 +13,21 @@
 ### Bullet A — General ML / Data Science
 
 > **PulseGuard Credit-Risk Governance Portfolio** | Python, LightGBM, Optuna, SHAP, BM25  
-> Built end-to-end credit-risk ML pipeline on Home Credit Default Risk dataset (307k applicants, 57.4M rows, 7 relational tables). Engineered 140 features; ran 12-model baseline tournament + Optuna-tuned 5-model search; champion LightGBM with monotone constraints achieves **AUC=0.7769, KS=0.41, ECE=0.0034** on 61k held-out test. Champion selected by 9-component composite score (AUC, PR-AUC, KS, Brier, ECE, latency, explainability, adverse-reason readiness) — not AUC alone. Delivered full governance artifact stack: model card, evidence ledger, score-band policy, SHAP reason codes, fairness proxy audit, drift baseline, and BM25+LLM governance assistant. Project scored **89.3% (GOLD) on 15-dimension governance audit**.
+> Built end-to-end credit-risk ML pipeline on Home Credit Default Risk dataset (307k applicants, 57.4M rows, 7 relational tables). Engineered 140 features; ran 12-model baseline tournament + Optuna-tuned 5-model search; champion LightGBM (isotonic-calibrated) with monotone constraints achieves **AUC=0.7769, KS=0.41, ECE=0.0019** on 61k held-out test. Champion selected by 9-component composite score (AUC, PR-AUC, KS, Brier, ECE, latency, explainability, adverse-reason readiness) — not AUC alone. Delivered full governance artifact stack: model card, evidence ledger, score-band policy, SHAP reason codes, fairness proxy audit, drift baseline, and BM25+LLM governance assistant. Project scored **89.3% (GOLD) on 15-dimension governance audit**.
 
 ---
 
 ### Bullet B — Credit Risk / Financial Services Focused
 
-> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Platt Calibration, SHAP, BM25  
-> Designed governed ML credit-risk pipeline: 140 features across 7 tables (bureau aggregates, instalment ratios, DPD composites, FOIR/LTV/DTI proxies); champion LightGBM with 15 monotone directional constraints (SR 26-2 aligned) achieves AUC=0.7769, ECE=0.0034 post-Platt. Built 3-band score policy (GREEN<0.20: DR=5.8%; AMBER 0.20–0.40: DR=27%; RED≥0.40: DR=54%). SHAP reason codes stable across 30 bootstrap resamples (EXT_SOURCE_MEAN rank-1 30/30). Fairness proxy audit — no approval-rate amplification beyond base-rate differentials. Local BM25 policy RAG: adverse-action memo drafting, ASSISTIVE_ONLY hard constraint, OOD abstain verified.
+> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Isotonic Calibration, SHAP, BM25  
+> Designed governed ML credit-risk pipeline: 140 features across 7 tables (bureau aggregates, instalment ratios, DPD composites, FOIR/LTV/DTI proxies); champion LightGBM with 15 monotone directional constraints (SR 26-2 aligned) achieves AUC=0.7769, test ECE=0.0019 (served isotonic) / 0.0034 (Platt, frozen report). Built 3-band score policy (GREEN<0.20: DR=5.8%; AMBER 0.20–0.40: DR=27%; RED≥0.40: DR=54%). SHAP reason codes stable across 30 bootstrap resamples (EXT_SOURCE_MEAN rank-1 30/30). Fairness proxy audit — no approval-rate amplification beyond base-rate differentials. Local BM25 policy RAG: adverse-action memo drafting, ASSISTIVE_ONLY hard constraint, OOD abstain verified.
 
 ---
 
 ### Bullet C — MLOps / Governance Focused
 
 > **PulseGuard Credit-Risk ML Governance Stack** | LightGBM, Optuna, SHAP, reportlab  
-> Delivered production-pattern ML lifecycle for regulated lending context: leakage audit (10/10 PASS, safe_to_tune=true) → validation-only Optuna HPO (TPE, 4–8 trials, val-only objective) → Platt calibration (ECE 0.296→0.0034) → 9-component composite champion selection → score-band policy → SHAP bootstrap stability (30/30 top-5, 30/30 rank-1) → fairness proxy audit → PSI drift baseline (val-vs-test PSI=0.0002) → model card + evidence ledger + claim boundary. All 15-dimension governance audit dimensions documented; project scored GOLD at 89.3%.
+> Delivered production-pattern ML lifecycle for regulated lending context: leakage audit (10/10 PASS, safe_to_tune=true) → validation-only Optuna HPO (TPE, 4–8 trials, val-only objective) → isotonic calibration (served; ECE 0.296 → 0.0019) → 9-component composite champion selection → score-band policy → SHAP bootstrap stability (30/30 top-5, 30/30 rank-1) → fairness proxy audit → PSI drift baseline (val-vs-test PSI=0.0002) → model card + evidence ledger + claim boundary. All 15-dimension governance audit dimensions documented; project scored GOLD at 89.3%.
 
 ---
 
@@ -40,7 +40,7 @@
 
 ### Bullet E — Short Version (LinkedIn, tight resume space)
 
-> **PulseGuard** — credit-risk governance portfolio · LightGBM + Platt · AUC=0.7769, ECE=0.0034 · 140 features across 7 relational tables (57M rows) · SHAP reason codes, score-band policy, fairness proxy audit, BM25+LLM governance demo · GOLD at 89.3% on 15-dimension governance audit
+> **PulseGuard** — credit-risk governance portfolio · LightGBM (isotonic-calibrated) · AUC=0.7769, test ECE=0.0019 · 140 features across 7 relational tables (57M rows) · SHAP reason codes, score-band policy, fairness proxy audit, BM25+LLM governance demo · GOLD at 89.3% on 15-dimension governance audit
 
 ---
 
@@ -55,7 +55,7 @@
 > What I built:
 > ▸ 140 engineered features (bureau aggregates, instalment ratios, DPD composites)
 > ▸ 12-model baseline tournament + Optuna-tuned final 5 models
-> ▸ Champion: LightGBM + Platt — AUC 0.7769, KS 0.41, ECE 0.003
+> ▸ Champion: LightGBM (isotonic-calibrated) — AUC 0.7769, KS 0.41, test ECE 0.0019
 > ▸ Selected by 9-component composite (calibration + explainability weighted in)
 > ▸ Score-band policy: GREEN/AMBER/RED with PD-semantic thresholds
 > ▸ SHAP reason codes, stable 30/30 bootstrap resamples
@@ -76,7 +76,7 @@
 >
 > ▸ Pre-tuning leakage audit (10/10 PASS) before any model training
 > ▸ Monotone constraints on 15 features — directional interpretability without SHAP
-> ▸ Platt calibration: ECE 0.296 → 0.003 (raw GBM score ≠ probability)
+> ▸ Isotonic calibration (served): ECE 0.296 → 0.0019 (raw GBM score ≠ probability)
 > ▸ SHAP bootstrapped 30 times — EXT_SOURCE_MEAN stable as rank-1 in all 30 runs
 > ▸ Score-band policy derived from PD semantics, not arbitrary percentiles
 > ▸ LLM governance assistant with hard ASSISTIVE_ONLY constraint
@@ -89,7 +89,7 @@
 
 > Built PulseGuard: end-to-end credit-risk governance stack (Home Credit, 307k applicants).
 >
-> Champion: LightGBM + Platt · AUC=0.7769 · ECE=0.0034 · KS=0.41
+> Champion: LightGBM (isotonic-calibrated) · AUC=0.7769 · test ECE=0.0019 · KS=0.41
 >
 > Governance: SHAP reason codes (30-bootstrap stable) · fairness proxy audit · PSI drift baseline · BM25+LLM policy assistant (ASSISTIVE_ONLY)
 >
@@ -103,13 +103,13 @@
 
 ### One-Liner A — High-level (used after "tell me about yourself")
 
-> "PulseGuard is my credit-risk governance portfolio — tuned LightGBM on 307,000 Home Credit applicants, AUC 0.7769, ECE 0.003, selected by a 9-component composite including calibration and explainability, with a full governance stack: SHAP reason codes, score bands, fairness proxy audit, and a local LLM governance assistant that drafts adverse-action memos for credit officer review."
+> "PulseGuard is my credit-risk governance portfolio — tuned LightGBM on 307,000 Home Credit applicants, AUC 0.7769, test ECE 0.0019 (served isotonic), selected by a 9-component composite including calibration and explainability, with a full governance stack: SHAP reason codes, score bands, fairness proxy audit, and a local LLM governance assistant that drafts adverse-action memos for credit officer review."
 
 ---
 
 ### One-Liner B — Role-contextualised (model risk / regulatory)
 
-> "I built a governed credit-risk ML pipeline with an explicit leakage audit, validation-only Optuna HPO, Platt calibration to ECE=0.003, monotone constraints for SR 26-2 directional interpretability, SHAP reason codes bootstrapped for stability, a fairness proxy audit skeleton, and PSI drift monitoring — all documented in a model card with a claim boundary that distinguishes what I implemented from what I haven't."
+> "I built a governed credit-risk ML pipeline with an explicit leakage audit, validation-only Optuna HPO, isotonic calibration (served) to test ECE=0.0019, monotone constraints for SR 26-2 directional interpretability, SHAP reason codes bootstrapped for stability, a fairness proxy audit skeleton, and PSI drift monitoring — all documented in a model card with a claim boundary that distinguishes what I implemented from what I haven't."
 
 ---
 
@@ -125,7 +125,7 @@
 
 > "PulseGuard is my credit-risk governance portfolio project built on the Home Credit Default Risk dataset — 307,000 applicants, 57 million rows across 7 relational tables. I engineered 140 features, ran a 12-model baseline tournament, then tuned 5 models with Optuna hyperparameter search on the validation set only.
 >
-> The champion is LightGBM with monotone constraints — meaning the model is guaranteed to be directionally interpretable without needing SHAP. Post-Platt calibration, I get ECE=0.003 on the test set, which means the predicted probabilities are very close to actual default rates.
+> The champion is LightGBM with monotone constraints — meaning the model is guaranteed to be directionally interpretable without needing SHAP. With the served isotonic calibration, I get test ECE=0.0019, which means the predicted probabilities are very close to actual default rates.
 >
 > The governance layer is the main contribution: score-band policy, SHAP reason codes that are stable across 30 bootstrap resamples, a fairness proxy audit, a PSI drift baseline, and a local policy RAG assistant that drafts adverse-action memos — ASSISTIVE_ONLY, the LLM never decides.
 >
@@ -139,7 +139,7 @@
 >
 > **Data.** Home Credit Default Risk — 307,000 applicants at 8% default rate, 7 relational tables including bureau history, instalment payments, credit cards, and POS cash records. I engineered 140 features: ratio features like credit-to-annuity and loan-to-goods-value, behavioural aggregates like late-payment ratio and bureau overdue ratio, a composite behavioral risk score, and employment anomaly flags. I ran a 10-check leakage audit before any training.
 >
-> **Model.** 12 baseline models, 2 hard-failed with documented cause. Optuna hyperparameter search on 5 finalists — validation-only, test set never touched. Champion is LightGBM with monotone constraints on 15 features. Post-Platt calibration: AUC=0.7769, KS=0.41, ECE=0.0034 on 61,000-row holdout. Selected by a 9-component composite — not AUC alone.
+> **Model.** 12 baseline models, 2 hard-failed with documented cause. Optuna hyperparameter search on 5 finalists — validation-only, test set never touched. Champion is LightGBM with monotone constraints on 15 features. With the served isotonic calibration: AUC=0.7769, KS=0.41, test ECE=0.0019 on 61,000-row holdout (Platt, the frozen GP2 report's calibrator, scored 0.0034). Selected by a 9-component composite — not AUC alone.
 >
 > **Governance.** Score-band policy with PD-semantic thresholds — GREEN below 0.20, AMBER 0.20 to 0.40, RED above 0.40. SHAP reason codes derived from LightGBM's native pred_contrib, bootstrapped 30 times — EXT_SOURCE_MEAN is rank-1 in all 30 runs. Fairness proxy audit on 4 proxy groups — approval-rate gaps align with default-rate differentials. PSI val-vs-test is 0.0002. Local policy RAG: BM25 retriever, 6-case demo, abstain on out-of-domain, LLM output always ASSISTIVE_ONLY.
 >
@@ -157,7 +157,7 @@
 | "I validated on out-of-time data" | No timestamps in Home Credit; random split only | "No temporal holdout possible; documented as limitation" |
 | "I ran 100 Optuna trials" | Actual: 4–8 per model (CPU constraint) | "4–8 Optuna trials per model; CPU sandbox constraint" |
 | "CatBoost champion at AUC=0.7716" | CatBoost is the G9A BASELINE, not the final champion | "LightGBM_monotonic champion, tuned AUC=0.7769" |
-| "Isotonic calibration" | Platt is the selected calibrator; isotonic overfits val | "Platt sigmoid, ECE=0.0034 on test" |
+| "Platt is the served calibrator" | Isotonic is the SERVED calibrator (app.py uses iso_x/iso_y); Platt was also evaluated and is what the frozen GP2 report scored | "Isotonic is served — test ECE=0.0019; Platt also evaluated, frozen report=0.0034. Isotonic's val ECE=0.0 is a degenerate fit-on-itself value, so isotonic is justified on its held-out test ECE, not val" |
 | "The LLM generates credit decisions" | ASSISTIVE_ONLY by design | "LLM drafts memos; officer decides" |
 | "SR 26-2 compliant" | Compliance requires external validation team | "SR 26-2 aligned design; not certified" |
 | "Reject inference implemented" | Not implemented; documented as limitation | "Reject inference deferred; approved-applicant selection bias documented" |
@@ -206,7 +206,7 @@ GROUP BY a.SK_ID_CURR, a.AMT_CREDIT, a.AMT_INCOME_TOTAL, a.AMT_ANNUITY
 
 | Role Type | Relevant PulseGuard Component | Key Claim |
 |---|---|---|
-| Data scientist (credit/banking) | Champion selection, calibration, SHAP, fairness | "AUC=0.7769, ECE=0.003, monotone constraints, 30-bootstrap SHAP stability" |
+| Data scientist (credit/banking) | Champion selection, calibration, SHAP, fairness | "AUC=0.7769, test ECE=0.0019 (served isotonic), monotone constraints, 30-bootstrap SHAP stability" |
 | ML engineer | Feature pipeline, HPO, serving architecture (FUTURE) | "140 features, Optuna, pred_contrib, PSI monitoring design" |
 | Model risk / MRM | Governance stack, claim boundary, evidence ledger | "SR 26-2 aligned; leakage audit; 15-dim governance audit GOLD" |
 | GenAI / LLM engineer | RAG/LLM governance assistant | "BM25 retriever, abstain threshold, ASSISTIVE_ONLY hard constraint" |
@@ -225,8 +225,8 @@ GROUP BY a.SK_ID_CURR, a.AMT_CREDIT, a.AMT_INCOME_TOTAL, a.AMT_ANNUITY
 
 ### Bullet F — Fraud Detection Roles
 
-> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Platt Calibration, SHAP, BM25  
-> Solved imbalanced binary classification (8.07% positive rate) — the same problem class as fraud detection — on Home Credit Default Risk (307k applicants, 57.4M rows across 7 tables). Applied scale_pos_weight=11.39 class weighting + LightGBM monotone constraints; post-Platt calibration achieves ECE=0.0034, recovering well-calibrated probabilities from an extreme-weight GBM. SHAP reason codes stable across 30 bootstrap resamples (EXT_SOURCE_MEAN rank-1 30/30); PSI drift monitoring with WARN/ALERT/CRITICAL cascade. Governance: model card, evidence ledger, score-band policy, ASSISTIVE_ONLY reason-code memo drafting. Methodology directly transferable to application fraud or transaction fraud scoring — same algorithmic stack, different feature domain.
+> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Isotonic Calibration, SHAP, BM25  
+> Solved imbalanced binary classification (8.07% positive rate) — the same problem class as fraud detection — on Home Credit Default Risk (307k applicants, 57.4M rows across 7 tables). Applied scale_pos_weight=11.39 class weighting + LightGBM monotone constraints; the served isotonic calibration achieves test ECE=0.0019, recovering well-calibrated probabilities from an extreme-weight GBM. SHAP reason codes stable across 30 bootstrap resamples (EXT_SOURCE_MEAN rank-1 30/30); PSI drift monitoring with WARN/ALERT/CRITICAL cascade. Governance: model card, evidence ledger, score-band policy, ASSISTIVE_ONLY reason-code memo drafting. Methodology directly transferable to application fraud or transaction fraud scoring — same algorithmic stack, different feature domain.
 
 **When to use:** Role is titled "Fraud Detection", "Risk Scoring", or "Financial Crimes ML" and the JD emphasizes class imbalance, recall/precision trade-offs, GBM-based scoring, or SHAP reason codes.
 
@@ -237,7 +237,7 @@ GROUP BY a.SK_ID_CURR, a.AMT_CREDIT, a.AMT_INCOME_TOTAL, a.AMT_ANNUITY
 ### Bullet G — MLOps / ML Platform Roles
 
 > **PulseGuard Credit-Risk ML Governance Stack** | LightGBM, Optuna, SHAP, reportlab  
-> Implemented the full governed ML lifecycle by hand — the layer that MLOps tooling automates: leakage audit → validation-only Optuna HPO (TPE) → Platt calibration (ECE 0.296→0.0034) → 9-component composite champion promotion criteria → score-band deployment policy → SHAP bootstrap stability audit (30 resamples) → PSI/KS drift monitoring with SLA thresholds (WARN/ALERT/CRITICAL) → model card + evidence ledger (equivalent to MLflow experiment tracking) + claim boundary documentation. Champion selection criteria fully specified before any experiment ran — no post-hoc metric selection. Governance artifacts structured to plug directly into a model registry and monitoring dashboard.
+> Implemented the full governed ML lifecycle by hand — the layer that MLOps tooling automates: leakage audit → validation-only Optuna HPO (TPE) → isotonic calibration (served; ECE 0.296 → 0.0019) → 9-component composite champion promotion criteria → score-band deployment policy → SHAP bootstrap stability audit (30 resamples) → PSI/KS drift monitoring with SLA thresholds (WARN/ALERT/CRITICAL) → model card + evidence ledger (equivalent to MLflow experiment tracking) + claim boundary documentation. Champion selection criteria fully specified before any experiment ran — no post-hoc metric selection. Governance artifacts structured to plug directly into a model registry and monitoring dashboard.
 
 **When to use:** Role is titled "MLOps Engineer", "ML Platform", "ML Infrastructure", or "Model Risk Management" and the JD emphasizes monitoring, model lifecycle, experiment tracking, or governance.
 
@@ -247,8 +247,8 @@ GROUP BY a.SK_ID_CURR, a.AMT_CREDIT, a.AMT_INCOME_TOTAL, a.AMT_ANNUITY
 
 ### Bullet H — Risk Scoring / Decision Science Roles
 
-> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Platt Calibration, SHAP  
-> Designed end-to-end score-to-decision pipeline: calibrated LightGBM champion (ECE=0.0034) → PD-semantic score bands (GREEN<20% PD: 89.7% of applicants, 5.8% DR; AMBER 20–40%: 9.8%, 27% DR; RED≥40%: 0.5%, 54% DR) → cost-sensitive threshold analysis across 4 cost-ratio scenarios → SHAP-driven reason-code policy for adverse action. Champion selected by 9-component composite (AUC, PR-AUC, KS, Brier, ECE, latency, explainability, adverse-reason readiness) — the same selection discipline used in production champion/challenger frameworks. Score-band policy documented with approval-rate and default-rate impact; governance stack includes fairness proxy audit and PSI drift baseline.
+> **PulseGuard Credit-Risk Governance Portfolio** | LightGBM, Isotonic Calibration, SHAP  
+> Designed end-to-end score-to-decision pipeline: calibrated LightGBM champion (served isotonic, test ECE=0.0019) → PD-semantic score bands (GREEN<20% PD: 89.7% of applicants, 5.8% DR; AMBER 20–40%: 9.8%, 27% DR; RED≥40%: 0.5%, 54% DR) → cost-sensitive threshold analysis across 4 cost-ratio scenarios → SHAP-driven reason-code policy for adverse action. Champion selected by 9-component composite (AUC, PR-AUC, KS, Brier, ECE, latency, explainability, adverse-reason readiness) — the same selection discipline used in production champion/challenger frameworks. Score-band policy documented with approval-rate and default-rate impact; governance stack includes fairness proxy audit and PSI drift baseline.
 
 **When to use:** Role is titled "Risk Analyst", "Decision Scientist", "Strategy Analytics", or "Risk Modelling" and the JD emphasizes policy design, threshold economics, or score interpretation.
 

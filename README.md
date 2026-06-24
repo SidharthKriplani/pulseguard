@@ -3,7 +3,7 @@
 <p align="left">
   <img src="https://img.shields.io/badge/Champion-LightGBM__monotonic-22c55e?style=flat-square" alt="Champion"/>
   <img src="https://img.shields.io/badge/AUC-0.7769-22c55e?style=flat-square" alt="AUC"/>
-  <img src="https://img.shields.io/badge/ECE-0.0034-22c55e?style=flat-square" alt="ECE"/>
+  <img src="https://img.shields.io/badge/ECE-0.0019-22c55e?style=flat-square" alt="ECE"/>
   <img src="https://img.shields.io/badge/KS-0.4141-22c55e?style=flat-square" alt="KS"/>
   <img src="https://img.shields.io/badge/PR--AUC-0.2628-22c55e?style=flat-square" alt="PR-AUC"/>
   <img src="https://img.shields.io/badge/Dataset-307k_applicants-22c55e?style=flat-square" alt="Dataset"/>
@@ -28,7 +28,7 @@
 </p>
 
 > A credit risk governance platform — built to answer: **when does a model score become a defensible governance output?**  
-> Home Credit Default Risk (307,511 real applicants, 140 features, 7 tables) → LightGBM champion (AUC=0.7769, ECE=0.0034) → Cloud Run. Every result is artifact-backed.
+> Home Credit Default Risk (307,511 real applicants, 140 features, 7 tables) → LightGBM champion (AUC=0.7769, test ECE=0.0019 served isotonic) → Cloud Run. Every result is artifact-backed.
 
 ---
 
@@ -72,7 +72,7 @@ LightGBM_monotonic with isotonic calibration — selected at Gold Pass 2 through
 |--------|-------|-------|
 | Val AUC | 0.7734 | Held-out validation set |
 | Test AUC | **0.7769** | Final held-out test set |
-| ECE | **0.0034** | After isotonic calibration |
+| ECE | **0.0019** | Served isotonic (test); Platt variant 0.0034 in frozen GP2 report |
 | KS Statistic | 0.4141 | Separation at optimal threshold |
 | PR-AUC | 0.2628 | Precision-recall area under curve |
 | Scale pos weight | 11.39 | Reflects 8.1% observed default rate |
@@ -91,7 +91,7 @@ Three model families tuned head-to-head with Optuna TPE (seed=42). The provision
 
 | Rank | Model | G9A Val AUC | GP2 Val AUC | ECE (calibrated) | Gate decision | Notes |
 |------|-------|------------|-------------|-----------------|---------------|-------|
-| **1** | **LightGBM_monotonic** | 0.7203 ⚠ | **0.7734** | **0.0034** | **CHAMPION** | Early stopping bug fixed + 15 monotone constraints |
+| **1** | **LightGBM_monotonic** | 0.7203 ⚠ | **0.7734** | **0.0019** | **CHAMPION** | Served isotonic test ECE; early-stopping bug fixed + 15 monotone constraints |
 | 2 | CatBoost | 0.7716 | 0.7716 | 0.0054 | Governance alt | G9A provisional champion; no directional constraints |
 | 3 | XGBoost | 0.7703 | ~0.7703 | 0.0040 | Not promoted | Competitive; excluded on governance |
 | — | TabNet | HARD_FAIL | — | — | Excluded | ~6 min/epoch on CPU; ~400h full training; no GPU |
@@ -174,7 +174,7 @@ curl https://pulseguard-api-98058433335.us-central1.run.app/health
   "dataset": "home_credit_default_risk",
   "n_features": 140,
   "auc_test": 0.7769,
-  "ece_test": 0.0034,
+  "ece_test": 0.0019,
   "calibration": "isotonic"
 }
 ```
@@ -275,7 +275,7 @@ docker run -p 8000:8000 pulseguard
 | `docs/PULSEGUARD_GOLD_PASS2_TUNED_CHAMPION_REPORT.md` | LightGBM_monotonic champion selection + early stopping bug diagnosis |
 | `docs/PULSEGUARD_GOLD_PASS3_GOVERNANCE_REPORT.md` | SHAP reason codes, RAG policy layer, LLM memo governance |
 | `docs/PULSEGUARD_GOLD_CHECKPOINT.md` | Consolidated Gold Pass 1–4 pass/fail record |
-| `docs/PULSEGUARD_MODEL_CARD.md` | AUC=0.7769 / ECE=0.0034 / KS=0.4141, intended use, limitations |
+| `docs/PULSEGUARD_MODEL_CARD.md` | AUC=0.7769 / test ECE=0.0019 served isotonic (0.0034 Platt, frozen report) / KS=0.4141, intended use, limitations |
 | `docs/G9A_FULL_MODERN_MODEL_TOURNAMENT.md` | 3-model tournament full results (baseline) |
 | `docs/G8_GOVERNANCE_SIGNOFF_PACKET.md` | Model risk governance signoff — fairness, adverse action, monitoring |
 | `docs/PULSEGUARD_FAILURE_ARCHAEOLOGY.md` | 8 real failures with root cause + fix |
@@ -300,7 +300,7 @@ Full design rationale, architecture decisions, and 30+ expected interview Q&A pa
 |-------|--------|
 | Champion model AUC=0.7769 (LightGBM_monotonic, Home Credit test set) | ✅ True |
 | Live endpoint serves LightGBM_monotonic (AUC=0.7769) | ✅ True |
-| ECE=0.0034 after isotonic calibration on test set | ✅ True |
+| Served isotonic test ECE=0.0019 (Platt variant 0.0034 in frozen GP2 report) | ✅ True |
 | 307,511 real Home Credit applicants in training pipeline | ✅ True |
 | SHAP reason codes from native LightGBM booster (pred_contrib) | ✅ True |
 | Gold Pass governance gates completed | ✅ True |
@@ -315,7 +315,7 @@ Full design rationale, architecture decisions, and 30+ expected interview Q&A pa
 
 ## Resume-Safe Claim
 
-Built PulseGuard, a production-simulated credit risk governance platform on Home Credit Default Risk (307,511 real applicants, 140 engineered features, 7 tables). Ran a 3-model Optuna tournament (LightGBM, CatBoost, XGBoost); diagnosed and fixed a LightGBM early-stopping interaction with `scale_pos_weight` that undertrained the baseline at 9 trees; crowned LightGBM_monotonic + isotonic calibration as champion (AUC=0.7769, ECE=0.0034, KS=0.4141, PR-AUC=0.2628) with 15 directional monotone constraints. Implemented SHAP-grounded adverse action reason codes, GREEN/AMBER/RED decision banding, and a RAG + LLM governance memo layer (ASSISTIVE_ONLY). Deployed champion to GCP Cloud Run using native LightGBM booster format and numpy-interp calibration — eliminating sklearn version dependency entirely. Extended the system with a deep learning component (GP5): trained a 1-layer LSTM on 13.6M raw installment payment rows to produce 32-dim sequence embeddings; challenger AUC (0.7264) did not beat the baseline (0.7769), and the negative result is documented honestly. Documented 8+ real failures with root cause and fix across a 5-checkpoint Gold Pass governance structure.
+Built PulseGuard, a production-simulated credit risk governance platform on Home Credit Default Risk (307,511 real applicants, 140 engineered features, 7 tables). Ran a 3-model Optuna tournament (LightGBM, CatBoost, XGBoost); diagnosed and fixed a LightGBM early-stopping interaction with `scale_pos_weight` that undertrained the baseline at 9 trees; crowned LightGBM_monotonic + isotonic calibration as champion (AUC=0.7769, served test ECE=0.0019, KS=0.4141, PR-AUC=0.2628) with 15 directional monotone constraints. Implemented SHAP-grounded adverse action reason codes, GREEN/AMBER/RED decision banding, and a RAG + LLM governance memo layer (ASSISTIVE_ONLY). Deployed champion to GCP Cloud Run using native LightGBM booster format and numpy-interp calibration — eliminating sklearn version dependency entirely. Extended the system with a deep learning component (GP5): trained a 1-layer LSTM on 13.6M raw installment payment rows to produce 32-dim sequence embeddings; challenger AUC (0.7264) did not beat the baseline (0.7769), and the negative result is documented honestly. Documented 8+ real failures with root cause and fix across a 5-checkpoint Gold Pass governance structure.
 
 ---
 

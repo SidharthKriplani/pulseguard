@@ -13,7 +13,7 @@ PulseGuard is **GOLD CHECKPOINTED**. All four gold passes are complete. The proj
 |---|---|---|
 | G9A | ✓ COMPLETE | Home Credit primary spine, 140 features, 12-model baseline tournament |
 | Gold Pass 1/4 | ✓ COMPLETE | Pre-tuning audit — safe_to_tune=true |
-| Gold Pass 2/4 | ✓ COMPLETE | Optuna tuning, champion: LightGBM_monotonic+Platt |
+| Gold Pass 2/4 | ✓ COMPLETE | Optuna tuning, champion: LightGBM_monotonic (isotonic-calibrated, served) |
 | Gold Pass 3/4 | ✓ COMPLETE | Governance stack: score bands, SHAP, fairness, drift, RAG/LLM |
 | Gold Pass 4/4 | ✓ COMPLETE | Final audit, checkpoint, defense doc, resume pack |
 
@@ -57,7 +57,7 @@ PulseGuard is a **credit-risk model governance portfolio project** built on the 
 - A system trained on real bank customer data
 
 **Strongest defensible one-liner:**  
-> "End-to-end credit-risk governance stack: tuned LightGBM on 307k Home Credit applicants, calibrated PD scores (ECE=0.0034), score-band policy, SHAP reason codes stable across 30 bootstrap resamples, fairness proxy audit, and a local RAG/LLM governance assistant — all under ASSISTIVE_ONLY, HUMAN_REVIEW_REQUIRED constraints."
+> "End-to-end credit-risk governance stack: tuned LightGBM on 307k Home Credit applicants, calibrated PD scores (served isotonic, test ECE=0.0019), score-band policy, SHAP reason codes stable across 30 bootstrap resamples, fairness proxy audit, and a local RAG/LLM governance assistant — all under ASSISTIVE_ONLY, HUMAN_REVIEW_REQUIRED constraints."
 
 ---
 
@@ -107,7 +107,7 @@ PulseGuard is a **credit-risk model governance portfolio project** built on the 
 | Phase | Models | Champion | Outcome |
 |---|---|---|---|
 | G9A Baseline (untuned) | CatBoost, XGBoost, LightGBM, RF, LR, SVM, GBM, monotonic variants (12 total) | CatBoost + Platt (provisional) | AUC=0.7716, ECE=0.0054 — BASELINE_NOT_TUNED |
-| Gold Pass 2 (Optuna) | CatBoost, XGBoost, XGBoost_mono, LightGBM_base, LightGBM_mono | LightGBM_monotonic + Platt | Tuned; composite 9-component score |
+| Gold Pass 2 (Optuna) | CatBoost, XGBoost, XGBoost_mono, LightGBM_base, LightGBM_mono | LightGBM_monotonic (isotonic-calibrated, served) | Tuned; composite 9-component score |
 | Hard failures | TabNet (CPU ~6min/epoch), sklearn GBM (wall-time) | — | Documented with cause |
 
 **Why LightGBM_monotonic won over CatBoost:**
@@ -121,7 +121,7 @@ CatBoost val_AUC=0.7708 vs LightGBM_mono val_AUC=0.7734 (+0.0026). But composite
 |---|---|
 | Model | LightGBM Gradient Boosted Trees |
 | Variant | Monotonic constraints on 15 features |
-| Calibration | Platt sigmoid (LogisticRegression C=1e6, fit on val only) |
+| Calibration | Isotonic regression (served via iso_x.npy/iso_y.npy, fit on val only); Platt sigmoid (LogisticRegression C=1e6, fit on val only) also evaluated — the frozen GP2 report's calibrator |
 | HPO | Optuna TPE, 5 trials, seed=42 |
 | Constraints | 12 risk-increasing (+1), 3 risk-decreasing (−1), 125 unconstrained |
 | Early-stop fix | LightGBM bug with scale_pos_weight + eval_metric='auc' fixed by treating n_estimators as Optuna hyperparameter |
@@ -139,7 +139,7 @@ CatBoost val_AUC=0.7708 vs LightGBM_mono val_AUC=0.7734 (+0.0026). But composite
 | PR-AUC | 0.2628 | −0.0009 | Default-minority precision-recall |
 | KS statistic | **0.4141** | +0.0047 | 41.4pp separation between default/non-default |
 | Brier score | 0.0668 | — | Good probabilistic accuracy |
-| ECE (Platt) | **0.0034** | improved | Near-perfect calibration |
+| ECE (served isotonic) | **0.0019** | improved | Near-perfect calibration (Platt, frozen GP2 report: 0.0034) |
 | Latency | 327 ms / 61k rows | — | <1ms per applicant |
 
 Val-test AUC gap = −0.0035 (test slightly higher than val) — within expected range for stratified random split; no leakage signal.
@@ -148,13 +148,13 @@ Val-test AUC gap = −0.0035 (test slightly higher than val) — within expected
 
 ## 9. Calibration Result
 
-| Model | ECE raw | ECE Platt (val) | ECE Platt (test) |
-|---|---|---|---|
-| LightGBM_mono (champion) | 0.2964 | 0.0051 | **0.0034** |
-| CatBoost | 0.3112 | 0.0044 | — |
-| XGBoost_mono | 0.3172 | 0.0057 | — |
+| Model | ECE raw | ECE served isotonic (test) | ECE Platt (val) | ECE Platt (test) |
+|---|---|---|---|---|
+| LightGBM_mono (champion) | 0.2964 | **0.0019** | 0.0051 | 0.0034 |
+| CatBoost | 0.3112 | — | 0.0044 | — |
+| XGBoost_mono | 0.3172 | — | 0.0057 | — |
 
-Isotonic calibration produces ECE=0.0 on val (overfitting artifact — fits to val perfectly). Platt is the correct selection: 2-parameter sigmoid, val-fit only, honest test generalisation.
+Two calibrators were evaluated, both fit on validation only. **Isotonic regression is the calibrator actually SERVED** (app.py applies iso_x.npy/iso_y.npy via np.interp); its audit-recomputed held-out test ECE is **0.0019**. **Platt** is what the frozen GP2 single-shot test report scored: test ECE=0.0034 (val ECE=0.0051). Isotonic's val ECE=0.0 is a degenerate fit-on-itself value, so it is NOT a valid selection basis; isotonic is justified instead by its held-out TEST ECE (0.0019), which beats Platt's frozen-report 0.0034.
 
 **Why calibration matters:** A calibrated PD of 0.20 means the model genuinely estimates 20% default probability at that score — enabling semantically interpretable score-band thresholds, cost-sensitive decisioning, and probabilistic adverse-action language.
 
@@ -217,7 +217,7 @@ Isotonic calibration produces ECE=0.0 on val (overfitting artifact — fits to v
 | train vs val/test | ~8.10 | Platt calibration artefact (not drift) |
 | Top-10 feature PSI (train vs test) | All < 0.001 | STABLE |
 
-AUC: val=0.7734 → test=0.7769 (gap=−0.0035). ECE: val=0.0051 → test=0.0034. No degradation between val and test.
+AUC: val=0.7734 → test=0.7769 (gap=−0.0035). Served isotonic test ECE=0.0019 (Platt: val=0.0051 → test=0.0034, the frozen GP2 report's number). No degradation between val and test.
 
 **True vintage validation** is not possible — Home Credit has no timestamps. Monthly PSI monitoring (score + top-10 features) is the recommended production monitoring plan.
 
@@ -246,9 +246,9 @@ AUC: val=0.7734 → test=0.7769 (gap=−0.0035). ECE: val=0.0051 → test=0.0034
 - [x] Leakage audit (10/10 PASS, safe_to_tune=true)
 - [x] 12-model baseline tournament with calibration
 - [x] 5-model Optuna tuning tournament (validation-only)
-- [x] Post-tuning Platt calibration
+- [x] Post-tuning calibration — isotonic (served) and Platt (frozen GP2 report) both evaluated
 - [x] 9-component composite champion selection
-- [x] Single held-out test evaluation (AUC=0.7769, ECE=0.0034)
+- [x] Single held-out test evaluation (AUC=0.7769, served isotonic test ECE=0.0019)
 - [x] Score-band policy (GREEN/AMBER/RED) with PD-semantic rationale
 - [x] Cost-sensitive threshold analysis (3 scenarios)
 - [x] SHAP reason codes (global + 4 local cases) via LightGBM pred_contrib
@@ -286,7 +286,7 @@ AUC: val=0.7734 → test=0.7769 (gap=−0.0035). ECE: val=0.0051 → test=0.0034
 PulseGuard has achieved GOLD status (89.3%). Every material gap from the RiskFrame audit (104/150, 2026-06-16) has been addressed:
 - Data realism: Home Credit (307k, 7 tables) replaces synthetic/Taiwan as primary
 - Tournament depth: 12 baseline + 5 tuned models
-- Calibration: ECE=0.0034 (near-production quality)
+- Calibration: served isotonic test ECE=0.0019 (Platt, frozen GP2 report: 0.0034)
 - Explainability: SHAP + monotone constraints + 4 local cases + stability
 - Governance: model card, governance report, evidence ledger, claim boundary
 - Fairness: proxy audit skeleton (appropriately caveated)
